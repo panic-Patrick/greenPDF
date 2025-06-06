@@ -1,16 +1,7 @@
 {
   "antraege": {
     "name": "antraege",
-    "files": [
-      {
-        "id": "antraege_kommunalwahl_2023",
-        "name": "kommunalwahl-2023.pdf",
-        "path": "/media/antraege/kommunalwahl-2023.pdf",
-        "type": "pdf",
-        "size": "972 Bytes",
-        "lastModified": "2025-06-06"
-      }
-    ]
+    "files": []
   },
   "presse": {
     "name": "presse",
