@@ -70,13 +70,15 @@ const PDFViewer = ({ selectedFile }) => {
 
   if (!selectedFile) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
+      <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-50">
         <div className="text-center">
-          <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-green">
+            <FileText className="h-12 w-12 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2 font-headline">
             {t('viewer.noDocument')}
           </h3>
-          <p className="text-gray-500">
+          <p className="text-gray-600">
             {t('header.subtitle')}
           </p>
         </div>
@@ -85,16 +87,16 @@ const PDFViewer = ({ selectedFile }) => {
   }
 
   return (
-    <div className={`flex-1 flex flex-col bg-gray-50 ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''}`}>
+    <div className={`flex-1 flex flex-col bg-gradient-to-br from-green-50 to-emerald-50 ${isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''}`}>
       {/* Toolbar */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3">
+      <div className="bg-white border-b border-gray-200 px-4 py-3 shadow-soft">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <h2 className="text-lg font-semibold text-gray-900 truncate max-w-xs">
+            <h2 className="text-lg font-semibold text-gray-900 truncate max-w-xs font-headline">
               {selectedFile.name}
             </h2>
             <div className="flex items-center space-x-2 text-sm text-gray-500">
-              <span>{selectedFile.size}</span>
+              <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">{selectedFile.size}</span>
               <span>•</span>
               <span>{selectedFile.lastModified}</span>
             </div>
@@ -103,24 +105,24 @@ const PDFViewer = ({ selectedFile }) => {
           <div className="flex items-center space-x-2">
             <button
               onClick={downloadFile}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              className="p-2 rounded-lg hover:bg-green-100 transition-all duration-200 group"
               title={t('viewer.download')}
             >
-              <Download className="h-4 w-4" />
+              <Download className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
             </button>
             <button
               onClick={printFile}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              className="p-2 rounded-lg hover:bg-green-100 transition-all duration-200 group"
               title={t('viewer.print')}
             >
-              <Printer className="h-4 w-4" />
+              <Printer className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
             </button>
             <button
               onClick={toggleFullscreen}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              className="p-2 rounded-lg hover:bg-green-100 transition-all duration-200 group"
               title={t('viewer.fullscreen')}
             >
-              <Maximize className="h-4 w-4" />
+              <Maximize className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
             </button>
           </div>
         </div>
@@ -128,17 +130,17 @@ const PDFViewer = ({ selectedFile }) => {
 
       {/* PDF Controls */}
       {selectedFile && (
-        <div className="bg-white border-b border-gray-200 px-4 py-2">
+        <div className="bg-white border-b border-gray-200 px-4 py-2 shadow-soft">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <button
                   onClick={prevPage}
                   disabled={pageNumber <= 1}
-                  className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="p-1 rounded hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 group"
                   title={t('viewer.prevPage')}
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  <ChevronLeft className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
                 </button>
                 
                 <form onSubmit={handlePageInputSubmit} className="flex items-center space-x-2">
@@ -147,7 +149,7 @@ const PDFViewer = ({ selectedFile }) => {
                     value={pageInput || pageNumber}
                     onChange={handlePageInputChange}
                     onBlur={() => setPageInput('')}
-                    className="w-12 px-2 py-1 text-sm border border-gray-300 rounded text-center focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    className="w-12 px-2 py-1 text-sm border border-gray-300 rounded text-center focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
                   />
                   <span className="text-sm text-gray-600">
                     {t('viewer.of')} {numPages || '–'}
@@ -157,10 +159,10 @@ const PDFViewer = ({ selectedFile }) => {
                 <button
                   onClick={nextPage}
                   disabled={pageNumber >= numPages}
-                  className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="p-1 rounded hover:bg-green-100 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 group"
                   title={t('viewer.nextPage')}
                 >
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
                 </button>
               </div>
             </div>
@@ -168,27 +170,27 @@ const PDFViewer = ({ selectedFile }) => {
             <div className="flex items-center space-x-2">
               <button
                 onClick={zoomOut}
-                className="p-1 rounded hover:bg-gray-100 transition-colors duration-200"
+                className="p-1 rounded hover:bg-green-100 transition-all duration-200 group"
                 title={t('viewer.zoomOut')}
               >
-                <ZoomOut className="h-4 w-4" />
+                <ZoomOut className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
               </button>
               
-              <span className="text-sm text-gray-600 px-2">
+              <span className="text-sm text-gray-600 px-2 bg-green-50 rounded-md py-1 font-medium">
                 {Math.round(scale * 100)}%
               </span>
               
               <button
                 onClick={zoomIn}
-                className="p-1 rounded hover:bg-gray-100 transition-colors duration-200"
+                className="p-1 rounded hover:bg-green-100 transition-all duration-200 group"
                 title={t('viewer.zoomIn')}
               >
-                <ZoomIn className="h-4 w-4" />
+                <ZoomIn className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
               </button>
               
               <button
                 onClick={fitToWidth}
-                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-100 transition-colors duration-200"
+                className="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-green-50 hover:border-green-300 transition-all duration-200"
                 title={t('viewer.fitToWidth')}
               >
                 {t('viewer.fitToWidth')}
@@ -196,10 +198,10 @@ const PDFViewer = ({ selectedFile }) => {
               
               <button
                 onClick={resetZoom}
-                className="p-1 rounded hover:bg-gray-100 transition-colors duration-200"
+                className="p-1 rounded hover:bg-green-100 transition-all duration-200 group"
                 title={t('viewer.actualSize')}
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200" />
               </button>
             </div>
           </div>
@@ -209,11 +211,11 @@ const PDFViewer = ({ selectedFile }) => {
       {/* PDF Document */}
       <div className="flex-1 overflow-auto p-4">
         <div className="flex justify-center">
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+          <div className="bg-white shadow-green rounded-xl overflow-hidden">
             {loading && (
               <div className="flex items-center justify-center h-96">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
                   <p className="text-gray-600">{t('viewer.loading')}</p>
                 </div>
               </div>
@@ -235,7 +237,7 @@ const PDFViewer = ({ selectedFile }) => {
                 onLoadError={onDocumentLoadError}
                 loading={
                   <div className="flex items-center justify-center h-96">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
                   </div>
                 }
                 error={
@@ -249,7 +251,7 @@ const PDFViewer = ({ selectedFile }) => {
                   scale={scale}
                   renderTextLayer={false}
                   renderAnnotationLayer={false}
-                  className="shadow-lg"
+                  className="shadow-green"
                 />
               </Document>
             )}

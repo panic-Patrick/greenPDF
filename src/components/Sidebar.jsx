@@ -71,11 +71,13 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
       onClick={() => handleFileSelect(file)}
       className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer group transition-all duration-200 ${
         selectedFile?.id === file.id 
-          ? 'bg-emerald-100 text-emerald-800 shadow-sm' 
-          : 'hover:bg-gray-100'
+          ? 'bg-green-100 text-green-800 shadow-soft border border-green-200' 
+          : 'hover:bg-green-50 hover:shadow-soft'
       }`}
     >
-      <FileText className="h-4 w-4 text-gray-500 flex-shrink-0" />
+      <FileText className={`h-4 w-4 flex-shrink-0 transition-colors duration-200 ${
+        selectedFile?.id === file.id ? 'text-green-600' : 'text-gray-500 group-hover:text-green-600'
+      }`} />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium truncate">{file.name}</p>
         <p className="text-xs text-gray-500">{file.size}</p>
@@ -98,7 +100,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
       return (
         <div className="flex items-center justify-center py-8">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-4"></div>
             <p className="text-sm text-gray-600">{t('sidebar.loading')}</p>
           </div>
         </div>
@@ -113,7 +115,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
             <p className="text-sm text-red-600 mb-4">{error}</p>
             <button
               onClick={refreshFolders}
-              className="flex items-center space-x-2 px-3 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors duration-200 mx-auto"
+              className="flex items-center space-x-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 mx-auto shadow-green"
             >
               <RefreshCw className="h-4 w-4" />
               <span>{t('sidebar.retry')}</span>
@@ -147,22 +149,22 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
             <div key={folderId} className="space-y-1">
               <div
                 onClick={() => toggleFolder(folderId)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-green-50 transition-all duration-200 group"
               >
                 {isExpanded ? (
-                  <ChevronDown className="h-4 w-4 text-gray-500" />
+                  <ChevronDown className="h-4 w-4 text-gray-500 group-hover:text-green-600 transition-colors duration-200" />
                 ) : (
-                  <ChevronRight className="h-4 w-4 text-gray-500" />
+                  <ChevronRight className="h-4 w-4 text-gray-500 group-hover:text-green-600 transition-colors duration-200" />
                 )}
                 {isExpanded ? (
-                  <FolderOpen className="h-4 w-4 text-emerald-600" />
+                  <FolderOpen className="h-4 w-4 text-green-600" />
                 ) : (
-                  <Folder className="h-4 w-4 text-emerald-600" />
+                  <Folder className="h-4 w-4 text-green-600" />
                 )}
-                <span className="text-sm font-medium text-gray-900">
+                <span className="text-sm font-medium text-gray-900 group-hover:text-green-800 transition-colors duration-200">
                   {t(`folders.${folderId}`)}
                 </span>
-                <span className="text-xs text-gray-500 bg-gray-200 px-2 py-0.5 rounded-full">
+                <span className="text-xs text-gray-500 bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
                   {files.length}
                 </span>
               </div>
@@ -196,7 +198,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
             placeholder={t('sidebar.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-colors duration-200"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
           />
         </div>
         
@@ -204,10 +206,10 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
         <button
           onClick={refreshFolders}
           disabled={loading}
-          className="mt-2 w-full flex items-center justify-center space-x-2 px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+          className="mt-2 w-full flex items-center justify-center space-x-2 px-3 py-2 text-sm border border-gray-300 rounded-lg hover:bg-green-50 hover:border-green-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 group"
         >
-          <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-          <span>{t('sidebar.refresh')}</span>
+          <RefreshCw className={`h-4 w-4 text-gray-600 group-hover:text-green-600 transition-colors duration-200 ${loading ? 'animate-spin' : ''}`} />
+          <span className="text-gray-700 group-hover:text-green-700 transition-colors duration-200">{t('sidebar.refresh')}</span>
         </button>
       </div>
 
@@ -221,10 +223,10 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 flex items-center justify-center space-x-1 px-3 py-3 text-sm font-medium border-b-2 transition-colors duration-200 ${
+            className={`flex-1 flex items-center justify-center space-x-1 px-3 py-3 text-sm font-medium border-b-2 transition-all duration-200 ${
               activeTab === tab.id
-                ? 'border-emerald-500 text-emerald-600 bg-emerald-50'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ? 'border-green-500 text-green-600 bg-green-50'
+                : 'border-transparent text-gray-500 hover:text-green-600 hover:bg-green-50'
             }`}
           >
             <tab.icon className="h-4 w-4" />
