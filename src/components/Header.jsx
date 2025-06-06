@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Languages, FileText, Moon, Sun } from 'lucide-react';
+import { Languages, Moon, Sun } from 'lucide-react';
 import { useDarkMode } from '../hooks/useDarkMode';
 
 const Header = () => {
@@ -17,15 +17,19 @@ const Header = () => {
       <div className="max-w-full mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl shadow-glass border border-white/30">
-              <FileText className="h-6 w-6 text-white" />
+            <div className="flex items-center justify-center w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl shadow-glass border border-white/30 p-2">
+              <img 
+                src="/assets/logo.png" 
+                alt="Grüne Fraktion Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white font-headline drop-shadow-sm">
-                {t('header.title')}
+                greenPDF
               </h1>
               <p className="text-sm text-green-100">
-                {t('header.subtitle')}
+                Grüne Fraktion Kirchhundem
               </p>
             </div>
           </div>
