@@ -1,310 +1,310 @@
 # greenPDF
 
-**Grüne Fraktion Kirchhundem - Media Document Management System**
+**Grüne Fraktion Kirchhundem - Medien-Dokumentenverwaltungssystem**
 
-A modern, responsive media viewer and management system built specifically for the Green Faction of Kirchhundem. This application provides an intuitive interface for organizing, viewing, and managing political documents and images across different categories.
+Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien.
 
 ![greenPDF Screenshot](https://via.placeholder.com/800x400/22c55e/ffffff?text=greenPDF+Interface)
 
-## ✨ Features
+## ✨ Funktionen
 
-### 📱 **Modern User Interface**
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Dark Mode Support**: Toggle between light and dark themes with system preference detection
-- **Professional Branding**: Custom green color scheme matching political identity
-- **Smooth Animations**: Micro-interactions and transitions for enhanced user experience
+### 📱 **Moderne Benutzeroberfläche**
+- **Responsives Design**: Optimiert für Desktop, Tablet und mobile Geräte
+- **Dunkelmodus-Unterstützung**: Wechsel zwischen hellem und dunklem Design mit Systemeinstellungserkennung
+- **Professionelles Branding**: Individuelles grünes Farbschema passend zur politischen Identität
+- **Sanfte Animationen**: Mikro-Interaktionen und Übergänge für eine verbesserte Benutzererfahrung
 
-### 📁 **Media Management**
-- **Multi-Format Support**: View PDFs, PNG, JPG, and JPEG files
-- **Organized Categories**: Documents sorted into three main folders:
-  - **Anträge** (Applications): Official applications and proposals
-  - **Presse** (Press): Press releases and media materials
-  - **Wahlkampf** (Campaign): Campaign materials and election documents
-- **Dynamic File Discovery**: Automatic scanning and manifest generation for media files
-- **Search Functionality**: Real-time search across all documents and images
-- **Favorites System**: Mark frequently used files as favorites
-- **Recent Files**: Quick access to recently viewed documents
-- **File Type Indicators**: Visual badges showing PDF or image file types
+### 📁 **Medienverwaltung**
+- **Multi-Format-Unterstützung**: Anzeige von PDFs, PNG, JPG und JPEG-Dateien
+- **Organisierte Kategorien**: Dokumente sortiert in drei Hauptordnern:
+  - **Anträge**: Offizielle Anträge und Vorschläge
+  - **Presse**: Pressemitteilungen und Medienmaterialien
+  - **Wahlkampf**: Kampagnenmaterialien und Wahldokumente
+- **Dynamische Dateierkennung**: Automatisches Scannen und Manifest-Generierung für Mediendateien
+- **Suchfunktion**: Echtzeit-Suche über alle Dokumente und Bilder
+- **Favoriten-System**: Markieren häufig verwendeter Dateien als Favoriten
+- **Zuletzt geöffnete Dateien**: Schneller Zugriff auf kürzlich angesehene Dokumente
+- **Dateityp-Indikatoren**: Visuelle Kennzeichnungen für PDF- oder Bilddateitypen
 
-### 🔍 **Advanced Media Viewer**
-- **PDF Rendering**: High-quality PDF display powered by PDF.js
-- **Image Viewer**: Optimized image viewing with zoom controls
-- **Zoom Controls**: Zoom in/out, fit to width, and actual size options
-- **Page Navigation**: Easy PDF page navigation with input controls
-- **Fullscreen Mode**: Distraction-free document and image viewing
-- **Download & Print**: Direct download and print functionality for all file types
-- **Loading States**: Smooth loading indicators and error handling
+### 🔍 **Erweiterter Medienbetrachter**
+- **PDF-Rendering**: Hochwertige PDF-Anzeige mit PDF.js
+- **Bildbetrachter**: Optimierte Bildanzeige mit Zoom-Steuerung
+- **Zoom-Funktionen**: Vergrößern/Verkleinern, an Breite anpassen und Originalgröße
+- **Seitennavigation**: Einfache PDF-Seitennavigation mit Eingabesteuerung
+- **Vollbildmodus**: Ablenkungsfreie Dokument- und Bildbetrachtung
+- **Download & Druck**: Direkte Download- und Druckfunktionalität für alle Dateitypen
+- **Ladezustände**: Sanfte Ladeanzeigen und Fehlerbehandlung
 
-### 🌐 **Internationalization**
-- **Bilingual Support**: German (primary) and English languages
-- **Dynamic Language Switching**: Toggle between languages instantly
-- **Localized Content**: All interface elements properly translated
-- **Browser Language Detection**: Automatic language detection based on browser settings
+### 🌐 **Internationalisierung**
+- **Zweisprachige Unterstützung**: Deutsch (primär) und Englisch
+- **Dynamischer Sprachwechsel**: Sofortiger Wechsel zwischen Sprachen
+- **Lokalisierte Inhalte**: Alle Oberflächenelemente korrekt übersetzt
+- **Browser-Spracherkennung**: Automatische Spracherkennung basierend auf Browser-Einstellungen
 
-### 💾 **Data Persistence**
-- **Local Storage**: Favorites and recent files persist across sessions
-- **Settings Memory**: Dark mode and language preferences saved locally
-- **Offline Capability**: Core functionality works without internet connection
+### 💾 **Datenpersistenz**
+- **Lokaler Speicher**: Favoriten und kürzlich geöffnete Dateien bleiben über Sitzungen hinweg erhalten
+- **Einstellungsspeicher**: Dunkelmodus- und Spracheinstellungen werden lokal gespeichert
+- **Offline-Fähigkeit**: Kernfunktionalität funktioniert ohne Internetverbindung
 
-## 🚀 Getting Started
+## 🚀 Erste Schritte
 
-### Prerequisites
+### Voraussetzungen
 
-- **Node.js** (version 16 or higher)
-- **npm** or **yarn** package manager
-- Modern web browser with JavaScript enabled
+- **Node.js** (Version 16 oder höher)
+- **npm** oder **yarn** Paketmanager
+- Moderner Webbrowser mit aktiviertem JavaScript
 
 ### Installation
 
-1. **Clone the repository**
+1. **Repository klonen**
    ```bash
    git clone <repository-url>
    cd greenpdf
    ```
 
-2. **Install dependencies**
+2. **Abhängigkeiten installieren**
    ```bash
    npm install
    ```
 
-3. **Add media files**
-   - Place PDF and image files in the appropriate folders under `public/media/`:
-     - `public/media/antraege/` - for applications and proposals
-     - `public/media/presse/` - for press materials
-     - `public/media/wahlkampf/` - for campaign documents
+3. **Mediendateien hinzufügen**
+   - Platzieren Sie PDF- und Bilddateien in den entsprechenden Ordnern unter `public/media/`:
+     - `public/media/antraege/` - für Anträge und Vorschläge
+     - `public/media/presse/` - für Pressematerialien
+     - `public/media/wahlkampf/` - für Wahlkampfdokumente
 
-4. **Generate manifest** (optional)
+4. **Manifest generieren** (optional)
    ```bash
    npm run generate-manifest
    ```
 
-5. **Start development server**
+5. **Entwicklungsserver starten**
    ```bash
    npm run dev
    ```
 
-6. **Open in browser**
-   Navigate to `http://localhost:5173`
+6. **Im Browser öffnen**
+   Navigieren Sie zu `http://localhost:5173`
 
-### Building for Production
+### Für Produktion bauen
 
 ```bash
 npm run build
 ```
 
-The built files will be available in the `dist/` directory.
+Die gebauten Dateien werden im Verzeichnis `dist/` verfügbar sein.
 
-## 📂 Project Structure
+## 📂 Projektstruktur
 
 ```
 greenpdf/
 ├── public/
 │   ├── assets/
-│   │   └── logo.png              # Organization logo
+│   │   └── logo.png              # Organisations-Logo
 │   └── media/
-│       ├── antraege/             # Application documents & images
-│       ├── presse/               # Press materials & images
-│       ├── wahlkampf/            # Campaign documents & images
-│       └── manifest.json         # Auto-generated file index
+│       ├── antraege/             # Antragsdokumente & Bilder
+│       ├── presse/               # Pressematerialien & Bilder
+│       ├── wahlkampf/            # Wahlkampfdokumente & Bilder
+│       └── manifest.json         # Automatisch generierter Dateiindex
 ├── src/
 │   ├── components/
-│   │   ├── Header.jsx            # Main header with branding
-│   │   ├── Sidebar.jsx           # Document navigation sidebar
-│   │   ├── MediaViewer.jsx       # PDF & image display component
-│   │   └── Footer.jsx            # Footer with legal links
+│   │   ├── Header.jsx            # Hauptheader mit Branding
+│   │   ├── Sidebar.jsx           # Dokumentennavigations-Seitenleiste
+│   │   ├── MediaViewer.jsx       # PDF- & Bildanzeige-Komponente
+│   │   └── Footer.jsx            # Fußzeile mit rechtlichen Links
 │   ├── hooks/
-│   │   ├── useDarkMode.js        # Dark mode state management
-│   │   ├── useDynamicFolders.js  # Dynamic file discovery
-│   │   ├── useLocalStorage.js    # Local storage utilities
-│   │   └── usePDFViewer.js       # PDF viewer state management
+│   │   ├── useDarkMode.js        # Dunkelmodus-Zustandsverwaltung
+│   │   ├── useDynamicFolders.js  # Dynamische Dateierkennung
+│   │   ├── useLocalStorage.js    # Lokale Speicher-Dienstprogramme
+│   │   └── usePDFViewer.js       # PDF-Viewer-Zustandsverwaltung
 │   ├── i18n/
-│   │   ├── i18n.js               # Internationalization setup
+│   │   ├── i18n.js               # Internationalisierungs-Setup
 │   │   └── locales/
-│   │       ├── de.json           # German translations
-│   │       └── en.json           # English translations
+│   │       ├── de.json           # Deutsche Übersetzungen
+│   │       └── en.json           # Englische Übersetzungen
 │   ├── api/
-│   │   └── fileScanner.js        # File discovery utilities
-│   └── App.jsx                   # Main application component
+│   │   └── fileScanner.js        # Dateierkennungs-Dienstprogramme
+│   └── App.jsx                   # Haupt-Anwendungskomponente
 ├── scripts/
-│   └── generate-manifest.js      # Manifest generation script
+│   └── generate-manifest.js      # Manifest-Generierungsskript
 └── package.json
 ```
 
-## 🛠️ Technical Stack
+## 🛠️ Technischer Stack
 
-### **Frontend Framework**
-- **React 18**: Modern React with hooks and functional components
-- **Vite**: Fast build tool and development server
-- **TypeScript**: Type safety and enhanced development experience
+### **Frontend-Framework**
+- **React 18**: Modernes React mit Hooks und funktionalen Komponenten
+- **Vite**: Schnelles Build-Tool und Entwicklungsserver
+- **TypeScript**: Typsicherheit und verbesserte Entwicklungserfahrung
 
 ### **Styling & UI**
-- **Tailwind CSS**: Utility-first CSS framework
-- **Lucide React**: Beautiful, customizable icons
-- **Custom Design System**: Green-themed color palette and components
+- **Tailwind CSS**: Utility-First CSS-Framework
+- **Lucide React**: Schöne, anpassbare Icons
+- **Benutzerdefiniertes Design-System**: Grün-thematische Farbpalette und Komponenten
 
-### **Media Handling**
-- **react-pdf**: React wrapper for PDF.js for PDF rendering
-- **PDF.js**: Mozilla's PDF rendering library
-- **Native Image Support**: Optimized image viewing for PNG, JPG, JPEG
+### **Medienverarbeitung**
+- **react-pdf**: React-Wrapper für PDF.js zur PDF-Darstellung
+- **PDF.js**: Mozilla's PDF-Rendering-Bibliothek
+- **Native Bildunterstützung**: Optimierte Bildanzeige für PNG, JPG, JPEG
 
-### **Internationalization**
-- **react-i18next**: React integration for i18next
-- **i18next**: Internationalization framework
-- **Browser Language Detection**: Automatic language detection
+### **Internationalisierung**
+- **react-i18next**: React-Integration für i18next
+- **i18next**: Internationalisierungs-Framework
+- **Browser-Spracherkennung**: Automatische Spracherkennung
 
-### **State Management**
-- **React Hooks**: useState, useEffect, custom hooks
-- **Local Storage**: Persistent client-side storage
-- **Context-free Architecture**: Prop drilling for simple state management
+### **Zustandsverwaltung**
+- **React Hooks**: useState, useEffect, benutzerdefinierte Hooks
+- **Local Storage**: Persistenter clientseitiger Speicher
+- **Kontextfreie Architektur**: Prop-Drilling für einfache Zustandsverwaltung
 
-## 📋 Available Scripts
+## 📋 Verfügbare Skripte
 
-| Script | Description |
+| Skript | Beschreibung |
 |--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run generate-manifest` | Generate media file manifest |
-| `npm run lint` | Run ESLint code analysis |
-| `npm run preview` | Preview production build |
+| `npm run dev` | Entwicklungsserver starten |
+| `npm run build` | Für Produktion bauen |
+| `npm run generate-manifest` | Mediendatei-Manifest generieren |
+| `npm run lint` | ESLint-Codeanalyse ausführen |
+| `npm run preview` | Produktions-Build vorschauen |
 
-## 🔧 Configuration
+## 🔧 Konfiguration
 
-### **Adding New Media Files**
+### **Neue Mediendateien hinzufügen**
 
-1. **Place files** in the appropriate folder under `public/media/`
-   - Supported formats: PDF, PNG, JPG, JPEG
-2. **Run manifest generation**:
+1. **Dateien platzieren** im entsprechenden Ordner unter `public/media/`
+   - Unterstützte Formate: PDF, PNG, JPG, JPEG
+2. **Manifest-Generierung ausführen**:
    ```bash
    npm run generate-manifest
    ```
-3. **Restart development server** if running
+3. **Entwicklungsserver neu starten**, falls dieser läuft
 
-### **Supported File Types**
+### **Unterstützte Dateitypen**
 
-- **PDFs**: `.pdf` - Rendered using PDF.js with full navigation controls
-- **Images**: `.png`, `.jpg`, `.jpeg` - Native image viewer with zoom controls
+- **PDFs**: `.pdf` - Dargestellt mit PDF.js mit vollständigen Navigationssteuerungen
+- **Bilder**: `.png`, `.jpg`, `.jpeg` - Nativer Bildbetrachter mit Zoom-Steuerung
 
-### **Customizing Translations**
+### **Übersetzungen anpassen**
 
-Edit the translation files in `src/i18n/locales/`:
-- `de.json` - German translations
-- `en.json` - English translations
+Bearbeiten Sie die Übersetzungsdateien in `src/i18n/locales/`:
+- `de.json` - Deutsche Übersetzungen
+- `en.json` - Englische Übersetzungen
 
-### **Modifying Color Scheme**
+### **Farbschema ändern**
 
-The color scheme is defined in `tailwind.config.js`. Modify the `colors.green` and `colors.emerald` sections to change the theme.
+Das Farbschema ist in `tailwind.config.js` definiert. Ändern Sie die Abschnitte `colors.green` und `colors.emerald`, um das Design anzupassen.
 
-### **Logo Replacement**
+### **Logo ersetzen**
 
-Replace `public/assets/logo.png` with your organization's logo. The component will automatically use the new logo.
+Ersetzen Sie `public/assets/logo.png` durch das Logo Ihrer Organisation. Die Komponente wird automatisch das neue Logo verwenden.
 
-## 🌟 Key Features Explained
+## 🌟 Wichtige Funktionen erklärt
 
-### **Multi-Format Support**
+### **Multi-Format-Unterstützung**
 
-The application automatically detects and handles different file types:
-- **PDFs**: Full-featured viewer with page navigation, zoom controls, and text rendering
-- **Images**: Optimized image viewer with zoom capabilities and fullscreen mode
+Die Anwendung erkennt und verarbeitet automatisch verschiedene Dateitypen:
+- **PDFs**: Vollwertiger Betrachter mit Seitennavigation, Zoom-Steuerung und Textdarstellung
+- **Bilder**: Optimierter Bildbetrachter mit Zoom-Funktionen und Vollbildmodus
 
-### **Dynamic File Discovery**
+### **Dynamische Dateierkennung**
 
-The application automatically discovers media files in the designated folders and generates a manifest for efficient loading. The `generate-manifest.js` script scans the folder structure and creates metadata for each file, including file type detection.
+Die Anwendung entdeckt automatisch Mediendateien in den festgelegten Ordnern und generiert ein Manifest für effizientes Laden. Das Skript `generate-manifest.js` scannt die Ordnerstruktur und erstellt Metadaten für jede Datei, einschließlich Dateityperkennung.
 
-### **Responsive Design**
+### **Responsives Design**
 
-The interface adapts to different screen sizes:
-- **Desktop**: Full sidebar and viewer layout
-- **Tablet**: Collapsible sidebar with overlay
-- **Mobile**: Hidden sidebar with toggle button
+Die Oberfläche passt sich an verschiedene Bildschirmgrößen an:
+- **Desktop**: Vollständiges Seitenleisten- und Betrachter-Layout
+- **Tablet**: Einklappbare Seitenleiste mit Overlay
+- **Mobil**: Ausgeblendete Seitenleiste mit Umschalttaste
 
-### **File Type Indicators**
+### **Dateityp-Indikatoren**
 
-Visual indicators help users quickly identify file types:
-- **PDF files**: Red badge with "PDF" label and document icon
-- **Image files**: Blue badge with "IMG" label and image icon
+Visuelle Indikatoren helfen Benutzern, Dateitypen schnell zu identifizieren:
+- **PDF-Dateien**: Rotes Abzeichen mit "PDF"-Beschriftung und Dokumentsymbol
+- **Bilddateien**: Blaues Abzeichen mit "IMG"-Beschriftung und Bildsymbol
 
-### **Enhanced Search**
+### **Erweiterte Suche**
 
-Real-time search across all media files:
-- Searches file names and metadata
-- Instant results as you type
-- Highlights matching documents and images
-- Cross-folder search capability
+Echtzeit-Suche über alle Mediendateien:
+- Durchsucht Dateinamen und Metadaten
+- Sofortige Ergebnisse während der Eingabe
+- Hervorhebung passender Dokumente und Bilder
+- Ordnerübergreifende Suchfunktion
 
-## 🚀 Deployment
+## 🚀 Bereitstellung
 
-### **Static Hosting**
+### **Statisches Hosting**
 
-The application can be deployed to any static hosting service:
+Die Anwendung kann auf jedem statischen Hosting-Dienst bereitgestellt werden:
 
-1. **Build the project**:
+1. **Projekt bauen**:
    ```bash
    npm run build
    ```
 
-2. **Deploy the `dist/` folder** to your hosting service
+2. **Den `dist/`-Ordner** auf Ihrem Hosting-Dienst bereitstellen
 
-### **Recommended Hosting Platforms**
-- **Netlify**: Automatic deployments from Git
-- **Vercel**: Optimized for React applications
-- **GitHub Pages**: Free hosting for public repositories
-- **AWS S3**: Scalable cloud storage with CloudFront CDN
+### **Empfohlene Hosting-Plattformen**
+- **Netlify**: Automatische Bereitstellungen aus Git
+- **Vercel**: Optimiert für React-Anwendungen
+- **GitHub Pages**: Kostenloses Hosting für öffentliche Repositories
+- **AWS S3**: Skalierbarer Cloud-Speicher mit CloudFront CDN
 
-## 🤝 Contributing
+## 🤝 Mitwirken
 
-### **Development Workflow**
+### **Entwicklungs-Workflow**
 
-1. **Fork the repository**
-2. **Create a feature branch**:
+1. **Repository forken**
+2. **Feature-Branch erstellen**:
    ```bash
-   git checkout -b feature/your-feature-name
+   git checkout -b feature/ihr-feature-name
    ```
-3. **Make your changes**
-4. **Test thoroughly** with both PDFs and images
-5. **Submit a pull request**
+3. **Änderungen vornehmen**
+4. **Gründlich testen** mit PDFs und Bildern
+5. **Pull-Request einreichen**
 
-### **Code Style**
+### **Code-Stil**
 
-- Follow existing code patterns
-- Use meaningful variable and function names
-- Add comments for complex logic
-- Ensure responsive design principles
-- Test in both light and dark modes
-- Test with different file types
+- Bestehende Code-Muster befolgen
+- Aussagekräftige Variablen- und Funktionsnamen verwenden
+- Kommentare für komplexe Logik hinzufügen
+- Responsive Design-Prinzipien sicherstellen
+- In hellen und dunklen Modi testen
+- Mit verschiedenen Dateitypen testen
 
-## 📄 License
+## 📄 Lizenz
 
-This project is developed for the Grüne Fraktion Kirchhundem. Please contact the organization for licensing information.
+Dieses Projekt wurde für die Grüne Fraktion Kirchhundem entwickelt. Bitte kontaktieren Sie die Organisation für Lizenzinformationen.
 
-## 🆘 Support
+## 🆘 Unterstützung
 
-For technical support or questions about the application:
+Für technische Unterstützung oder Fragen zur Anwendung:
 
-1. **Check the documentation** in this README
-2. **Review the code comments** for implementation details
-3. **Contact the development team** for specific issues
+1. **Überprüfen Sie die Dokumentation** in dieser README
+2. **Sehen Sie die Code-Kommentare durch** für Implementierungsdetails
+3. **Kontaktieren Sie das Entwicklungsteam** für spezifische Probleme
 
-## 🔮 Future Enhancements
+## 🔮 Zukünftige Erweiterungen
 
-### **Planned Features**
-- **Document Annotations**: Add notes and highlights to PDFs
-- **Advanced Search**: Full-text search within PDF content
-- **Image Metadata**: EXIF data display for images
-- **Slideshow Mode**: Automatic image slideshow functionality
-- **Document Versioning**: Track document changes over time
-- **User Management**: Role-based access control
-- **Export Options**: Bulk download and sharing features
-- **Analytics**: Document usage statistics and insights
+### **Geplante Funktionen**
+- **Dokumenten-Anmerkungen**: Notizen und Hervorhebungen zu PDFs hinzufügen
+- **Erweiterte Suche**: Volltextsuche innerhalb von PDF-Inhalten
+- **Bild-Metadaten**: EXIF-Datenanzeige für Bilder
+- **Diashow-Modus**: Automatische Bilddiashowfunktion
+- **Dokumenten-Versionierung**: Dokumentenänderungen im Laufe der Zeit verfolgen
+- **Benutzerverwaltung**: Rollenbasierte Zugriffskontrolle
+- **Export-Optionen**: Funktionen für Massendownload und Teilen
+- **Analytik**: Dokumentnutzungsstatistiken und Erkenntnisse
 
-### **Technical Improvements**
-- **Progressive Web App**: Offline functionality and app-like experience
-- **Performance Optimization**: Lazy loading and caching strategies
-- **Accessibility**: Enhanced screen reader support and keyboard navigation
-- **Testing**: Comprehensive unit and integration tests
-- **Additional Formats**: Support for more file types (WEBP, SVG, etc.)
+### **Technische Verbesserungen**
+- **Progressive Web App**: Offline-Funktionalität und App-ähnliche Erfahrung
+- **Leistungsoptimierung**: Lazy-Loading- und Caching-Strategien
+- **Barrierefreiheit**: Verbesserte Screenreader-Unterstützung und Tastaturnavigation
+- **Tests**: Umfassende Einheits- und Integrationstests
+- **Zusätzliche Formate**: Unterstützung für weitere Dateitypen (WEBP, SVG, usw.)
 
 ---
 
-**Built with ❤️ for the Grüne Fraktion Kirchhundem**
+**Mit ❤️ erstellt für die Grüne Fraktion Kirchhundem**
 
-*This application represents our commitment to digital transparency and efficient media management in local politics.*
+*Diese Anwendung repräsentiert unser Engagement für digitale Transparenz und effiziente Medienverwaltung in der Lokalpolitik.*
