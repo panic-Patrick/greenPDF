@@ -17,7 +17,7 @@ const Header = () => {
       <div className="max-w-full mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl shadow-glass border border-white/30 p-2">
+            <div className="flex items-center justify-center w-16 h-16 p-2">
               <img 
                 src="/assets/logo.png" 
                 alt="Grüne Fraktion Logo" 
