@@ -1,11 +1,29 @@
 {
   "antraege": {
     "name": "antraege",
-    "files": []
+    "files": [
+      {
+        "id": "antraege_kommunalwahl_2023",
+        "name": "kommunalwahl-2023.pdf",
+        "path": "/media/antraege/kommunalwahl-2023.pdf",
+        "type": "pdf",
+        "size": "972 Bytes",
+        "lastModified": "2025-06-06"
+      }
+    ]
   },
   "presse": {
     "name": "presse",
-    "files": []
+    "files": [
+      {
+        "id": "presse_logo",
+        "name": "logo.png",
+        "path": "/media/presse/logo.png",
+        "type": "image",
+        "size": "567.7 KB",
+        "lastModified": "2025-06-06"
+      }
+    ]
   },
   "wahlkampf": {
     "name": "wahlkampf",
