@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import PDFViewer from './components/PDFViewer';
+import Footer from './components/Footer';
 import './i18n/i18n';
 
 function App() {
@@ -82,6 +83,8 @@ function App() {
           <PDFViewer selectedFile={selectedFile} />
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }
