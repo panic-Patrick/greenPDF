@@ -65,7 +65,7 @@ const Footer = () => {
           <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0">
             <div className="flex items-center space-x-4">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                © 2024 Grüne Fraktion Kirchhundem
+                © 2025 Grüne Fraktion Kirchhundem
               </p>
             </div>
             
