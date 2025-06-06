@@ -1,0 +1,14 @@
+{
+  "antraege": {
+    "name": "antraege",
+    "files": []
+  },
+  "presse": {
+    "name": "presse",
+    "files": []
+  },
+  "wahlkampf": {
+    "name": "wahlkampf",
+    "files": []
+  }
+}

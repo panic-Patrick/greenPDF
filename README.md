@@ -1,8 +1,8 @@
 # greenPDF
 
-**Grüne Fraktion Kirchhundem - PDF Document Management System**
+**Grüne Fraktion Kirchhundem - Media Document Management System**
 
-A modern, responsive PDF document viewer and management system built specifically for the Green Faction of Kirchhundem. This application provides an intuitive interface for organizing, viewing, and managing political documents across different categories.
+A modern, responsive media viewer and management system built specifically for the Green Faction of Kirchhundem. This application provides an intuitive interface for organizing, viewing, and managing political documents and images across different categories.
 
 ![greenPDF Screenshot](https://via.placeholder.com/800x400/22c55e/ffffff?text=greenPDF+Interface)
 
@@ -14,22 +14,25 @@ A modern, responsive PDF document viewer and management system built specificall
 - **Professional Branding**: Custom green color scheme matching political identity
 - **Smooth Animations**: Micro-interactions and transitions for enhanced user experience
 
-### 📁 **Document Management**
+### 📁 **Media Management**
+- **Multi-Format Support**: View PDFs, PNG, JPG, and JPEG files
 - **Organized Categories**: Documents sorted into three main folders:
   - **Anträge** (Applications): Official applications and proposals
   - **Presse** (Press): Press releases and media materials
   - **Wahlkampf** (Campaign): Campaign materials and election documents
-- **Dynamic File Discovery**: Automatic scanning and manifest generation for PDF files
-- **Search Functionality**: Real-time search across all documents
-- **Favorites System**: Mark frequently used documents as favorites
+- **Dynamic File Discovery**: Automatic scanning and manifest generation for media files
+- **Search Functionality**: Real-time search across all documents and images
+- **Favorites System**: Mark frequently used files as favorites
 - **Recent Files**: Quick access to recently viewed documents
+- **File Type Indicators**: Visual badges showing PDF or image file types
 
-### 🔍 **Advanced PDF Viewer**
-- **High-Quality Rendering**: Powered by PDF.js for accurate document display
+### 🔍 **Advanced Media Viewer**
+- **PDF Rendering**: High-quality PDF display powered by PDF.js
+- **Image Viewer**: Optimized image viewing with zoom controls
 - **Zoom Controls**: Zoom in/out, fit to width, and actual size options
-- **Page Navigation**: Easy navigation with page input and arrow controls
-- **Fullscreen Mode**: Distraction-free document viewing
-- **Download & Print**: Direct download and print functionality
+- **Page Navigation**: Easy PDF page navigation with input controls
+- **Fullscreen Mode**: Distraction-free document and image viewing
+- **Download & Print**: Direct download and print functionality for all file types
 - **Loading States**: Smooth loading indicators and error handling
 
 ### 🌐 **Internationalization**
@@ -64,11 +67,11 @@ A modern, responsive PDF document viewer and management system built specificall
    npm install
    ```
 
-3. **Add PDF documents**
-   - Place PDF files in the appropriate folders under `public/pdfs/`:
-     - `public/pdfs/antraege/` - for applications and proposals
-     - `public/pdfs/presse/` - for press materials
-     - `public/pdfs/wahlkampf/` - for campaign documents
+3. **Add media files**
+   - Place PDF and image files in the appropriate folders under `public/media/`:
+     - `public/media/antraege/` - for applications and proposals
+     - `public/media/presse/` - for press materials
+     - `public/media/wahlkampf/` - for campaign documents
 
 4. **Generate manifest** (optional)
    ```bash
@@ -98,16 +101,17 @@ greenpdf/
 ├── public/
 │   ├── assets/
 │   │   └── logo.png              # Organization logo
-│   └── pdfs/
-│       ├── antraege/             # Application documents
-│       ├── presse/               # Press materials
-│       ├── wahlkampf/            # Campaign documents
+│   └── media/
+│       ├── antraege/             # Application documents & images
+│       ├── presse/               # Press materials & images
+│       ├── wahlkampf/            # Campaign documents & images
 │       └── manifest.json         # Auto-generated file index
 ├── src/
 │   ├── components/
 │   │   ├── Header.jsx            # Main header with branding
 │   │   ├── Sidebar.jsx           # Document navigation sidebar
-│   │   └── PDFViewer.jsx         # PDF display component
+│   │   ├── MediaViewer.jsx       # PDF & image display component
+│   │   └── Footer.jsx            # Footer with legal links
 │   ├── hooks/
 │   │   ├── useDarkMode.js        # Dark mode state management
 │   │   ├── useDynamicFolders.js  # Dynamic file discovery
@@ -138,9 +142,10 @@ greenpdf/
 - **Lucide React**: Beautiful, customizable icons
 - **Custom Design System**: Green-themed color palette and components
 
-### **PDF Handling**
-- **react-pdf**: React wrapper for PDF.js
+### **Media Handling**
+- **react-pdf**: React wrapper for PDF.js for PDF rendering
 - **PDF.js**: Mozilla's PDF rendering library
+- **Native Image Support**: Optimized image viewing for PNG, JPG, JPEG
 
 ### **Internationalization**
 - **react-i18next**: React integration for i18next
@@ -158,20 +163,26 @@ greenpdf/
 |--------|-------------|
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
-| `npm run generate-manifest` | Generate PDF file manifest |
+| `npm run generate-manifest` | Generate media file manifest |
 | `npm run lint` | Run ESLint code analysis |
 | `npm run preview` | Preview production build |
 
 ## 🔧 Configuration
 
-### **Adding New Documents**
+### **Adding New Media Files**
 
-1. **Place PDF files** in the appropriate folder under `public/pdfs/`
+1. **Place files** in the appropriate folder under `public/media/`
+   - Supported formats: PDF, PNG, JPG, JPEG
 2. **Run manifest generation**:
    ```bash
    npm run generate-manifest
    ```
 3. **Restart development server** if running
+
+### **Supported File Types**
+
+- **PDFs**: `.pdf` - Rendered using PDF.js with full navigation controls
+- **Images**: `.png`, `.jpg`, `.jpeg` - Native image viewer with zoom controls
 
 ### **Customizing Translations**
 
@@ -189,9 +200,15 @@ Replace `public/assets/logo.png` with your organization's logo. The component wi
 
 ## 🌟 Key Features Explained
 
+### **Multi-Format Support**
+
+The application automatically detects and handles different file types:
+- **PDFs**: Full-featured viewer with page navigation, zoom controls, and text rendering
+- **Images**: Optimized image viewer with zoom capabilities and fullscreen mode
+
 ### **Dynamic File Discovery**
 
-The application automatically discovers PDF files in the designated folders and generates a manifest for efficient loading. The `generate-manifest.js` script scans the folder structure and creates metadata for each file.
+The application automatically discovers media files in the designated folders and generates a manifest for efficient loading. The `generate-manifest.js` script scans the folder structure and creates metadata for each file, including file type detection.
 
 ### **Responsive Design**
 
@@ -200,20 +217,18 @@ The interface adapts to different screen sizes:
 - **Tablet**: Collapsible sidebar with overlay
 - **Mobile**: Hidden sidebar with toggle button
 
-### **Dark Mode Implementation**
+### **File Type Indicators**
 
-Dark mode is implemented using:
-- Tailwind CSS dark mode classes
-- System preference detection
-- Local storage persistence
-- Smooth transitions between themes
+Visual indicators help users quickly identify file types:
+- **PDF files**: Red badge with "PDF" label and document icon
+- **Image files**: Blue badge with "IMG" label and image icon
 
-### **Search Functionality**
+### **Enhanced Search**
 
-Real-time search across all documents:
+Real-time search across all media files:
 - Searches file names and metadata
 - Instant results as you type
-- Highlights matching documents
+- Highlights matching documents and images
 - Cross-folder search capability
 
 ## 🚀 Deployment
@@ -245,7 +260,7 @@ The application can be deployed to any static hosting service:
    git checkout -b feature/your-feature-name
    ```
 3. **Make your changes**
-4. **Test thoroughly**
+4. **Test thoroughly** with both PDFs and images
 5. **Submit a pull request**
 
 ### **Code Style**
@@ -255,6 +270,7 @@ The application can be deployed to any static hosting service:
 - Add comments for complex logic
 - Ensure responsive design principles
 - Test in both light and dark modes
+- Test with different file types
 
 ## 📄 License
 
@@ -273,6 +289,8 @@ For technical support or questions about the application:
 ### **Planned Features**
 - **Document Annotations**: Add notes and highlights to PDFs
 - **Advanced Search**: Full-text search within PDF content
+- **Image Metadata**: EXIF data display for images
+- **Slideshow Mode**: Automatic image slideshow functionality
 - **Document Versioning**: Track document changes over time
 - **User Management**: Role-based access control
 - **Export Options**: Bulk download and sharing features
@@ -283,9 +301,10 @@ For technical support or questions about the application:
 - **Performance Optimization**: Lazy loading and caching strategies
 - **Accessibility**: Enhanced screen reader support and keyboard navigation
 - **Testing**: Comprehensive unit and integration tests
+- **Additional Formats**: Support for more file types (WEBP, SVG, etc.)
 
 ---
 
 **Built with ❤️ for the Grüne Fraktion Kirchhundem**
 
-*This application represents our commitment to digital transparency and efficient document management in local politics.*
+*This application represents our commitment to digital transparency and efficient media management in local politics.*

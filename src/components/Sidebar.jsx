@@ -10,7 +10,8 @@ import {
   ChevronRight,
   ChevronDown,
   RefreshCw,
-  AlertCircle
+  AlertCircle,
+  Image as ImageIcon
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -65,6 +66,24 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
   const isFavorite = (fileId) => favoriteFiles.some(f => f.id === fileId);
 
+  const getFileIcon = (file) => {
+    if (file.type === 'pdf') {
+      return <FileText className="h-4 w-4 text-red-600 dark:text-red-400" />;
+    } else if (file.type === 'image') {
+      return <ImageIcon className="h-4 w-4 text-blue-600 dark:text-blue-400" />;
+    }
+    return <FileText className="h-4 w-4 text-gray-500 dark:text-gray-400" />;
+  };
+
+  const getFileTypeColor = (file) => {
+    if (file.type === 'pdf') {
+      return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300';
+    } else if (file.type === 'image') {
+      return 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300';
+    }
+    return 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300';
+  };
+
   const renderFile = (file) => (
     <div
       key={file.id}
@@ -75,11 +94,14 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
           : 'hover:bg-green-50 dark:hover:bg-green-900/20 hover:shadow-soft'
       }`}
     >
-      <FileText className={`h-4 w-4 flex-shrink-0 transition-colors duration-200 ${
-        selectedFile?.id === file.id ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400'
-      }`} />
+      {getFileIcon(file)}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-100">{file.name}</p>
+        <div className="flex items-center space-x-2">
+          <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-100">{file.name}</p>
+          <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${getFileTypeColor(file)}`}>
+            {file.type?.toUpperCase() || 'FILE'}
+          </span>
+        </div>
         <p className="text-xs text-gray-500 dark:text-gray-400">{file.size}</p>
       </div>
       <button
@@ -144,6 +166,8 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
         {Object.entries(folderStructure).map(([folderId, folder]) => {
           const isExpanded = expandedFolders.has(folderId);
           const files = folder.files || [];
+          const pdfCount = files.filter(f => f.type === 'pdf').length;
+          const imageCount = files.filter(f => f.type === 'image').length;
           
           return (
             <div key={folderId} className="space-y-1">
@@ -164,9 +188,18 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
                 <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors duration-200">
                   {t(`folders.${folderId}`)}
                 </span>
-                <span className="text-xs text-gray-500 dark:text-gray-400 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-0.5 rounded-full">
-                  {files.length}
-                </span>
+                <div className="flex items-center space-x-1">
+                  {pdfCount > 0 && (
+                    <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                      {pdfCount} PDF
+                    </span>
+                  )}
+                  {imageCount > 0 && (
+                    <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                      {imageCount} IMG
+                    </span>
+                  )}
+                </div>
               </div>
               
               {isExpanded && (

@@ -15,9 +15,9 @@
     "retry": "Retry"
   },
   "viewer": {
-    "loading": "Loading PDF...",
-    "error": "Error loading PDF file",
-    "noDocument": "Select a document",
+    "loading": "Loading file...",
+    "error": "Error loading file",
+    "noDocument": "Select a file",
     "page": "Page",
     "of": "of",
     "zoomIn": "Zoom in",
@@ -25,6 +25,7 @@
     "fitToWidth": "Fit to width",
     "actualSize": "Actual size",
     "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen",
     "download": "Download",
     "print": "Print",
     "prevPage": "Previous page",

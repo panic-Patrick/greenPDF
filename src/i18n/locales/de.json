@@ -15,9 +15,9 @@
     "retry": "Erneut versuchen"
   },
   "viewer": {
-    "loading": "PDF wird geladen...",
-    "error": "Fehler beim Laden der PDF-Datei",
-    "noDocument": "Wählen Sie ein Dokument aus",
+    "loading": "Datei wird geladen...",
+    "error": "Fehler beim Laden der Datei",
+    "noDocument": "Wählen Sie eine Datei aus",
     "page": "Seite",
     "of": "von",
     "zoomIn": "Hineinzoomen",
@@ -25,6 +25,7 @@
     "fitToWidth": "An Breite anpassen",
     "actualSize": "Originalgröße",
     "fullscreen": "Vollbild",
+    "exitFullscreen": "Vollbild verlassen",
     "download": "Herunterladen",
     "print": "Drucken",
     "prevPage": "Vorherige Seite",

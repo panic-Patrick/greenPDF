@@ -1,4 +1,4 @@
-// File scanner utility to dynamically discover PDF files
+// File scanner utility to dynamically discover media files
 export class FileScanner {
   static async scanFolder(folderPath) {
     try {
@@ -15,13 +15,13 @@ export class FileScanner {
     }
   }
 
-  static async getAllPDFs() {
+  static async getAllFiles() {
     const folders = ['antraege', 'presse', 'wahlkampf'];
     const folderStructure = {};
 
     for (const folder of folders) {
       try {
-        const files = await this.scanPDFsInFolder(folder);
+        const files = await this.scanFilesInFolder(folder);
         folderStructure[folder] = {
           name: folder,
           files: files
@@ -38,7 +38,7 @@ export class FileScanner {
     return folderStructure;
   }
 
-  static async scanPDFsInFolder(folderName) {
+  static async scanFilesInFolder(folderName) {
     // For browser environment, we'll try to fetch a directory listing
     // This is a fallback approach since we can't directly access the file system
     const knownFiles = await this.tryFetchKnownFiles(folderName);
@@ -47,7 +47,8 @@ export class FileScanner {
 
   static async tryFetchKnownFiles(folderName) {
     // Try to fetch files by attempting to load them
-    const commonPDFNames = [
+    const commonFileNames = [
+      // PDFs
       'antrag-solaranlagen.pdf',
       'antrag-fahrradwege.pdf',
       'umweltbericht-2023.pdf',
@@ -62,22 +63,37 @@ export class FileScanner {
       'interview.pdf',
       'wahlprogramm.pdf',
       'kampagne.pdf',
-      'flyer.pdf'
+      'flyer.pdf',
+      'protokoll-jan-2024.pdf',
+      'protokoll-mar-2024.pdf',
+      // Images
+      'logo.png',
+      'banner.jpg',
+      'team-foto.jpg',
+      'veranstaltung.png',
+      'plakat.jpg',
+      'infografik.png',
+      'wahlkampf-foto.jpg',
+      'gemeinderat.png',
+      'projekt-bild.jpg',
+      'umwelt-foto.png'
     ];
 
     const files = [];
     
-    for (const fileName of commonPDFNames) {
+    for (const fileName of commonFileNames) {
       try {
-        const response = await fetch(`/pdfs/${folderName}/${fileName}`, { method: 'HEAD' });
+        const response = await fetch(`/media/${folderName}/${fileName}`, { method: 'HEAD' });
         if (response.ok) {
           const fileSize = response.headers.get('content-length');
           const lastModified = response.headers.get('last-modified');
+          const fileType = this.getFileType(fileName);
           
           files.push({
-            id: `${folderName}_${fileName.replace('.pdf', '')}`,
+            id: `${folderName}_${fileName.replace(/\.(pdf|png|jpg|jpeg)$/i, '')}`,
             name: fileName,
-            path: `/pdfs/${folderName}/${fileName}`,
+            path: `/media/${folderName}/${fileName}`,
+            type: fileType,
             size: fileSize ? this.formatFileSize(parseInt(fileSize)) : 'Unknown',
             lastModified: lastModified ? new Date(lastModified).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
           });
@@ -88,6 +104,13 @@ export class FileScanner {
     }
 
     return files;
+  }
+
+  static getFileType(fileName) {
+    const ext = fileName.split('.').pop().toLowerCase();
+    if (ext === 'pdf') return 'pdf';
+    if (['png', 'jpg', 'jpeg'].includes(ext)) return 'image';
+    return 'unknown';
   }
 
   static formatFileSize(bytes) {
@@ -101,7 +124,7 @@ export class FileScanner {
   // Alternative approach: Use a manifest file
   static async loadFromManifest() {
     try {
-      const response = await fetch('/pdfs/manifest.json');
+      const response = await fetch('/media/manifest.json');
       if (response.ok) {
         return await response.json();
       }

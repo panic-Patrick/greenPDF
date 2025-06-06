@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import PDFViewer from './components/PDFViewer';
+import MediaViewer from './components/MediaViewer';
 import Footer from './components/Footer';
 import './i18n/i18n';
 
@@ -80,7 +80,7 @@ function App() {
             </button>
           </div>
           
-          <PDFViewer selectedFile={selectedFile} />
+          <MediaViewer selectedFile={selectedFile} />
         </div>
       </div>
       
