@@ -1,0 +1,44 @@
+{
+  "header": {
+    "title": "PDF Document Viewer",
+    "subtitle": "Manage and view your documents"
+  },
+  "sidebar": {
+    "folders": "Folders",
+    "search": "Search...",
+    "recent": "Recent",
+    "favorites": "Favorites",
+    "noResults": "No results found",
+    "noFiles": "No files found",
+    "loading": "Loading folders...",
+    "refresh": "Refresh",
+    "retry": "Retry"
+  },
+  "viewer": {
+    "loading": "Loading PDF...",
+    "error": "Error loading PDF file",
+    "noDocument": "Select a document",
+    "page": "Page",
+    "of": "of",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "fitToWidth": "Fit to width",
+    "actualSize": "Actual size",
+    "fullscreen": "Fullscreen",
+    "download": "Download",
+    "print": "Print",
+    "prevPage": "Previous page",
+    "nextPage": "Next page"
+  },
+  "folders": {
+    "antraege": "Applications",
+    "presse": "Press",
+    "wahlkampf": "Campaign",
+    "documents": "Documents"
+  },
+  "actions": {
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "copyLink": "Copy link"
+  }
+}

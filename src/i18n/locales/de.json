@@ -1,0 +1,44 @@
+{
+  "header": {
+    "title": "PDF Dokumenten-Viewer",
+    "subtitle": "Verwalten und betrachten Sie Ihre Dokumente"
+  },
+  "sidebar": {
+    "folders": "Ordner",
+    "search": "Suchen...",
+    "recent": "Zuletzt verwendet",
+    "favorites": "Favoriten",
+    "noResults": "Keine Ergebnisse gefunden",
+    "noFiles": "Keine Dateien gefunden",
+    "loading": "Lade Ordner...",
+    "refresh": "Aktualisieren",
+    "retry": "Erneut versuchen"
+  },
+  "viewer": {
+    "loading": "PDF wird geladen...",
+    "error": "Fehler beim Laden der PDF-Datei",
+    "noDocument": "Wählen Sie ein Dokument aus",
+    "page": "Seite",
+    "of": "von",
+    "zoomIn": "Hineinzoomen",
+    "zoomOut": "Herauszoomen",
+    "fitToWidth": "An Breite anpassen",
+    "actualSize": "Originalgröße",
+    "fullscreen": "Vollbild",
+    "download": "Herunterladen",
+    "print": "Drucken",
+    "prevPage": "Vorherige Seite",
+    "nextPage": "Nächste Seite"
+  },
+  "folders": {
+    "antraege": "Anträge",
+    "presse": "Presse",
+    "wahlkampf": "Wahlkampf",
+    "documents": "Dokumente"
+  },
+  "actions": {
+    "addToFavorites": "Zu Favoriten hinzufügen",
+    "removeFromFavorites": "Aus Favoriten entfernen",
+    "copyLink": "Link kopieren"
+  }
+}

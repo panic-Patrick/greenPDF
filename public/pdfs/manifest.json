@@ -1,0 +1,73 @@
+{
+  "antraege": {
+    "name": "antraege",
+    "files": [
+      {
+        "id": "antraege_antrag_fahrradwege",
+        "name": "antrag-fahrradwege.pdf",
+        "path": "/pdfs/antraege/antrag-fahrradwege.pdf",
+        "size": "973 Bytes",
+        "lastModified": "2025-06-06"
+      },
+      {
+        "id": "antraege_antrag_solaranlagen",
+        "name": "antrag-solaranlagen.pdf",
+        "path": "/pdfs/antraege/antrag-solaranlagen.pdf",
+        "size": "974 Bytes",
+        "lastModified": "2025-06-06"
+      },
+      {
+        "id": "antraege_protokoll_jan_2024",
+        "name": "protokoll-jan-2024.pdf",
+        "path": "/pdfs/antraege/protokoll-jan-2024.pdf",
+        "size": "973 Bytes",
+        "lastModified": "2025-06-06"
+      },
+      {
+        "id": "antraege_protokoll_mar_2024",
+        "name": "protokoll-mar-2024.pdf",
+        "path": "/pdfs/antraege/protokoll-mar-2024.pdf",
+        "size": "973 Bytes",
+        "lastModified": "2025-06-06"
+      }
+    ]
+  },
+  "presse": {
+    "name": "presse",
+    "files": [
+      {
+        "id": "presse_projekt_waldschutz",
+        "name": "projekt-waldschutz.pdf",
+        "path": "/pdfs/presse/projekt-waldschutz.pdf",
+        "size": "973 Bytes",
+        "lastModified": "2025-06-06"
+      },
+      {
+        "id": "presse_umweltbericht_2023",
+        "name": "umweltbericht-2023.pdf",
+        "path": "/pdfs/presse/umweltbericht-2023.pdf",
+        "size": "973 Bytes",
+        "lastModified": "2025-06-06"
+      }
+    ]
+  },
+  "wahlkampf": {
+    "name": "wahlkampf",
+    "files": [
+      {
+        "id": "wahlkampf_kommunalwahl_2023",
+        "name": "kommunalwahl-2023.pdf",
+        "path": "/pdfs/wahlkampf/kommunalwahl-2023.pdf",
+        "size": "972 Bytes",
+        "lastModified": "2025-06-06"
+      },
+      {
+        "id": "wahlkampf_wahlprogramm_2024",
+        "name": "wahlprogramm-2024.pdf",
+        "path": "/pdfs/wahlkampf/wahlprogramm-2024.pdf",
+        "size": "972 Bytes",
+        "lastModified": "2025-06-06"
+      }
+    ]
+  }
+}
