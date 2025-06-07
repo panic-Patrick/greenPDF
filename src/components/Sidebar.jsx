@@ -13,15 +13,13 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useFavorites, useRecentFiles, useDocumentAnalytics } from '../hooks/useDatabase';
 
 const Sidebar = ({ onFileSelect, selectedFile }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedFolders, setExpandedFolders] = useState(new Set(['antraege', 'presse', 'wahlkampf']));
   const [activeTab, setActiveTab] = useState('folders');
-  const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
-  const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
 
   const { 
     folderStructure, 
@@ -30,9 +28,42 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     searchFiles 
   } = useDynamicFolders();
 
-  const searchResults = useMemo(() => {
-    return searchFiles(searchQuery);
-  }, [searchQuery, searchFiles]);
+  const { 
+    favorites, 
+    addToFavorites, 
+    removeFromFavorites, 
+    isFavorite 
+  } = useFavorites();
+
+  const { 
+    recentFiles, 
+    addToRecent 
+  } = useRecentFiles();
+
+  const { trackView } = useDocumentAnalytics();
+
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+
+  // Handle search with database integration
+  const handleSearch = async (query) => {
+    setSearchQuery(query);
+    if (!query.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearchLoading(true);
+    try {
+      const results = await searchFiles(query);
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
 
   const toggleFolder = (folderId) => {
     const newExpanded = new Set(expandedFolders);
@@ -44,25 +75,37 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     setExpandedFolders(newExpanded);
   };
 
-  const handleFileSelect = (file) => {
+  const handleFileSelect = async (file) => {
     onFileSelect(file);
     
-    // Add to recent files
-    const updatedRecent = [file, ...recentFiles.filter(f => f.id !== file.id)].slice(0, 10);
-    setRecentFiles(updatedRecent);
-  };
-
-  const toggleFavorite = (file, event) => {
-    event.stopPropagation();
-    const isFavorite = favoriteFiles.some(f => f.id === file.id);
-    if (isFavorite) {
-      setFavoriteFiles(favoriteFiles.filter(f => f.id !== file.id));
-    } else {
-      setFavoriteFiles([file, ...favoriteFiles]);
+    // Track analytics and add to recent files
+    try {
+      await Promise.all([
+        trackView(file.id),
+        addToRecent(file.id)
+      ]);
+    } catch (error) {
+      console.error('Error tracking file interaction:', error);
     }
   };
 
-  const isFavorite = (fileId) => favoriteFiles.some(f => f.id === fileId);
+  const toggleFavorite = async (file, event) => {
+    event.stopPropagation();
+    try {
+      const isCurrentlyFavorite = await isFavorite(file.id);
+      if (isCurrentlyFavorite) {
+        await removeFromFavorites(file.id);
+      } else {
+        await addToFavorites(file.id);
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+    }
+  };
+
+  const isFileFavorite = (fileId) => {
+    return favorites.some(f => f.file_id === fileId || f.id === fileId);
+  };
 
   const getFileIcon = (file) => {
     if (file.type === 'pdf') {
@@ -82,38 +125,50 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     return 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300';
   };
 
-  const renderFile = (file) => (
-    <div
-      key={file.id}
-      onClick={() => handleFileSelect(file)}
-      className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer group transition-all duration-200 ${
-        selectedFile?.id === file.id 
-          ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 shadow-soft border border-green-200 dark:border-green-700' 
-          : 'hover:bg-green-50 dark:hover:bg-green-900/20 hover:shadow-soft'
-      }`}
-    >
-      {getFileIcon(file)}
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-100">{file.name}</p>
-          <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${getFileTypeColor(file)}`}>
-            {file.type?.toUpperCase() || 'FILE'}
-          </span>
-        </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">{file.size}</p>
-      </div>
-      <button
-        onClick={(e) => toggleFavorite(file, e)}
-        className={`opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 ${
-          isFavorite(file.id) ? 'text-red-500 dark:text-red-400 opacity-100' : 'text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400'
+  const renderFile = (file) => {
+    // Normalize file object for database vs manifest differences
+    const normalizedFile = {
+      id: file.file_id || file.id,
+      name: file.name,
+      path: file.path,
+      type: file.type,
+      size: file.size,
+      lastModified: file.last_modified || file.lastModified
+    };
+
+    return (
+      <div
+        key={normalizedFile.id}
+        onClick={() => handleFileSelect(normalizedFile)}
+        className={`flex items-center space-x-3 px-3 py-2 rounded-lg cursor-pointer group transition-all duration-200 ${
+          selectedFile?.id === normalizedFile.id 
+            ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 shadow-soft border border-green-200 dark:border-green-700' 
+            : 'hover:bg-green-50 dark:hover:bg-green-900/20 hover:shadow-soft'
         }`}
       >
-        <Heart 
-          className={`h-3 w-3 ${isFavorite(file.id) ? 'fill-current' : ''}`} 
-        />
-      </button>
-    </div>
-  );
+        {getFileIcon(normalizedFile)}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center space-x-2">
+            <p className="text-sm font-medium truncate text-gray-900 dark:text-gray-100">{normalizedFile.name}</p>
+            <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${getFileTypeColor(normalizedFile)}`}>
+              {normalizedFile.type?.toUpperCase() || 'FILE'}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{normalizedFile.size}</p>
+        </div>
+        <button
+          onClick={(e) => toggleFavorite(normalizedFile, e)}
+          className={`opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 ${
+            isFileFavorite(normalizedFile.id) ? 'text-red-500 dark:text-red-400 opacity-100' : 'text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400'
+          }`}
+        >
+          <Heart 
+            className={`h-3 w-3 ${isFileFavorite(normalizedFile.id) ? 'fill-current' : ''}`} 
+          />
+        </button>
+      </div>
+    );
+  };
 
   const renderFolderContent = () => {
     if (loading) {
@@ -141,7 +196,11 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     if (searchQuery) {
       return (
         <div className="space-y-1">
-          {searchResults.length > 0 ? (
+          {searchLoading ? (
+            <div className="flex items-center justify-center py-4">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600 dark:border-green-400"></div>
+            </div>
+          ) : searchResults.length > 0 ? (
             searchResults.map(renderFile)
           ) : (
             <p className="text-sm text-gray-500 dark:text-gray-400 px-3 py-4 text-center">
@@ -221,7 +280,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
             type="text"
             placeholder={t('sidebar.search')}
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
@@ -267,8 +326,8 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
         
         {activeTab === 'favorites' && (
           <div className="space-y-1">
-            {favoriteFiles.length > 0 ? (
-              favoriteFiles.map(renderFile)
+            {favorites.length > 0 ? (
+              favorites.map(renderFile)
             ) : (
               <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-8">
                 {t('sidebar.noResults')}
