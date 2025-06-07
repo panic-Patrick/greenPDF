@@ -10,7 +10,10 @@ import {
   ChevronRight,
   ChevronDown,
   AlertCircle,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Database,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -22,11 +25,13 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
   const [activeTab, setActiveTab] = useState('folders');
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
   const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
+  const [showBucketStatus, setShowBucketStatus] = useState(false);
 
   const { 
     folderStructure, 
     loading, 
     error, 
+    bucketsHealth,
     searchFiles 
   } = useDynamicFolders();
 
@@ -100,7 +105,14 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
             {file.type?.toUpperCase() || 'FILE'}
           </span>
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">{file.size}</p>
+        <div className="flex items-center space-x-2">
+          <p className="text-xs text-gray-500 dark:text-gray-400">{file.size}</p>
+          {file.bucket && (
+            <span className="text-xs text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-1 py-0.5 rounded">
+              {file.bucket}
+            </span>
+          )}
+        </div>
       </div>
       <button
         onClick={(e) => toggleFavorite(file, e)}
@@ -115,6 +127,37 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     </div>
   );
 
+  const renderBucketStatus = () => (
+    <div className="space-y-2 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+      <div className="flex items-center justify-between">
+        <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Supabase Buckets Status</h4>
+        <button
+          onClick={() => setShowBucketStatus(!showBucketStatus)}
+          className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+        >
+          {showBucketStatus ? 'Ausblenden' : 'Anzeigen'}
+        </button>
+      </div>
+      {showBucketStatus && (
+        <div className="space-y-1">
+          {Object.entries(bucketsHealth).map(([folderName, status]) => (
+            <div key={folderName} className="flex items-center space-x-2 text-xs">
+              {status.accessible ? (
+                <CheckCircle className="h-3 w-3 text-green-500" />
+              ) : (
+                <XCircle className="h-3 w-3 text-red-500" />
+              )}
+              <span className="text-gray-700 dark:text-gray-300">{folderName}</span>
+              {!status.accessible && status.error && (
+                <span className="text-red-500 text-xs truncate">{status.error}</span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
   const renderFolderContent = () => {
     if (loading) {
       return (
@@ -122,6 +165,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
             <p className="text-sm text-gray-600 dark:text-gray-300">{t('sidebar.loading')}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Lade von Supabase Storage...</p>
           </div>
         </div>
       );
@@ -129,11 +173,17 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
     if (error) {
       return (
-        <div className="flex items-center justify-center py-8">
-          <div className="text-center">
-            <AlertCircle className="h-8 w-8 text-red-500 dark:text-red-400 mx-auto mb-4" />
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <div className="space-y-4">
+          <div className="flex items-center justify-center py-8">
+            <div className="text-center">
+              <AlertCircle className="h-8 w-8 text-red-500 dark:text-red-400 mx-auto mb-4" />
+              <p className="text-sm text-red-600 dark:text-red-400 mb-2">{error}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Überprüfen Sie Ihre Supabase-Konfiguration
+              </p>
+            </div>
           </div>
+          {renderBucketStatus()}
         </div>
       );
     }
@@ -154,11 +204,14 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
     return (
       <div className="space-y-2">
+        {renderBucketStatus()}
+        
         {Object.entries(folderStructure).map(([folderId, folder]) => {
           const isExpanded = expandedFolders.has(folderId);
           const files = folder.files || [];
           const pdfCount = files.filter(f => f.type === 'pdf').length;
           const imageCount = files.filter(f => f.type === 'image').length;
+          const bucketStatus = bucketsHealth[folderId];
           
           return (
             <div key={folderId} className="space-y-1">
@@ -180,6 +233,9 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
                   {t(`folders.${folderId}`)}
                 </span>
                 <div className="flex items-center space-x-1">
+                  {bucketStatus && !bucketStatus.accessible && (
+                    <XCircle className="h-3 w-3 text-red-500" />
+                  )}
                   {pdfCount > 0 && (
                     <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
                       {pdfCount} PDF
@@ -199,7 +255,10 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
                     files.map(renderFile)
                   ) : (
                     <p className="text-xs text-gray-500 dark:text-gray-400 px-3 py-2">
-                      {t('sidebar.noFiles')}
+                      {bucketStatus && !bucketStatus.accessible 
+                        ? 'Bucket nicht erreichbar' 
+                        : t('sidebar.noFiles')
+                      }
                     </p>
                   )}
                 </div>
@@ -213,8 +272,18 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
   return (
     <div className="w-full h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-colors duration-300">
-      {/* Search */}
+      {/* Header with Supabase indicator */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center space-x-2">
+            <Database className="h-4 w-4 text-green-600 dark:text-green-400" />
+            <span className="text-xs text-green-600 dark:text-green-400 font-medium">Supabase Storage</span>
+          </div>
+          {Object.values(bucketsHealth).some(status => status.accessible) && (
+            <CheckCircle className="h-4 w-4 text-green-500" />
+          )}
+        </div>
+        
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
           <input
