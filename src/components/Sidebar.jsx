@@ -13,10 +13,12 @@ import {
   Image as ImageIcon,
   Database,
   CheckCircle,
-  XCircle
+  XCircle,
+  Settings
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import SupabaseDebug from './SupabaseDebug';
 
 const Sidebar = ({ onFileSelect, selectedFile }) => {
   const { t } = useTranslation();
@@ -25,7 +27,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
   const [activeTab, setActiveTab] = useState('folders');
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
   const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
-  const [showBucketStatus, setShowBucketStatus] = useState(false);
+  const [showDebug, setShowDebug] = useState(false);
 
   const { 
     folderStructure, 
@@ -127,37 +129,6 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     </div>
   );
 
-  const renderBucketStatus = () => (
-    <div className="space-y-2 p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
-      <div className="flex items-center justify-between">
-        <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">Supabase Buckets Status</h4>
-        <button
-          onClick={() => setShowBucketStatus(!showBucketStatus)}
-          className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-        >
-          {showBucketStatus ? 'Ausblenden' : 'Anzeigen'}
-        </button>
-      </div>
-      {showBucketStatus && (
-        <div className="space-y-1">
-          {Object.entries(bucketsHealth).map(([folderName, status]) => (
-            <div key={folderName} className="flex items-center space-x-2 text-xs">
-              {status.accessible ? (
-                <CheckCircle className="h-3 w-3 text-green-500" />
-              ) : (
-                <XCircle className="h-3 w-3 text-red-500" />
-              )}
-              <span className="text-gray-700 dark:text-gray-300">{folderName}</span>
-              {!status.accessible && status.error && (
-                <span className="text-red-500 text-xs truncate">{status.error}</span>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-
   const renderFolderContent = () => {
     if (loading) {
       return (
@@ -181,9 +152,15 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 Überprüfen Sie Ihre Supabase-Konfiguration
               </p>
+              <button
+                onClick={() => setShowDebug(!showDebug)}
+                className="mt-2 text-xs text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                {showDebug ? 'Diagnose ausblenden' : 'Diagnose anzeigen'}
+              </button>
             </div>
           </div>
-          {renderBucketStatus()}
+          {showDebug && <SupabaseDebug />}
         </div>
       );
     }
@@ -204,7 +181,27 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
     return (
       <div className="space-y-2">
-        {renderBucketStatus()}
+        {/* Debug toggle button */}
+        <div className="flex items-center justify-between px-3 py-2">
+          <div className="flex items-center space-x-2">
+            <Database className="h-4 w-4 text-green-600 dark:text-green-400" />
+            <span className="text-xs text-green-600 dark:text-green-400 font-medium">Supabase Storage</span>
+            {Object.values(bucketsHealth).some(status => status.accessible) ? (
+              <CheckCircle className="h-3 w-3 text-green-500" />
+            ) : (
+              <XCircle className="h-3 w-3 text-red-500" />
+            )}
+          </div>
+          <button
+            onClick={() => setShowDebug(!showDebug)}
+            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            title="Diagnose anzeigen"
+          >
+            <Settings className="h-3 w-3 text-gray-500 dark:text-gray-400" />
+          </button>
+        </div>
+
+        {showDebug && <SupabaseDebug />}
         
         {Object.entries(folderStructure).map(([folderId, folder]) => {
           const isExpanded = expandedFolders.has(folderId);
@@ -272,18 +269,8 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
   return (
     <div className="w-full h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-colors duration-300">
-      {/* Header with Supabase indicator */}
+      {/* Search */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-2">
-            <Database className="h-4 w-4 text-green-600 dark:text-green-400" />
-            <span className="text-xs text-green-600 dark:text-green-400 font-medium">Supabase Storage</span>
-          </div>
-          {Object.values(bucketsHealth).some(status => status.accessible) && (
-            <CheckCircle className="h-4 w-4 text-green-500" />
-          )}
-        </div>
-        
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
           <input
