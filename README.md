@@ -288,10 +288,13 @@ Die Anwendung kann auf jedem statischen Hosting-Dienst bereitgestellt werden:
 2. **Den `dist/`-Ordner** auf Ihrem Hosting-Dienst bereitstellen
 
 ### **Empfohlene Hosting-Plattformen**
-- **Netlify**: Automatische Bereitstellungen aus Git
-- **Vercel**: Optimiert für React-Anwendungen
-- **GitHub Pages**: Kostenloses Hosting für öffentliche Repositories
-- **AWS S3**: Skalierbarer Cloud-Speicher mit CloudFront CDN
+- 🇩🇪 **[Codeberg Pages](https://codeberg.page)**: Kostenloses Hosting frei lizenzierter statischer Websites (per Git-Repo)
+- 🇩🇪 **[Uberspace](https://uberspace.de)**: Kostengünstige universelle Server
+- 🇸🇪 **[Statichost.eu](https://statichost.eu)**: Hosting statischer Websites per öffentlichen/privaten Git-Repos
+- 🇺🇸 **Netlify**: Automatische Bereitstellungen aus Git
+- 🇺🇸 **Vercel**: Optimiert für React-Anwendungen
+- 🇺🇸 **GitHub Pages**: Kostenloses Hosting für öffentliche Repositories
+- 🇺🇸 **AWS S3**: Skalierbarer Cloud-Speicher mit CloudFront CDN
 
 ### **Umgebungsvariablen konfigurieren**
 
