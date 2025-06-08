@@ -1,8 +1,8 @@
 # greenPDF
 
-**Grüne Fraktion Kirchhundem - Medien-Dokumentenverwaltungssystem**
+**Grüne Fraktion Kirchhundem - Medien-Dokumentenverwaltungssystem mit Supabase-Integration**
 
-Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien.
+Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien. Die gesamte Medienverwaltung läuft über Supabase als Backend-as-a-Service.
 
 ![greenPDF Screenshot](/assets/logo.png)
 
@@ -14,12 +14,13 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 - **Professionelles Branding**: Individuelles grünes Farbschema passend zur politischen Identität
 - **Sanfte Animationen**: Mikro-Interaktionen und Übergänge für eine verbesserte Benutzererfahrung
 
-### 📁 **Medienverwaltung**
+### �� **Medienverwaltung über Supabase**
 - **Multi-Format-Unterstützung**: Anzeige von PDFs, PNG, JPG und JPEG-Dateien
 - **Organisierte Kategorien**: Dokumente sortiert in drei Hauptordnern:
   - **Anträge**: Offizielle Anträge und Vorschläge
   - **Presse**: Pressemitteilungen und Medienmaterialien
   - **Wahlkampf**: Kampagnenmaterialien und Wahldokumente
+- **Cloud-basierte Speicherung**: Alle Mediendateien werden in Supabase Storage Buckets verwaltet
 - **Dynamische Dateierkennung**: Automatisches Scannen und Manifest-Generierung für Mediendateien
 - **Suchfunktion**: Echtzeit-Suche über alle Dokumente und Bilder
 - **Favoriten-System**: Markieren häufig verwendeter Dateien als Favoriten
@@ -45,8 +46,8 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 - **Lokaler Speicher**: Favoriten und kürzlich geöffnete Dateien bleiben über Sitzungen hinweg erhalten
 - **Einstellungsspeicher**: Dunkelmodus- und Spracheinstellungen werden lokal gespeichert
 - **Offline-Fähigkeit**: Kernfunktionalität funktioniert ohne Internetverbindung
-- **Supabase-Integration**: Cloud-Speicher für Mediendateien mit sicherer Zugriffsverwaltung
-- **Automatische Synchronisierung**: Dokumente werden aus Supabase Storage Buckets geladen
+- **Supabase-Integration**: Cloud-Speicher für alle Mediendateien mit sicherer Zugriffsverwaltung
+- **Automatische Synchronisierung**: Dokumente werden aus Supabase Storage Buckets geladen und verwaltet
 
 ## 🚀 Erste Schritte
 
@@ -61,7 +62,7 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 
 1. **Repository klonen**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/panic-Patrick/greenPDF
    cd greenpdf
    ```
 
@@ -78,11 +79,11 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
    ```
 
 4. **Mediendateien hinzufügen**
-   - **Option 1: Lokale Dateien**: Platzieren Sie PDF- und Bilddateien in den entsprechenden Ordnern unter `public/media/`:
+   - **Supabase (empfohlen)**: Laden Sie Dateien in die entsprechenden Supabase Storage Buckets hoch.
+   - **Option 2: Lokale Dateien**: Platzieren Sie PDF- und Bilddateien in den entsprechenden Ordnern unter `public/media/`:
      - `public/media/antraege/` - für Anträge und Vorschläge
      - `public/media/presse/` - für Pressematerialien
      - `public/media/wahlkampf/` - für Wahlkampfdokumente
-   - **Option 2: Supabase**: Laden Sie Dateien in die entsprechenden Supabase Storage Buckets hoch.
 
 5. **Manifest generieren** (für lokale Dateien)
    ```bash
@@ -201,7 +202,11 @@ greenpdf/
 
 ### **Neue Mediendateien hinzufügen**
 
-#### Für lokale Dateien:
+#### Für Supabase-Speicher (empfohlene Methode):
+1. **Dateien hochladen** in die entsprechenden Supabase Storage Buckets über die Supabase-Konsole
+2. **Anwendung neu laden**, die Dateien werden automatisch erkannt
+
+#### Für lokale Dateien (Alternative):
 1. **Dateien platzieren** im entsprechenden Ordner unter `public/media/`
    - Unterstützte Formate: PDF, PNG, JPG, JPEG
 2. **Manifest-Generierung ausführen**:
@@ -209,10 +214,6 @@ greenpdf/
    npm run generate-manifest
    ```
 3. **Entwicklungsserver neu starten**, falls dieser läuft
-
-#### Für Supabase-Speicher:
-1. **Dateien hochladen** in die entsprechenden Supabase Storage Buckets über die Supabase-Konsole
-2. **Anwendung neu laden**, die Dateien werden automatisch erkannt
 
 ### **Unterstützte Dateitypen**
 
@@ -235,13 +236,13 @@ Ersetzen Sie `public/assets/logo.png` durch das Logo Ihrer Organisation. Die Kom
 
 ## 🌟 Wichtige Funktionen erklärt
 
-### **Dual-Storage-System**
+### **Medienverwaltung über Supabase**
 
-Die Anwendung unterstützt zwei Speicheroptionen für Mediendateien:
-- **Lokaler Speicher**: Dateien werden im `public/media`-Verzeichnis gespeichert und über ein generiertes Manifest zugänglich gemacht
-- **Supabase Cloud-Speicher**: Dateien werden in Supabase Storage Buckets gespeichert und über die Supabase API abgerufen
-
-Das System prüft automatisch die Verfügbarkeit von Supabase und fällt bei Bedarf auf lokale Dateien zurück.
+Die Anwendung verwendet primär Supabase für die Medienverwaltung:
+- **Supabase Cloud-Speicher**: Alle Mediendateien werden in Supabase Storage Buckets gespeichert und über die Supabase API abgerufen
+- **Strukturierte Buckets**: Separate Buckets für Anträge, Presse und Wahlkampfmaterialien
+- **Sichere Zugriffsverwaltung**: Dateizugriff wird über Supabase-Berechtigungen gesteuert
+- **Lokaler Fallback**: Bei Bedarf kann auf lokale Dateien zurückgegriffen werden
 
 ### **Multi-Format-Unterstützung**
 
