@@ -53,9 +53,9 @@ const DatenschutzContent = () => {
           Wir hosten die Inhalte unserer Website bei folgendem Anbieter:
         </p>
         
-        <h5 className="font-medium mt-2 mb-1 text-gray-900 dark:text-gray-100">Externes Hosting</h5>
+        <h5 className="font-medium mt-2 mb-1 text-gray-900 dark:text-gray-100">Externes Hosting über Netlify</h5>
         <p className="mb-2">
-          Diese Website wird extern gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, 
+          Diese Website wird extern bei Netlify gehostet. Die personenbezogenen Daten, die auf dieser Website erfasst werden, 
           werden auf den Servern des Hosters gespeichert. Hierbei kann es sich v. a. um IP-Adressen, Kontaktanfragen, 
           Meta- und Kommunikationsdaten, Vertragsdaten, Kontaktdaten, Namen, Websitezugriffe und sonstige Daten, 
           die über eine Website generiert werden, handeln.
@@ -63,6 +63,13 @@ const DatenschutzContent = () => {
         <p className="mb-2">
           Das externe Hosting erfolgt zum Zwecke der Vertragserfüllung gegenüber unseren potenziellen und bestehenden 
           Besuchern (Art. 6 Abs. 1 lit. b DSGVO).
+        </p>
+        <p className="mb-2">
+          Netlify verarbeitet Ihre Daten nur im Rahmen unserer Weisungen und zur Erfüllung ihrer Pflichten als 
+          Auftragsverarbeiter. Netlify hat seinen Sitz in den USA und ist zertifiziert unter dem EU-US-Privacy Shield.
+          Weitere Informationen finden Sie in der Datenschutzerklärung von Netlify: 
+          <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer" 
+             className="text-green-600 dark:text-green-400 hover:underline"> https://www.netlify.com/privacy/</a>
         </p>
       </section>
 
@@ -93,12 +100,46 @@ const DatenschutzContent = () => {
           Besuchs automatisch gelöscht. Permanente Cookies bleiben auf Ihrem Endgerät gespeichert, bis Sie diese selbst 
           löschen oder eine automatische Löschung durch Ihren Webbrowser erfolgt.
         </p>
+
+        <h5 className="font-medium mt-4 mb-1 text-gray-900 dark:text-gray-100">Lokaler Speicher (Local Storage)</h5>
+        <p className="mb-2">
+          Diese Website nutzt den lokalen Speicher (Local Storage) Ihres Browsers, um Benutzereinstellungen wie den Dark Mode 
+          oder bevorzugte Sprache zu speichern. Diese Daten werden nur lokal auf Ihrem Gerät gespeichert und nicht an unsere 
+          Server übertragen. Die gespeicherten Daten können Sie jederzeit durch Löschen des lokalen Speichers in Ihren 
+          Browser-Einstellungen entfernen.
+        </p>
       </section>
 
       <section>
-        <h4 className="text-lg font-semibold text-emerald-800 dark:text-emerald-400 mb-2">5. Plugins und Tools</h4>
+        <h4 className="text-lg font-semibold text-emerald-800 dark:text-emerald-400 mb-2">5. Externe Dienste und Datenverarbeitung</h4>
         
-        <h5 className="font-medium mt-2 mb-1 text-gray-900 dark:text-gray-100">Google Fonts</h5>
+        <h5 className="font-medium mt-2 mb-1 text-gray-900 dark:text-gray-100">Supabase</h5>
+        <p className="mb-2">
+          Für die Speicherung und Verwaltung von Mediendateien (PDFs und Bilder) nutzen wir den Dienst Supabase. 
+          Supabase ist ein Backend-as-a-Service-Anbieter, der Cloud-Speicher und Datenbankdienste bereitstellt. 
+          Wenn Sie Dokumente in unserer Anwendung betrachten, werden diese von Supabase-Servern abgerufen.
+        </p>
+        <p className="mb-2">
+          Dabei können folgende Daten an Supabase übermittelt werden:
+          <ul className="list-disc pl-5 mt-1 mb-2">
+            <li>Technische Daten wie IP-Adresse, Browsertyp und -version</li>
+            <li>Informationen darüber, welche Dokumente Sie angesehen haben</li>
+            <li>Zeitpunkt und Dauer der Nutzung</li>
+          </ul>
+        </p>
+        <p className="mb-2">
+          Supabase speichert und verarbeitet diese Daten in der Europäischen Union und unterliegt den europäischen 
+          Datenschutzbestimmungen. Die Datenübertragung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO 
+          (berechtigtes Interesse). Unser berechtigtes Interesse liegt in der effizienten und sicheren Bereitstellung 
+          unserer Mediendateien.
+        </p>
+        <p className="mb-2">
+          Weitere Informationen zum Datenschutz bei Supabase finden Sie unter: 
+          <a href="https://supabase.com/privacy" target="_blank" rel="noopener noreferrer"
+             className="text-green-600 dark:text-green-400 hover:underline"> https://supabase.com/privacy</a>
+        </p>
+
+        <h5 className="font-medium mt-4 mb-1 text-gray-900 dark:text-gray-100">Google Fonts</h5>
         <p className="mb-2">
           Diese Seite nutzt zur einheitlichen Darstellung von Schriftarten so genannte Google Fonts, die von Google 
           bereitgestellt werden. Beim Aufruf einer Seite lädt Ihr Browser die benötigten Fonts in ihren Browsercache, 
@@ -111,6 +152,28 @@ const DatenschutzContent = () => {
           hat ein berechtigtes Interesse an der einheitlichen Darstellung des Schriftbildes auf seiner Website. 
           Sofern eine entsprechende Einwilligung abgefragt wurde, erfolgt die Verarbeitung ausschließlich auf Grundlage 
           von Art. 6 Abs. 1 lit. a DSGVO; die Einwilligung ist jederzeit widerrufbar.
+        </p>
+      </section>
+
+      <section>
+        <h4 className="text-lg font-semibold text-emerald-800 dark:text-emerald-400 mb-2">6. Ihre Rechte als Betroffener</h4>
+        <p className="mb-2">
+          Unter den angegebenen Kontaktdaten können Sie jederzeit folgende Rechte ausüben:
+        </p>
+        <ul className="list-disc pl-5 mb-2">
+          <li>Auskunft über Ihre bei uns gespeicherten Daten und deren Verarbeitung</li>
+          <li>Berichtigung unrichtiger personenbezogener Daten</li>
+          <li>Löschung Ihrer bei uns gespeicherten Daten</li>
+          <li>Einschränkung der Datenverarbeitung, sofern wir Ihre Daten aufgrund gesetzlicher Pflichten noch nicht löschen dürfen</li>
+          <li>Widerspruch gegen die Verarbeitung Ihrer Daten bei uns</li>
+          <li>Datenübertragbarkeit, sofern Sie in die Datenverarbeitung eingewilligt haben oder einen Vertrag mit uns abgeschlossen haben</li>
+        </ul>
+        <p className="mb-2">
+          Sofern Sie uns eine Einwilligung erteilt haben, können Sie diese jederzeit mit Wirkung für die Zukunft widerrufen.
+        </p>
+        <p className="mb-2">
+          Sie können sich jederzeit mit einer Beschwerde an eine Aufsichtsbehörde wenden, z. B. an die zuständige 
+          Aufsichtsbehörde des Bundeslands Ihres Wohnsitzes oder an die für uns als verantwortliche Stelle zuständige Behörde.
         </p>
       </section>
     </div>
