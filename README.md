@@ -1,6 +1,6 @@
 # greenPDF
 
-**Grüne Fraktion Kirchhundem - Medien-Dokumentenverwaltungssystem mit Supabase-Integration**
+**Grüne Fraktion Kirchhundem – Medien-Dokumentenverwaltungssystem mit Supabase-Integration**
 
 Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien. Die gesamte Medienverwaltung läuft über Supabase als Backend-as-a-Service.
 
@@ -19,7 +19,7 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
   - **Anträge**: Offizielle Anträge und Vorschläge
   - **Presse**: Pressemitteilungen und Medienmaterialien
   - **Wahlkampf**: Kampagnenmaterialien und Wahldokumente
-- **Cloud-basierte Speicherung**: Alle Mediendateien werden in Supabase Storage Buckets verwaltet
+- **Cloud-basierte Speicherung**: Alle Mediendateien werden in Supabase-Storage-Buckets verwaltet
 - **Dynamische Dateierkennung**: Automatisches Scannen und Manifest-Generierung für Mediendateien
 - **Suchfunktion**: Echtzeit-Suche über alle Dokumente und Bilder
 - **Favoriten-System**: Markieren häufig verwendeter Dateien als Favoriten
@@ -29,7 +29,7 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 ### 🔍 **Erweiterter Medienbetrachter**
 - **PDF-Rendering**: Hochwertige PDF-Anzeige mit PDF.js
 - **Bildbetrachter**: Optimierte Bildanzeige mit Zoom-Steuerung
-- **Zoom-Funktionen**: Vergrößern/Verkleinern, an Breite anpassen und Originalgröße
+- **Zoom-Funktionen**: Vergrößern/verkleinern, an Breite anpassen und Originalgröße
 - **Seitennavigation**: Einfache PDF-Seitennavigation mit Eingabesteuerung
 - **Vollbildmodus**: Ablenkungsfreie Dokument- und Bildbetrachtung
 - **Download & Druck**: Direkte Download- und Druckfunktionalität für alle Dateitypen
@@ -46,7 +46,7 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 - **Einstellungsspeicher**: Dunkelmodus- und Spracheinstellungen werden lokal gespeichert
 - **Offline-Fähigkeit**: Kernfunktionalität funktioniert ohne Internetverbindung
 - **Supabase-Integration**: Cloud-Speicher für alle Mediendateien mit sicherer Zugriffsverwaltung
-- **Automatische Synchronisierung**: Dokumente werden aus Supabase Storage Buckets geladen und verwaltet
+- **Automatische Synchronisierung**: Dokumente werden aus Supabase-Storage-Buckets geladen und verwaltet
 
 ## 🚀 Erste Schritte
 
@@ -78,7 +78,7 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
    ```
 
 4. **Mediendateien hinzufügen**
-   - **Supabase (empfohlen)**: Laden Sie Dateien in die entsprechenden Supabase Storage Buckets hoch.
+   - **Supabase (empfohlen)**: Laden Sie Dateien in die entsprechenden Supabase-Storage-Buckets hoch.
    - **Option 2: Lokale Dateien**: Platzieren Sie PDF- und Bilddateien in den entsprechenden Ordnern unter `public/media/`:
      - `public/media/antraege/` - für Anträge und Vorschläge
      - `public/media/presse/` - für Pressematerialien
@@ -141,8 +141,8 @@ greenpdf/
 │   │   ├── fileScanner.js        # Lokale Dateierkennungs-Dienstprogramme
 │   │   └── supabaseStorage.js    # Supabase Storage-Integration
 │   ├── lib/
-│   │   └── supabaseClient.js     # Supabase Client-Konfiguration
-│   ├── vite-env.d.ts             # TypeScript Umgebungsdeklarationen
+│   │   └── supabaseClient.js     # Supabase-Client-Konfiguration
+│   ├── vite-env.d.ts             # TypeScript-Umgebungsdeklarationen
 │   ├── index.css                 # Globale CSS-Stile
 │   └── main.tsx                  # Anwendungs-Einstiegspunkt
 ├── scripts/
@@ -158,13 +158,13 @@ greenpdf/
 - **TypeScript**: Typsicherheit und verbesserte Entwicklungserfahrung
 
 ### **Styling & UI**
-- **Tailwind CSS**: Utility-First CSS-Framework
+- **Tailwind CSS**: Utility-First-CSS-Framework
 - **Lucide React**: Schöne, anpassbare Icons
 - **Benutzerdefiniertes Design-System**: Grün-thematische Farbpalette und Komponenten
 
 ### **Medienverarbeitung**
 - **react-pdf**: React-Wrapper für PDF.js zur PDF-Darstellung
-- **PDF.js**: Mozilla's PDF-Rendering-Bibliothek
+- **PDF.js**: Mozillas PDF-Rendering-Bibliothek
 - **Native Bildunterstützung**: Optimierte Bildanzeige für PNG, JPG, JPEG
 
 ### **Internationalisierung**
@@ -197,12 +197,12 @@ greenpdf/
    - Erstellen Sie drei öffentliche Buckets: `antraege`, `presse` und `wahlkampf`
    - Setzen Sie die entsprechenden Berechtigungen für diese Buckets
 3. **Umgebungsvariablen konfigurieren**:
-   - Kopieren Sie Ihre Supabase URL und Anon Key in die `.env`-Datei
+   - Kopieren Sie Ihre Supabase-URL und Anon-Key in die `.env`-Datei
 
 ### **Neue Mediendateien hinzufügen**
 
 #### Für Supabase-Speicher (empfohlene Methode):
-1. **Dateien hochladen** in die entsprechenden Supabase Storage Buckets über die Supabase-Konsole
+1. **Dateien hochladen** in die entsprechenden Supabase-Storage-Buckets über die Supabase-Konsole
 2. **Anwendung neu laden**, die Dateien werden automatisch erkannt
 
 #### Für lokale Dateien (Alternative):
@@ -238,7 +238,7 @@ Ersetzen Sie `public/assets/logo.png` durch das Logo Ihrer Organisation. Die Kom
 ### **Medienverwaltung über Supabase**
 
 Die Anwendung verwendet primär Supabase für die Medienverwaltung:
-- **Supabase Cloud-Speicher**: Alle Mediendateien werden in Supabase Storage Buckets gespeichert und über die Supabase API abgerufen
+- **Supabase-Cloud-Speicher**: Alle Mediendateien werden in Supabase-Storage-Buckets gespeichert und über die Supabase-API abgerufen
 - **Strukturierte Buckets**: Separate Buckets für Anträge, Presse und Wahlkampfmaterialien
 - **Sichere Zugriffsverwaltung**: Dateizugriff wird über Supabase-Berechtigungen gesteuert
 - **Lokaler Fallback**: Bei Bedarf kann auf lokale Dateien zurückgegriffen werden
@@ -290,14 +290,14 @@ Die Anwendung kann auf jedem statischen Hosting-Dienst bereitgestellt werden:
 ### **Empfohlene Hosting-Plattformen**
 - **Netlify**: Automatische Bereitstellungen aus Git
 - **Vercel**: Optimiert für React-Anwendungen
-- **GitHub Pages**: Kostenloses Hosting für öffentliche Repositories
+- **GitHub Pages**: Kostenloses Hosting für öffentliche Repositorys
 - **AWS S3**: Skalierbarer Cloud-Speicher mit CloudFront CDN
 
 ### **Umgebungsvariablen konfigurieren**
 
 Bei der Bereitstellung auf Hosting-Plattformen müssen Sie die folgenden Umgebungsvariablen konfigurieren:
 - `VITE_SUPABASE_URL`: Ihre Supabase-Projekt-URL
-- `VITE_SUPABASE_ANON_KEY`: Ihr Supabase anonymer Schlüssel
+- `VITE_SUPABASE_ANON_KEY`: Ihr anonymer Supabase-Schlüssel
 
 ## 🤝 Mitwirken
 
