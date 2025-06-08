@@ -4,7 +4,7 @@
 
 Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien.
 
-![greenPDF Screenshot](https://via.placeholder.com/800x400/22c55e/ffffff?text=greenPDF+Interface)
+![greenPDF Screenshot](/assets/logo.png)
 
 ## ✨ Funktionen
 
@@ -41,10 +41,12 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 - **Lokalisierte Inhalte**: Alle Oberflächenelemente korrekt übersetzt
 - **Browser-Spracherkennung**: Automatische Spracherkennung basierend auf Browser-Einstellungen
 
-### 💾 **Datenpersistenz**
+### 💾 **Datenpersistenz & Cloud-Integration**
 - **Lokaler Speicher**: Favoriten und kürzlich geöffnete Dateien bleiben über Sitzungen hinweg erhalten
 - **Einstellungsspeicher**: Dunkelmodus- und Spracheinstellungen werden lokal gespeichert
 - **Offline-Fähigkeit**: Kernfunktionalität funktioniert ohne Internetverbindung
+- **Supabase-Integration**: Cloud-Speicher für Mediendateien mit sicherer Zugriffsverwaltung
+- **Automatische Synchronisierung**: Dokumente werden aus Supabase Storage Buckets geladen
 
 ## 🚀 Erste Schritte
 
@@ -53,6 +55,7 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 - **Node.js** (Version 16 oder höher)
 - **npm** oder **yarn** Paketmanager
 - Moderner Webbrowser mit aktiviertem JavaScript
+- **Supabase-Konto** für Cloud-Speicher (optional, alternativ lokale Dateispeicherung)
 
 ### Installation
 
@@ -67,23 +70,31 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
    npm install
    ```
 
-3. **Mediendateien hinzufügen**
-   - Platzieren Sie PDF- und Bilddateien in den entsprechenden Ordnern unter `public/media/`:
+3. **Umgebungsvariablen konfigurieren**
+   - Erstellen Sie eine `.env`-Datei im Stammverzeichnis:
+   ```
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+4. **Mediendateien hinzufügen**
+   - **Option 1: Lokale Dateien**: Platzieren Sie PDF- und Bilddateien in den entsprechenden Ordnern unter `public/media/`:
      - `public/media/antraege/` - für Anträge und Vorschläge
      - `public/media/presse/` - für Pressematerialien
      - `public/media/wahlkampf/` - für Wahlkampfdokumente
+   - **Option 2: Supabase**: Laden Sie Dateien in die entsprechenden Supabase Storage Buckets hoch.
 
-4. **Manifest generieren** (optional)
+5. **Manifest generieren** (für lokale Dateien)
    ```bash
    npm run generate-manifest
    ```
 
-5. **Entwicklungsserver starten**
+6. **Entwicklungsserver starten**
    ```bash
    npm run dev
    ```
 
-6. **Im Browser öffnen**
+7. **Im Browser öffnen**
    Navigieren Sie zu `http://localhost:5173`
 
 ### Für Produktion bauen
@@ -111,7 +122,11 @@ greenpdf/
 │   │   ├── Header.jsx            # Hauptheader mit Branding
 │   │   ├── Sidebar.jsx           # Dokumentennavigations-Seitenleiste
 │   │   ├── MediaViewer.jsx       # PDF- & Bildanzeige-Komponente
-│   │   └── Footer.jsx            # Fußzeile mit rechtlichen Links
+│   │   ├── PDFViewer.jsx         # PDF-spezifische Anzeige-Komponente
+│   │   ├── Footer.jsx            # Fußzeile mit rechtlichen Links
+│   │   ├── ImpressumContent.jsx  # Impressum-Inhalte
+│   │   ├── DatenschutzContent.jsx # Datenschutzerklärung 
+│   │   └── SupabaseDebug.jsx     # Debug-Komponente für Supabase
 │   ├── hooks/
 │   │   ├── useDarkMode.js        # Dunkelmodus-Zustandsverwaltung
 │   │   ├── useDynamicFolders.js  # Dynamische Dateierkennung
@@ -123,8 +138,13 @@ greenpdf/
 │   │       ├── de.json           # Deutsche Übersetzungen
 │   │       └── en.json           # Englische Übersetzungen
 │   ├── api/
-│   │   └── fileScanner.js        # Dateierkennungs-Dienstprogramme
-│   └── App.jsx                   # Haupt-Anwendungskomponente
+│   │   ├── fileScanner.js        # Lokale Dateierkennungs-Dienstprogramme
+│   │   └── supabaseStorage.js    # Supabase Storage-Integration
+│   ├── lib/
+│   │   └── supabaseClient.js     # Supabase Client-Konfiguration
+│   ├── vite-env.d.ts             # TypeScript Umgebungsdeklarationen
+│   ├── index.css                 # Globale CSS-Stile
+│   └── main.tsx                  # Anwendungs-Einstiegspunkt
 ├── scripts/
 │   └── generate-manifest.js      # Manifest-Generierungsskript
 └── package.json
@@ -152,25 +172,36 @@ greenpdf/
 - **i18next**: Internationalisierungs-Framework
 - **Browser-Spracherkennung**: Automatische Spracherkennung
 
-### **Zustandsverwaltung**
+### **Zustandsverwaltung & Datenspeicherung**
 - **React Hooks**: useState, useEffect, benutzerdefinierte Hooks
 - **Local Storage**: Persistenter clientseitiger Speicher
-- **Kontextfreie Architektur**: Prop-Drilling für einfache Zustandsverwaltung
+- **Supabase**: Backend-as-a-Service für Datenspeicherung und -verwaltung
+- **Supabase Storage**: Cloud-Speicher für Mediendateien
 
 ## 📋 Verfügbare Skripte
 
 | Skript | Beschreibung |
 |--------|-------------|
 | `npm run dev` | Entwicklungsserver starten |
-| `npm run build` | Für Produktion bauen |
+| `npm run build` | Für Produktion bauen (inkl. Manifest-Generierung) |
 | `npm run generate-manifest` | Mediendatei-Manifest generieren |
 | `npm run lint` | ESLint-Codeanalyse ausführen |
 | `npm run preview` | Produktions-Build vorschauen |
 
 ## 🔧 Konfiguration
 
+### **Supabase-Integration einrichten**
+
+1. **Supabase-Projekt erstellen** auf [supabase.com](https://supabase.com)
+2. **Storage-Buckets erstellen**:
+   - Erstellen Sie drei öffentliche Buckets: `antraege`, `presse` und `wahlkampf`
+   - Setzen Sie die entsprechenden Berechtigungen für diese Buckets
+3. **Umgebungsvariablen konfigurieren**:
+   - Kopieren Sie Ihre Supabase URL und Anon Key in die `.env`-Datei
+
 ### **Neue Mediendateien hinzufügen**
 
+#### Für lokale Dateien:
 1. **Dateien platzieren** im entsprechenden Ordner unter `public/media/`
    - Unterstützte Formate: PDF, PNG, JPG, JPEG
 2. **Manifest-Generierung ausführen**:
@@ -178,6 +209,10 @@ greenpdf/
    npm run generate-manifest
    ```
 3. **Entwicklungsserver neu starten**, falls dieser läuft
+
+#### Für Supabase-Speicher:
+1. **Dateien hochladen** in die entsprechenden Supabase Storage Buckets über die Supabase-Konsole
+2. **Anwendung neu laden**, die Dateien werden automatisch erkannt
 
 ### **Unterstützte Dateitypen**
 
@@ -199,6 +234,14 @@ Das Farbschema ist in `tailwind.config.js` definiert. Ändern Sie die Abschnitte
 Ersetzen Sie `public/assets/logo.png` durch das Logo Ihrer Organisation. Die Komponente wird automatisch das neue Logo verwenden.
 
 ## 🌟 Wichtige Funktionen erklärt
+
+### **Dual-Storage-System**
+
+Die Anwendung unterstützt zwei Speicheroptionen für Mediendateien:
+- **Lokaler Speicher**: Dateien werden im `public/media`-Verzeichnis gespeichert und über ein generiertes Manifest zugänglich gemacht
+- **Supabase Cloud-Speicher**: Dateien werden in Supabase Storage Buckets gespeichert und über die Supabase API abgerufen
+
+Das System prüft automatisch die Verfügbarkeit von Supabase und fällt bei Bedarf auf lokale Dateien zurück.
 
 ### **Multi-Format-Unterstützung**
 
@@ -249,6 +292,12 @@ Die Anwendung kann auf jedem statischen Hosting-Dienst bereitgestellt werden:
 - **Vercel**: Optimiert für React-Anwendungen
 - **GitHub Pages**: Kostenloses Hosting für öffentliche Repositories
 - **AWS S3**: Skalierbarer Cloud-Speicher mit CloudFront CDN
+
+### **Umgebungsvariablen konfigurieren**
+
+Bei der Bereitstellung auf Hosting-Plattformen müssen Sie die folgenden Umgebungsvariablen konfigurieren:
+- `VITE_SUPABASE_URL`: Ihre Supabase-Projekt-URL
+- `VITE_SUPABASE_ANON_KEY`: Ihr Supabase anonymer Schlüssel
 
 ## 🤝 Mitwirken
 
@@ -302,6 +351,7 @@ Für technische Unterstützung oder Fragen zur Anwendung:
 - **Barrierefreiheit**: Verbesserte Screenreader-Unterstützung und Tastaturnavigation
 - **Tests**: Umfassende Einheits- und Integrationstests
 - **Zusätzliche Formate**: Unterstützung für weitere Dateitypen (WEBP, SVG, usw.)
+- **Verbesserter Supabase-Support**: Vollständige Integration aller Supabase-Funktionen
 
 ---
 

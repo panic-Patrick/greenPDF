@@ -10,15 +10,10 @@ import {
   ChevronRight,
   ChevronDown,
   AlertCircle,
-  Image as ImageIcon,
-  Database,
-  CheckCircle,
-  XCircle,
-  Settings
+  Image as ImageIcon
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import SupabaseDebug from './SupabaseDebug';
 
 const Sidebar = ({ onFileSelect, selectedFile }) => {
   const { t } = useTranslation();
@@ -27,13 +22,11 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
   const [activeTab, setActiveTab] = useState('folders');
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
   const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
-  const [showDebug, setShowDebug] = useState(false);
 
   const { 
     folderStructure, 
     loading, 
     error, 
-    bucketsHealth,
     searchFiles 
   } = useDynamicFolders();
 
@@ -152,15 +145,8 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 Überprüfen Sie Ihre Supabase-Konfiguration
               </p>
-              <button
-                onClick={() => setShowDebug(!showDebug)}
-                className="mt-2 text-xs text-blue-600 dark:text-blue-400 hover:underline"
-              >
-                {showDebug ? 'Diagnose ausblenden' : 'Diagnose anzeigen'}
-              </button>
             </div>
           </div>
-          {showDebug && <SupabaseDebug />}
         </div>
       );
     }
@@ -181,34 +167,11 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
     return (
       <div className="space-y-2">
-        {/* Debug toggle button */}
-        <div className="flex items-center justify-between px-3 py-2">
-          <div className="flex items-center space-x-2">
-            <Database className="h-4 w-4 text-green-600 dark:text-green-400" />
-            <span className="text-xs text-green-600 dark:text-green-400 font-medium">Supabase Storage</span>
-            {Object.values(bucketsHealth).some(status => status.accessible) ? (
-              <CheckCircle className="h-3 w-3 text-green-500" />
-            ) : (
-              <XCircle className="h-3 w-3 text-red-500" />
-            )}
-          </div>
-          <button
-            onClick={() => setShowDebug(!showDebug)}
-            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            title="Diagnose anzeigen"
-          >
-            <Settings className="h-3 w-3 text-gray-500 dark:text-gray-400" />
-          </button>
-        </div>
-
-        {showDebug && <SupabaseDebug />}
-        
         {Object.entries(folderStructure).map(([folderId, folder]) => {
           const isExpanded = expandedFolders.has(folderId);
           const files = folder.files || [];
           const pdfCount = files.filter(f => f.type === 'pdf').length;
           const imageCount = files.filter(f => f.type === 'image').length;
-          const bucketStatus = bucketsHealth[folderId];
           
           return (
             <div key={folderId} className="space-y-1">
@@ -230,9 +193,6 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
                   {t(`folders.${folderId}`)}
                 </span>
                 <div className="flex items-center space-x-1">
-                  {bucketStatus && !bucketStatus.accessible && (
-                    <XCircle className="h-3 w-3 text-red-500" />
-                  )}
                   {pdfCount > 0 && (
                     <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
                       {pdfCount} PDF
@@ -252,10 +212,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
                     files.map(renderFile)
                   ) : (
                     <p className="text-xs text-gray-500 dark:text-gray-400 px-3 py-2">
-                      {bucketStatus && !bucketStatus.accessible 
-                        ? 'Bucket nicht erreichbar' 
-                        : t('sidebar.noFiles')
-                      }
+                      {t('sidebar.noFiles')}
                     </p>
                   )}
                 </div>

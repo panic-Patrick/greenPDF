@@ -16,19 +16,13 @@ export const useDynamicFolders = () => {
       setLoading(true);
       setError(null);
 
-      // Check bucket health first
+      // Check bucket health first - nur für die Statusanzeige, nicht blockierend
       console.log('Checking Supabase buckets health...');
       const health = await SupabaseStorageService.checkBucketsHealth();
       setBucketsHealth(health);
 
-      // Check if any buckets are inaccessible
-      const inaccessibleBuckets = Object.entries(health)
-        .filter(([_, status]) => !status.accessible)
-        .map(([name, _]) => name);
-
-      if (inaccessibleBuckets.length > 0) {
-        console.warn('Some buckets are inaccessible:', inaccessibleBuckets);
-      }
+      // Entferne die Warnung über unzugängliche Buckets, da wir trotzdem Dateien laden können
+      // Die Bucket-Gesundheit wird nur für die UI-Anzeige verwendet
 
       // Load files from Supabase Storage
       console.log('Loading files from Supabase Storage...');

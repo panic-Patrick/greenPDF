@@ -16,11 +16,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables. Please check your .env file.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: false
-  }
-});
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Helper function to get public URL for a file in storage
 export const getPublicUrl = (bucket, filePath) => {
@@ -87,5 +83,23 @@ export const testSupabaseConnection = async () => {
     return { success: !error, error: error?.message };
   } catch (error) {
     return { success: false, error: error.message };
+  }
+};
+
+// Helper function to check if bucket exists
+export const checkBucketExists = async (bucketName) => {
+  try {
+    // Verwenden Sie die korrekte API-Methode
+    const { data, error } = await supabase.storage.getBucket(bucketName);
+    
+    if (error) {
+      console.error(`Error checking bucket ${bucketName}:`, error);
+      return false;
+    }
+    
+    return !!data;
+  } catch (error) {
+    console.error(`Error checking bucket ${bucketName}:`, error);
+    return false;
   }
 };
