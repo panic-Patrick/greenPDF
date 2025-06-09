@@ -29,7 +29,7 @@ const FolderOverview = ({
   const { t } = useTranslation();
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('name'); // 'name', 'type', 'size', 'date'
+  const [sortBy, setSortBy] = useState('name-asc'); // 'name-asc', 'name-desc', 'type-asc', etc.
   const [linkGenerator, setLinkGenerator] = useState({ show: false, bucket: null, folder: null });
 
   // Get all files and subfolders
@@ -42,20 +42,79 @@ const FolderOverview = ({
       file.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // Parse sort option
+    const [sortField, sortDirection] = sortBy.split('-');
+
     // Sort files
     filtered.sort((a, b) => {
-      switch (sortBy) {
+      let result = 0;
+      
+      switch (sortField) {
         case 'name':
-          return a.name.localeCompare(b.name);
+          result = a.name.localeCompare(b.name, 'de', { numeric: true, sensitivity: 'base' });
+          break;
+        
         case 'type':
-          return a.type.localeCompare(b.type);
+          const typeA = a.type || '';
+          const typeB = b.type || '';
+          result = typeA.localeCompare(typeB);
+          break;
+        
         case 'size':
-          return (a.metadata?.size || 0) - (b.metadata?.size || 0);
+          // Parse size strings like "1.2 MB", "500 KB", etc.
+          const parseSize = (sizeStr) => {
+            if (!sizeStr || typeof sizeStr !== 'string') return 0;
+            
+            const match = sizeStr.match(/^([\d.]+)\s*(bytes?|kb|mb|gb)$/i);
+            if (!match) return 0;
+            
+            const value = parseFloat(match[1]);
+            const unit = match[2].toLowerCase();
+            
+            switch (unit) {
+              case 'gb': return value * 1024 * 1024 * 1024;
+              case 'mb': return value * 1024 * 1024;
+              case 'kb': return value * 1024;
+              case 'bytes':
+              case 'byte':
+              default: return value;
+            }
+          };
+          
+          const sizeA = parseSize(a.size);
+          const sizeB = parseSize(b.size);
+          result = sizeA - sizeB;
+          break;
+        
         case 'date':
-          return new Date(b.lastModified) - new Date(a.lastModified);
+          // Handle different date formats
+          const parseDate = (dateStr) => {
+            if (!dateStr) return new Date(0);
+            
+            // Try parsing as ISO string first
+            let date = new Date(dateStr);
+            if (isNaN(date.getTime())) {
+              // Try parsing as YYYY-MM-DD format
+              const parts = dateStr.split('-');
+              if (parts.length === 3) {
+                date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+              }
+            }
+            
+            return isNaN(date.getTime()) ? new Date(0) : date;
+          };
+          
+          const dateA = parseDate(a.lastModified);
+          const dateB = parseDate(b.lastModified);
+          result = dateB.getTime() - dateA.getTime(); // Default: newest first for date
+          break;
+        
         default:
-          return 0;
+          result = 0;
       }
+      
+      // Apply sort direction
+      return sortDirection === 'desc' ? -result : result;
     });
 
     return filtered;
@@ -63,9 +122,16 @@ const FolderOverview = ({
 
   // Filter subfolders
   const filteredSubfolders = useMemo(() => {
-    return subfolders.filter(folder => 
+    let filtered = subfolders.filter(folder => 
       folder.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // Sort subfolders by name (always by name for folders)
+    filtered.sort((a, b) => {
+      return a.name.localeCompare(b.name, 'de', { numeric: true, sensitivity: 'base' });
+    });
+
+    return filtered;
   }, [subfolders, searchQuery]);
 
   const getFileIcon = (file) => {
@@ -182,7 +248,7 @@ const FolderOverview = ({
               placeholder={t('folderOverview.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+              className="w-full h-10 pl-10 pr-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
             />
           </div>
 
@@ -191,21 +257,25 @@ const FolderOverview = ({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+              className="h-10 px-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
             >
-              <option value="name">{t('folderOverview.sortByName')}</option>
-              <option value="type">{t('folderOverview.sortByType')}</option>
-              <option value="size">{t('folderOverview.sortBySize')}</option>
-              <option value="date">{t('folderOverview.sortByDate')}</option>
+              <option value="name-asc">Name (A-Z)</option>
+              <option value="name-desc">Name (Z-A)</option>
+              <option value="type-asc">Typ (A-Z)</option>
+              <option value="type-desc">Typ (Z-A)</option>
+              <option value="size-asc">Größe (Klein-Groß)</option>
+              <option value="size-desc">Größe (Groß-Klein)</option>
+              <option value="date-desc">Datum (Neueste zuerst)</option>
+              <option value="date-asc">Datum (Älteste zuerst)</option>
             </select>
 
             {/* View Mode */}
-            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg h-10">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded-md transition-all duration-200 touch-manipulation ${
+                className={`h-full px-3 rounded-l-lg transition-all duration-200 touch-manipulation flex items-center justify-center ${
                   viewMode === 'grid'
-                    ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-400 shadow-sm'
+                    ? 'text-green-600 dark:text-green-400'
                     : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
                 title={t('folderOverview.gridView')}
@@ -214,9 +284,9 @@ const FolderOverview = ({
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded-md transition-all duration-200 touch-manipulation ${
+                className={`h-full px-3 rounded-r-lg transition-all duration-200 touch-manipulation flex items-center justify-center ${
                   viewMode === 'list'
-                    ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-400 shadow-sm'
+                    ? 'text-green-600 dark:text-green-400'
                     : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 }`}
                 title={t('folderOverview.listView')}

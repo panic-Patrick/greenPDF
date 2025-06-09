@@ -9,6 +9,10 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 
 ### 📱 **Moderne Benutzeroberfläche**
 - **Responsives Design**: Optimiert für Desktop, Tablet und mobile Geräte
+- **Mobile-First Optimierung**: Umfassende Touch-Optimierung mit mindestens 44px Touch-Zielgrößen
+- **Responsive Breakpoints**: Erweiterte Breakpoint-Unterstützung inkl. xs (475px) für sehr kleine Geräte
+- **Touch-Performance**: Optimierte Touch-Interaktionen mit `touch-manipulation` CSS
+- **Safe Area Support**: Vollständige Unterstützung für Geräte mit Notches und abgerundeten Ecken
 - **Dunkelmodus-Unterstützung**: Wechsel zwischen hellem und dunklem Design mit Systemeinstellungserkennung
 - **Professionelles Branding**: Individuelles grünes Farbschema passend zur politischen Identität
 - **Sanfte Animationen**: Mikro-Interaktionen und Übergänge für eine verbesserte Benutzererfahrung
@@ -191,10 +195,13 @@ greenpdf/
 - **TypeScript**: Typsicherheit und verbesserte Entwicklungserfahrung
 
 ### **Styling & UI**
-- **Tailwind CSS**: Utility-First CSS-Framework
-- **Lucide React**: Schöne, anpassbare Icons
+- **Tailwind CSS**: Utility-First CSS-Framework mit erweiterten Mobile-Breakpoints
+- **Mobile-First Design**: Responsive Design-Ansatz mit Touch-Optimierung
+- **Touch-optimierte Utilities**: Spezielle CSS-Klassen für Touch-Interaktionen und Safe Areas
+- **Lucide React**: Schöne, anpassbare Icons mit responsiven Größen
 - **Benutzerdefiniertes Design-System**: Grün-thematische Farbpalette und Komponenten
 - **Erweiterte CSS-Animationen**: Slide-in-Animationen, Folder-Icon-Transitions und benutzerdefinierte Scrollbars
+- **iOS/Android Optimierungen**: Spezielle CSS für iOS Zoom-Prevention und Android Touch-Performance
 
 ### **Medienverarbeitung**
 - **react-pdf**: React-Wrapper für PDF.js zur PDF-Darstellung
@@ -378,6 +385,75 @@ Die Oberfläche passt sich an verschiedene Bildschirmgrößen an:
 - **Tablet**: Einklappbare Seitenleiste mit Overlay
 - **Mobil**: Ausgeblendete Seitenleiste mit Umschalttaste
 
+### **📱 Mobile Optimierungen**
+
+Die Anwendung wurde umfassend für mobile Geräte optimiert:
+
+#### **Header-Optimierungen**
+- **Responsive Logo-Größe**: Automatische Anpassung der Logo-Größe (w-12 h-12 auf mobil, w-16 h-16 auf größeren Bildschirmen)
+- **Touch-optimierte Buttons**: Alle Buttons haben mindestens 44px Touch-Zielgröße
+- **Responsive Typografie**: Text-Größen passen sich automatisch an (text-lg auf mobil, text-2xl auf Desktop)
+- **Verbesserte Touch-Interaktion**: `touch-manipulation` CSS für bessere Touch-Performance
+
+#### **Sidebar-Optimierungen**
+- **Mobile-First Navigation**: Vollbreite Sidebar auf mobilen Geräten (w-full max-w-sm)
+- **Verbesserte Overlay-Interaktion**: Touch-freundliche Overlay-Bedienung
+- **Optimierte Ordner-Navigation**: Touch-optimierte Ausklapp-Funktionen für Unterordner
+- **Sichtbare Icons**: Favoriten- und Share-Icons sind immer sichtbar (nicht nur bei Hover)
+- **Responsive Ordner-Struktur**: Angepasste Einrückungen und Abstände für mobile Bildschirme
+
+#### **MediaViewer Mobile-Optimierungen**
+- **Responsive PDF-Anzeige**: Automatische Breitenanpassung für mobile Bildschirme
+- **Touch-optimierte Toolbar**: Größere Buttons und bessere Abstände
+- **Mobile Zoom-Steuerung**: Touch-freundliche Zoom-Buttons und Gesten-Unterstützung
+- **Responsive Seitennavigation**: Angepasste Seitenzahl-Eingabe für mobile Tastaturen
+- **Mobile Datei-Info**: Zusätzliche mobile Datei-Info-Sektion unterhalb der Hauptinformationen
+- **Optimierte Vollbild-Ansicht**: Verbesserte Vollbild-Erfahrung auf mobilen Geräten
+
+#### **FolderOverview Mobile-Optimierungen**
+- **Responsive Grid-Layout**: 2 Spalten auf mobil, mehr auf größeren Bildschirmen
+- **Touch-freundliche Karten**: Optimierte Datei- und Ordner-Karten für Touch-Bedienung
+- **Mobile Such- und Filter-Controls**: Angepasste Layout für Such- und Filterfunktionen
+- **Responsive Icon-Größen**: Automatische Anpassung der Icon-Größen je nach Bildschirmgröße
+- **Verbesserte Share-Funktionalität**: Sichtbare Share-Buttons mit grünem Hintergrund und Text
+
+#### **Footer Mobile-Optimierungen**
+- **Responsive 3-Spalten-Layout**: Stapelt sich auf mobilen Geräten zu einer Spalte
+- **Touch-optimierte Links**: Alle Footer-Links haben ausreichende Touch-Zielgrößen
+- **Mobile Kontakt-Informationen**: Optimierte Darstellung von Kontaktdaten
+- **Responsive Modal-Integration**: Touch-freundliche Impressum- und Datenschutz-Modals
+
+#### **Tailwind CSS Mobile-Konfiguration**
+- **Erweiterte Breakpoints**: Zusätzlicher `xs` Breakpoint (475px) für sehr kleine Geräte
+- **Touch Media Queries**: Spezielle Styles für Touch-Geräte
+- **Safe Area Support**: Unterstützung für Geräte mit Notches und abgerundeten Ecken
+- **Touch-optimierte Utilities**: Spezielle CSS-Klassen für Touch-Interaktionen
+
+#### **CSS Mobile-Optimierungen**
+- **iOS Zoom-Prevention**: Verhindert ungewolltes Zoomen bei Input-Focus auf iOS
+- **Verbesserte Touch-Scrolling**: Optimierte Scroll-Performance mit `-webkit-overflow-scrolling`
+- **Safe Area Insets**: Unterstützung für `env(safe-area-inset-*)` für moderne Smartphones
+- **Touch-Feedback**: Verbesserte visuelle Rückmeldung bei Touch-Interaktionen
+- **Minimum Touch-Targets**: Alle interaktiven Elemente haben mindestens 44px Touch-Zielgröße
+
+#### **Modal Mobile-Optimierungen**
+- **Vollbild-Modals auf mobil**: Impressum und Datenschutz-Modals nutzen den gesamten Bildschirm
+- **Touch-freundliche Schließ-Buttons**: Große X-Buttons in der oberen rechten Ecke
+- **Mobile Scroll-Optimierung**: Optimiertes Scrolling innerhalb der Modals
+- **Responsive Modal-Inhalte**: Angepasste Typografie und Abstände für mobile Bildschirme
+
+#### **Performance-Optimierungen für Mobile**
+- **Lazy Loading**: Optimiertes Laden von Inhalten für langsamere mobile Verbindungen
+- **Touch-optimierte Animationen**: Reduzierte Animationen für bessere Performance
+- **Mobile-First CSS**: CSS wurde mobile-first geschrieben für bessere Performance
+- **Optimierte Bundle-Größe**: Minimierte JavaScript- und CSS-Bundles für schnellere Ladezeiten
+
+#### **Accessibility Mobile-Verbesserungen**
+- **Touch-Accessibility**: Alle interaktiven Elemente sind mit Touch-Geräten zugänglich
+- **Mobile Screen Reader**: Optimierte Unterstützung für mobile Screen Reader
+- **Keyboard Navigation**: Verbesserte Tastatur-Navigation auf mobilen Geräten mit externer Tastatur
+- **High Contrast Support**: Unterstützung für High-Contrast-Modi auf mobilen Geräten
+
 ### **Dateityp-Indikatoren**
 
 Visuelle Indikatoren helfen Benutzern, Dateitypen schnell zu identifizieren:
@@ -464,6 +540,9 @@ Bei der Bereitstellung auf Hosting-Plattformen müssen Sie die folgenden Umgebun
 - Responsive Design-Prinzipien sicherstellen
 - In hellen und dunklen Modi testen
 - Mit verschiedenen Dateitypen testen
+- **Mobile Testing**: Testen auf verschiedenen mobilen Geräten und Bildschirmgrößen
+- **Touch-Interaktion Testing**: Sicherstellen, dass alle Touch-Ziele mindestens 44px groß sind
+- **Performance Testing**: Mobile Performance mit langsameren Verbindungen testen
 
 ## 📄 Lizenz
 

@@ -167,9 +167,9 @@ const MediaViewer = ({ selectedFile }) => {
 
   if (!selectedFile) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 px-4">
-        <div className="text-center">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-green">
+      <div className="flex-1 h-full min-h-0 flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300 px-4">
+        <div className="flex flex-col items-center justify-center text-center max-w-md w-full">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 rounded-2xl flex items-center justify-center mb-6 shadow-green">
             <FileText className="h-10 w-10 sm:h-12 sm:w-12 text-white" />
           </div>
           <h3 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 font-headline">
