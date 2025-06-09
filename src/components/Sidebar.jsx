@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
   Search, 
@@ -10,7 +10,8 @@ import {
   ChevronRight,
   ChevronDown,
   AlertCircle,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Loader
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -18,7 +19,9 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 const Sidebar = ({ onFileSelect, selectedFile }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   const [expandedFolders, setExpandedFolders] = useState(new Set(['antraege', 'presse', 'wahlkampf', 'events']));
+  const [expandedSubfolders, setExpandedSubfolders] = useState(new Set());
   const [activeTab, setActiveTab] = useState('folders');
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
   const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
@@ -30,9 +33,15 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     searchFiles 
   } = useDynamicFolders();
 
-  const searchResults = useMemo(() => {
-    return searchFiles(searchQuery);
-  }, [searchQuery, searchFiles]);
+  // Search functionality
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const results = searchFiles(searchQuery);
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
+  }, [searchQuery, folderStructure, searchFiles]);
 
   const toggleFolder = (folderId) => {
     const newExpanded = new Set(expandedFolders);
@@ -42,6 +51,16 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
       newExpanded.add(folderId);
     }
     setExpandedFolders(newExpanded);
+  };
+
+  const toggleSubfolder = (subfolderPath) => {
+    const newExpanded = new Set(expandedSubfolders);
+    if (newExpanded.has(subfolderPath)) {
+      newExpanded.delete(subfolderPath);
+    } else {
+      newExpanded.add(subfolderPath);
+    }
+    setExpandedSubfolders(newExpanded);
   };
 
   const handleFileSelect = (file) => {
@@ -102,9 +121,9 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
         </div>
         <div className="flex items-center space-x-2">
           <p className="text-xs text-gray-500 dark:text-gray-400">{file.size}</p>
-          {file.bucket && (
-            <span className="text-xs text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900/30 px-1 py-0.5 rounded">
-              {file.bucket}
+          {file.folder && (
+            <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded">
+              {file.folder}
             </span>
           )}
         </div>
@@ -121,6 +140,95 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
       </button>
     </div>
   );
+
+  // Helper function to count files in subfolder recursively
+  const countFilesInSubfolder = (subfolder) => {
+    let count = (subfolder.files || []).length;
+    if (subfolder.subfolders) {
+      Object.values(subfolder.subfolders).forEach(sf => {
+        count += countFilesInSubfolder(sf);
+      });
+    }
+    return count;
+  };
+
+  // Recursive function to render subfolders
+  const renderSubfolder = (subfolder, parentPath = '', level = 0) => {
+    const subfolderPath = `${parentPath}/${subfolder.name}`;
+    const isExpanded = expandedSubfolders.has(subfolderPath);
+    const files = subfolder.files || [];
+    const subfolders = Object.values(subfolder.subfolders || {});
+    const pdfCount = files.filter(f => f.type === 'pdf').length;
+    const imageCount = files.filter(f => f.type === 'image').length;
+    const totalSubfolderFiles = subfolders.reduce((count, sf) => count + countFilesInSubfolder(sf), 0);
+    const totalFiles = pdfCount + imageCount + totalSubfolderFiles;
+
+    return (
+      <div key={subfolderPath} className="space-y-1">
+        <div
+          onClick={() => toggleSubfolder(subfolderPath)}
+          className={`flex items-center space-x-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 group ${
+            level > 0 ? 'ml-4' : ''
+          }`}
+        >
+          {isExpanded ? (
+            <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
+          ) : (
+            <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
+          )}
+          {isExpanded ? (
+            <FolderOpen className="h-4 w-4 text-yellow-600 dark:text-yellow-400 folder-icon-transition" />
+          ) : (
+            <Folder className="h-4 w-4 text-yellow-600 dark:text-yellow-400 folder-icon-transition" />
+          )}
+          <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors duration-200">
+            {subfolder.name}
+          </span>
+          <div className="flex items-center space-x-1">
+            {totalFiles > 0 && (
+              <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full font-medium">
+                {totalFiles}
+              </span>
+            )}
+            {pdfCount > 0 && (
+              <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                {pdfCount} PDF
+              </span>
+            )}
+            {imageCount > 0 && (
+              <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                {imageCount} IMG
+              </span>
+            )}
+          </div>
+        </div>
+        
+        {isExpanded && (
+          <div className={`space-y-1 animate-slide-in ${level > 0 ? 'ml-4' : 'ml-6'}`}>
+            {/* Render files in this subfolder */}
+            {files.length > 0 && (
+              <div className="space-y-1">
+                {files.map(renderFile)}
+              </div>
+            )}
+            
+            {/* Render nested subfolders */}
+            {subfolders.length > 0 && (
+              <div className="space-y-1">
+                {subfolders.map(sf => renderSubfolder(sf, subfolderPath, level + 1))}
+              </div>
+            )}
+            
+            {files.length === 0 && subfolders.length === 0 && (
+              <p className="text-xs text-gray-500 dark:text-gray-400 px-3 py-2">
+                {t('sidebar.noFiles')}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const renderFolderContent = () => {
     if (loading) {
@@ -170,8 +278,11 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
         {Object.entries(folderStructure).map(([folderId, folder]) => {
           const isExpanded = expandedFolders.has(folderId);
           const files = folder.files || [];
+          const subfolders = Object.values(folder.subfolders || {});
           const pdfCount = files.filter(f => f.type === 'pdf').length;
           const imageCount = files.filter(f => f.type === 'image').length;
+          const totalSubfolderFiles = subfolders.reduce((count, sf) => count + countFilesInSubfolder(sf), 0);
+          const totalFiles = pdfCount + imageCount + totalSubfolderFiles;
           
           return (
             <div key={folderId} className="space-y-1">
@@ -185,14 +296,19 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
                   <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
                 )}
                 {isExpanded ? (
-                  <FolderOpen className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <FolderOpen className="h-4 w-4 text-green-600 dark:text-green-400 folder-icon-transition" />
                 ) : (
-                  <Folder className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <Folder className="h-4 w-4 text-green-600 dark:text-green-400 folder-icon-transition" />
                 )}
                 <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors duration-200">
                   {t(`folders.${folderId}`)}
                 </span>
                 <div className="flex items-center space-x-1">
+                  {totalFiles > 0 && (
+                    <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full font-medium">
+                      {totalFiles}
+                    </span>
+                  )}
                   {pdfCount > 0 && (
                     <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
                       {pdfCount} PDF
@@ -208,9 +324,21 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
               
               {isExpanded && (
                 <div className="ml-6 space-y-1 animate-slide-in">
-                  {files.length > 0 ? (
-                    files.map(renderFile)
-                  ) : (
+                  {/* Render files in root of bucket */}
+                  {files.length > 0 && (
+                    <div className="space-y-1">
+                      {files.map(renderFile)}
+                    </div>
+                  )}
+                  
+                  {/* Render subfolders */}
+                  {subfolders.length > 0 && (
+                    <div className="space-y-1">
+                      {subfolders.map(subfolder => renderSubfolder(subfolder, folderId))}
+                    </div>
+                  )}
+                  
+                  {files.length === 0 && subfolders.length === 0 && (
                     <p className="text-xs text-gray-500 dark:text-gray-400 px-3 py-2">
                       {t('sidebar.noFiles')}
                     </p>
@@ -263,7 +391,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4 sidebar-scroll">
         {activeTab === 'folders' && renderFolderContent()}
         
         {activeTab === 'recent' && (

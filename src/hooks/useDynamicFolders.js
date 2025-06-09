@@ -31,7 +31,8 @@ export const useDynamicFolders = () => {
       setFolderStructure(structure);
       
       // Log summary
-      const totalFiles = Object.values(structure).reduce((sum, folder) => sum + (folder.files?.length || 0), 0);
+      const totalFiles = Object.values(structure).reduce((sum, folder) => 
+        sum + SupabaseStorageService.countFilesRecursively(folder), 0);
       console.log(`Successfully loaded ${totalFiles} files from Supabase Storage`);
       
     } catch (err) {
@@ -40,9 +41,10 @@ export const useDynamicFolders = () => {
       
       // Fallback to empty structure
       setFolderStructure({
-        antraege: { name: 'antraege', files: [] },
-        presse: { name: 'presse', files: [] },
-        wahlkampf: { name: 'wahlkampf', files: [] }
+        antraege: { name: 'antraege', bucket: 'antraege', files: [], subfolders: {} },
+        presse: { name: 'presse', bucket: 'presse', files: [], subfolders: {} },
+        wahlkampf: { name: 'wahlkampf', bucket: 'wahlkampf', files: [], subfolders: {} },
+        events: { name: 'events', bucket: 'events', files: [], subfolders: {} }
       });
     } finally {
       setLoading(false);
@@ -54,7 +56,9 @@ export const useDynamicFolders = () => {
   };
 
   const getAllFiles = () => {
-    return Object.values(folderStructure).flatMap(folder => folder.files || []);
+    return Object.values(folderStructure).flatMap(folder => 
+      SupabaseStorageService.getAllFilesRecursively(folder)
+    );
   };
 
   const searchFiles = (query) => {

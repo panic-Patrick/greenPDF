@@ -15,16 +15,20 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 
 ### �� **Medienverwaltung über Supabase**
 - **Multi-Format-Unterstützung**: Anzeige von PDFs, PNG, JPG und JPEG-Dateien
-- **Organisierte Kategorien**: Dokumente sortiert in drei Hauptordnern:
-  - **Anträge**: Offizielle Anträge und Vorschläge
-  - **Presse**: Pressemitteilungen und Medienmaterialien
+- **Hierarchische Ordnerstruktur**: Vollständige Unterstützung für Unterordner und verschachtelte Strukturen
+- **Organisierte Kategorien**: Dokumente sortiert in Hauptordnern mit beliebig tiefen Unterordnern:
+  - **Anträge**: Offizielle Anträge und Vorschläge (z.B. 2024/Januar/, Vorlagen/)
+  - **Presse**: Pressemitteilungen und Medienmaterialien (z.B. Pressemitteilungen/2024/, Medienkit/Logos/)
   - **Wahlkampf**: Kampagnenmaterialien und Wahldokumente
+  - **Events**: Veranstaltungsdokumente und -materialien
+- **Ausklappbare Navigation**: Intuitive Ordner-Navigation mit Ein-/Ausklapp-Funktionalität
 - **Cloud-basierte Speicherung**: Alle Mediendateien werden in Supabase Storage Buckets verwaltet
-- **Dynamische Dateierkennung**: Automatisches Scannen und Manifest-Generierung für Mediendateien
-- **Suchfunktion**: Echtzeit-Suche über alle Dokumente und Bilder
+- **Rekursive Dateierkennung**: Automatisches Scannen aller Ordnerebenen und Unterverzeichnisse
+- **Intelligente Datei-Zähler**: Anzeige der Gesamtanzahl von Dateien pro Ordner (inkl. Unterordner)
+- **Suchfunktion**: Echtzeit-Suche über alle Dokumente und Bilder in allen Ordnerebenen
 - **Favoriten-System**: Markieren häufig verwendeter Dateien als Favoriten
 - **Zuletzt geöffnete Dateien**: Schneller Zugriff auf kürzlich angesehene Dokumente
-- **Dateityp-Indikatoren**: Visuelle Kennzeichnungen für PDF- oder Bilddateitypen
+- **Dateityp-Indikatoren**: Visuelle Kennzeichnungen für PDF- oder Bilddateitypen mit Typ-spezifischen Zählern
 
 ### 🔍 **Erweiterter Medienbetrachter**
 - **PDF-Rendering**: Hochwertige PDF-Anzeige mit PDF.js
@@ -194,8 +198,9 @@ greenpdf/
 
 1. **Supabase-Projekt erstellen** auf [supabase.com](https://supabase.com)
 2. **Storage-Buckets erstellen**:
-   - Erstellen Sie drei öffentliche Buckets: `antraege`, `presse` und `wahlkampf`
+   - Erstellen Sie vier öffentliche Buckets: `antraege`, `presse`, `wahlkampf` und `events`
    - Setzen Sie die entsprechenden Berechtigungen für diese Buckets
+   - Erstellen Sie Unterordner nach Bedarf (z.B. `antraege/2024/januar/`, `presse/medienkit/logos/`)
 3. **Umgebungsvariablen konfigurieren**:
    - Kopieren Sie Ihre Supabase URL und Anon Key in die `.env`-Datei
 
@@ -203,7 +208,8 @@ greenpdf/
 
 #### Für Supabase-Speicher (empfohlene Methode):
 1. **Dateien hochladen** in die entsprechenden Supabase Storage Buckets über die Supabase-Konsole
-2. **Anwendung neu laden**, die Dateien werden automatisch erkannt
+2. **Unterordner erstellen** für bessere Organisation (z.B. `2024/januar/`, `medienkit/logos/`)
+3. **Anwendung neu laden**, die Dateien und Ordnerstruktur werden automatisch erkannt
 
 #### Für lokale Dateien (Alternative):
 1. **Dateien platzieren** im entsprechenden Ordner unter `public/media/`
@@ -232,6 +238,35 @@ Das Farbschema ist in `tailwind.config.js` definiert. Ändern Sie die Abschnitte
 ### **Logo ersetzen**
 
 Ersetzen Sie `public/assets/logo.png` durch das Logo Ihrer Organisation. Die Komponente wird automatisch das neue Logo verwenden.
+
+### **Unterordner-Navigation verwenden**
+
+Die neue hierarchische Ordnerstruktur ermöglicht eine bessere Organisation:
+
+1. **Hauptordner ausklappen**: Klicken Sie auf einen Bucket-Namen (z.B. "Anträge")
+2. **Unterordner navigieren**: Klicken Sie auf Unterordner-Namen, um sie auszuklappen
+3. **Dateien anzeigen**: Dateien werden in jedem Ordner-Level angezeigt
+4. **Visuelle Unterscheidung**:
+   - **Hauptordner**: Grüne Ordner-Icons
+   - **Unterordner**: Gelbe Ordner-Icons mit Einrückung
+   - **Datei-Zähler**: Zeigen Gesamtanzahl und Typ-spezifische Zähler
+5. **Ordner-Pfad**: Bei Dateien wird der Ordner-Pfad angezeigt
+
+**Beispiel-Ordnerstruktur**:
+```
+antraege/
+├── 2024/
+│   ├── januar/
+│   │   ├── antrag_solaranlagen.pdf
+│   │   └── antrag_fahrradwege.pdf
+│   └── februar/
+│       └── antrag_umweltschutz.pdf
+├── 2023/
+│   └── archiv/
+│       └── alte_antraege.pdf
+└── vorlagen/
+    └── antrag_vorlage.pdf
+```
 
 ## 🌟 Wichtige Funktionen erklärt
 
@@ -330,12 +365,16 @@ Dieses Projekt wurde für die Grüne Fraktion Kirchhundem entwickelt. Bitte kont
 Für technische Unterstützung oder Fragen zur Anwendung:
 
 1. **Überprüfen Sie die Dokumentation** in dieser README
-2. **Sehen Sie die Code-Kommentare durch** für Implementierungsdetails
-3. **Kontaktieren Sie das Entwicklungsteam** für spezifische Probleme
+2. **Lesen Sie die Unterordner-Dokumentation** in `SUBFOLDER_FEATURE.md` für detaillierte Informationen zur neuen Funktionalität
+3. **Sehen Sie die Code-Kommentare durch** für Implementierungsdetails
+4. **Kontaktieren Sie das Entwicklungsteam** für spezifische Probleme
 
 ## 🔮 Zukünftige Erweiterungen
 
 ### **Geplante Funktionen**
+- **Ordner-Management**: Ordner-Erstellung, -Umbenennung und -Löschung über die UI
+- **Drag & Drop**: Dateien zwischen Ordnern verschieben
+- **Bulk-Operationen**: Mehrere Dateien gleichzeitig verwalten
 - **Dokumenten-Anmerkungen**: Notizen und Hervorhebungen zu PDFs hinzufügen
 - **Erweiterte Suche**: Volltextsuche innerhalb von PDF-Inhalten
 - **Bild-Metadaten**: EXIF-Datenanzeige für Bilder
