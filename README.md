@@ -2,7 +2,7 @@
 
 **Grüne Fraktion Kirchhundem - Medien-Dokumentenverwaltungssystem mit Supabase-Integration**
 
-Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien. Die gesamte Medienverwaltung läuft über Supabase als Backend-as-a-Service.
+Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien. Die gesamte Medienverwaltung läuft über Supabase als Backend-as-a-Service mit vollständiger Unterordner-Unterstützung.
 
 
 ## ✨ Funktionen
@@ -12,23 +12,51 @@ Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell e
 - **Dunkelmodus-Unterstützung**: Wechsel zwischen hellem und dunklem Design mit Systemeinstellungserkennung
 - **Professionelles Branding**: Individuelles grünes Farbschema passend zur politischen Identität
 - **Sanfte Animationen**: Mikro-Interaktionen und Übergänge für eine verbesserte Benutzererfahrung
+- **Erweiterte CSS-Animationen**: Slide-in-Animationen, Hover-Effekte und benutzerdefinierte Scrollbars
 
-### �� **Medienverwaltung über Supabase**
+### 🗂️ **Erweiterte Hierarchische Ordnerstruktur**
+- **Rekursive Ordner-Auflistung**: Vollständige Unterstützung für beliebig tiefe Unterordner-Strukturen
+- **Intelligente Datenstruktur**: Verschachtelte Ordnerstruktur mit effizienter Speicherung und Navigation
+- **Lazy Loading**: Unterordner werden nur bei Bedarf geladen für optimale Performance
+- **Visuelle Unterscheidung**: 
+  - **Hauptordner**: Grüne Ordner-Icons
+  - **Unterordner**: Gelbe Ordner-Icons mit visueller Einrückung
+  - **Animierte Ausklapp-Funktionen**: Sanfte Übergänge beim Öffnen/Schließen von Ordnern
+- **Erweiterte State-Verwaltung**: Separate Tracking für Hauptordner und Unterordner-Zustände
+- **Pfad-Anzeige**: Vollständige Pfad-Information für bessere Orientierung
+
+### 📊 **Intelligente Datei-Zählung und -Analyse**
+- **Rekursive Datei-Zählung**: Automatische Berechnung der Gesamtanzahl von Dateien pro Ordner (inkl. aller Unterordner)
+- **Typ-spezifische Zähler**: Separate Anzeige für PDF- und Bild-Dateien mit visuellen Badges
+- **Performance-optimierte Zählung**: Effiziente Algorithmen für große Ordnerstrukturen
+- **Echtzeit-Updates**: Automatische Aktualisierung der Zähler bei Strukturänderungen
+
+### 🗃️ **Medienverwaltung über Supabase**
 - **Multi-Format-Unterstützung**: Anzeige von PDFs, PNG, JPG und JPEG-Dateien
-- **Hierarchische Ordnerstruktur**: Vollständige Unterstützung für Unterordner und verschachtelte Strukturen
+- **Hierarchische Ordnerstruktur**: Vollständige Unterstützung für Unterordner und verschachtelte Strukturen mit beliebiger Tiefe
 - **Organisierte Kategorien**: Dokumente sortiert in Hauptordnern mit beliebig tiefen Unterordnern:
-  - **Anträge**: Offizielle Anträge und Vorschläge (z.B. 2024/Januar/, Vorlagen/)
-  - **Presse**: Pressemitteilungen und Medienmaterialien (z.B. Pressemitteilungen/2024/, Medienkit/Logos/)
+  - **Anträge**: Offizielle Anträge und Vorschläge (z.B. `2024/januar/`, `vorlagen/`)
+  - **Presse**: Pressemitteilungen und Medienmaterialien (z.B. `pressemitteilungen/2024/`, `medienkit/logos/`)
   - **Wahlkampf**: Kampagnenmaterialien und Wahldokumente
   - **Events**: Veranstaltungsdokumente und -materialien
-- **Ausklappbare Navigation**: Intuitive Ordner-Navigation mit Ein-/Ausklapp-Funktionalität
+- **Ausklappbare Navigation**: Intuitive Ordner-Navigation mit Ein-/Ausklapp-Funktionalität für alle Ebenen
 - **Cloud-basierte Speicherung**: Alle Mediendateien werden in Supabase Storage Buckets verwaltet
 - **Rekursive Dateierkennung**: Automatisches Scannen aller Ordnerebenen und Unterverzeichnisse
-- **Intelligente Datei-Zähler**: Anzeige der Gesamtanzahl von Dateien pro Ordner (inkl. Unterordner)
+- **Caching-System**: Geladene Ordnerstrukturen werden im State gecacht für bessere Performance
 - **Suchfunktion**: Echtzeit-Suche über alle Dokumente und Bilder in allen Ordnerebenen
 - **Favoriten-System**: Markieren häufig verwendeter Dateien als Favoriten
 - **Zuletzt geöffnete Dateien**: Schneller Zugriff auf kürzlich angesehene Dokumente
 - **Dateityp-Indikatoren**: Visuelle Kennzeichnungen für PDF- oder Bilddateitypen mit Typ-spezifischen Zählern
+
+### 🔗 **Link-Generator und QR-Code-Funktionalität**
+- **Direkte Links erstellen**: Generierung von direkten Links zu spezifischen Ordnern oder Ordner-Übersichten
+- **QR-Code-Generierung**: Automatische Erstellung hochauflösender QR-Codes mit integriertem Logo
+- **Intelligente URL-Parameter**: Links enthalten Bucket- und Ordner-Informationen für direkten Zugriff
+- **QR-Code-Download**: Download der generierten QR-Codes als PNG-Dateien in hoher Qualität
+- **Native Sharing-API**: Unterstützung für das native Teilen auf mobilen Geräten
+- **Clipboard-Integration**: Ein-Klick-Kopieren von Links in die Zwischenablage
+- **Responsive QR-Codes**: QR-Codes mit Logo-Integration und anpassbarer Fehlerkorrektur
+- **Fallback-Unterstützung**: Automatische Fallbacks für ältere Browser ohne moderne APIs
 
 ### 🔍 **Erweiterter Medienbetrachter**
 - **PDF-Rendering**: Hochwertige PDF-Anzeige mit PDF.js
@@ -124,9 +152,10 @@ greenpdf/
 ├── src/
 │   ├── components/
 │   │   ├── Header.jsx            # Hauptheader mit Branding
-│   │   ├── Sidebar.jsx           # Dokumentennavigations-Seitenleiste
+│   │   ├── Sidebar.jsx           # Dokumentennavigations-Seitenleiste mit Unterordner-Support
 │   │   ├── MediaViewer.jsx       # PDF- & Bildanzeige-Komponente
 │   │   ├── PDFViewer.jsx         # PDF-spezifische Anzeige-Komponente
+│   │   ├── LinkGenerator.jsx     # Link- und QR-Code-Generator-Komponente
 │   │   ├── Footer.jsx            # Fußzeile mit rechtlichen Links
 │   │   ├── ImpressumContent.jsx  # Impressum-Inhalte
 │   │   ├── DatenschutzContent.jsx # Datenschutzerklärung 
@@ -143,11 +172,11 @@ greenpdf/
 │   │       └── en.json           # Englische Übersetzungen
 │   ├── api/
 │   │   ├── fileScanner.js        # Lokale Dateierkennungs-Dienstprogramme
-│   │   └── supabaseStorage.js    # Supabase Storage-Integration
+│   │   └── supabaseStorage.js    # Supabase Storage-Integration mit Unterordner-Support
 │   ├── lib/
-│   │   └── supabaseClient.js     # Supabase Client-Konfiguration
+│   │   └── supabaseClient.js     # Supabase Client-Konfiguration mit rekursiven Funktionen
 │   ├── vite-env.d.ts             # TypeScript Umgebungsdeklarationen
-│   ├── index.css                 # Globale CSS-Stile
+│   ├── index.css                 # Globale CSS-Stile mit Unterordner-Animationen
 │   └── main.tsx                  # Anwendungs-Einstiegspunkt
 ├── scripts/
 │   └── generate-manifest.js      # Manifest-Generierungsskript
@@ -165,11 +194,17 @@ greenpdf/
 - **Tailwind CSS**: Utility-First CSS-Framework
 - **Lucide React**: Schöne, anpassbare Icons
 - **Benutzerdefiniertes Design-System**: Grün-thematische Farbpalette und Komponenten
+- **Erweiterte CSS-Animationen**: Slide-in-Animationen, Folder-Icon-Transitions und benutzerdefinierte Scrollbars
 
 ### **Medienverarbeitung**
 - **react-pdf**: React-Wrapper für PDF.js zur PDF-Darstellung
 - **PDF.js**: Mozilla's PDF-Rendering-Bibliothek
 - **Native Bildunterstützung**: Optimierte Bildanzeige für PNG, JPG, JPEG
+
+### **Link-Generierung und QR-Codes**
+- **qrcode**: QR-Code-Generierung mit hoher Auflösung und Fehlerkorrektur
+- **Clipboard API**: Moderne Browser-API für Zwischenablage-Funktionen
+- **Web Share API**: Native Sharing-Funktionalität für mobile Geräte
 
 ### **Internationalisierung**
 - **react-i18next**: React-Integration für i18next
@@ -180,7 +215,8 @@ greenpdf/
 - **React Hooks**: useState, useEffect, benutzerdefinierte Hooks
 - **Local Storage**: Persistenter clientseitiger Speicher
 - **Supabase**: Backend-as-a-Service für Datenspeicherung und -verwaltung
-- **Supabase Storage**: Cloud-Speicher für Mediendateien
+- **Supabase Storage**: Cloud-Speicher für Mediendateien mit hierarchischer Struktur
+- **Erweiterte State-Verwaltung**: Separate Tracking für `expandedFolders` und `expandedSubfolders`
 
 ## 📋 Verfügbare Skripte
 
@@ -241,18 +277,10 @@ Ersetzen Sie `public/assets/logo.png` durch das Logo Ihrer Organisation. Die Kom
 
 ### **Unterordner-Navigation verwenden**
 
-Die neue hierarchische Ordnerstruktur ermöglicht eine bessere Organisation:
+Die erweiterte hierarchische Ordnerstruktur ermöglicht eine professionelle Organisation:
 
-1. **Hauptordner ausklappen**: Klicken Sie auf einen Bucket-Namen (z.B. "Anträge")
-2. **Unterordner navigieren**: Klicken Sie auf Unterordner-Namen, um sie auszuklappen
-3. **Dateien anzeigen**: Dateien werden in jedem Ordner-Level angezeigt
-4. **Visuelle Unterscheidung**:
-   - **Hauptordner**: Grüne Ordner-Icons
-   - **Unterordner**: Gelbe Ordner-Icons mit Einrückung
-   - **Datei-Zähler**: Zeigen Gesamtanzahl und Typ-spezifische Zähler
-5. **Ordner-Pfad**: Bei Dateien wird der Ordner-Pfad angezeigt
+#### **Beispiel-Ordnerstruktur in Supabase Storage**
 
-**Beispiel-Ordnerstruktur**:
 ```
 antraege/
 ├── 2024/
@@ -266,7 +294,62 @@ antraege/
 │       └── alte_antraege.pdf
 └── vorlagen/
     └── antrag_vorlage.pdf
+
+presse/
+├── pressemitteilungen/
+│   ├── 2024/
+│   │   └── pm_januar.pdf
+│   └── 2023/
+│       └── pm_dezember.pdf
+└── medienkit/
+    ├── logos/
+    │   └── logo.png
+    └── fotos/
+        └── team.jpg
 ```
+
+#### **Navigation und Bedienung**
+
+1. **Hauptordner ausklappen**: Klicken Sie auf einen Bucket-Namen (z.B. "Anträge")
+2. **Unterordner ausklappen**: Klicken Sie auf einen Unterordner-Namen
+3. **Dateien anzeigen**: Dateien werden in jedem Ordner-Level angezeigt
+4. **Datei-Zähler**: Zeigt die Anzahl der Dateien in jedem Ordner an (rekursiv)
+5. **Typ-Badges**: PDF- und Bild-Dateien werden separat gezählt und angezeigt
+6. **Visuelle Unterscheidung**:
+   - **Hauptordner**: Grüne Ordner-Icons
+   - **Unterordner**: Gelbe Ordner-Icons mit visueller Einrückung
+   - **Animationen**: Sanfte Ausklapp-Animationen mit CSS-Transitions
+7. **Ordner-Pfad**: Bei Dateien wird der vollständige Ordner-Pfad angezeigt
+
+#### **Link-Generator und QR-Code-Funktionen**
+
+**Zugriff auf den Link-Generator:**
+- **Share-Button**: Klicken Sie auf das Link-Symbol neben jedem Ordner
+- **Direkte Links**: Erstellen Sie Links zu spezifischen Ordnern oder der Ordner-Übersicht
+- **QR-Code-Generierung**: Automatische Erstellung mit integriertem Logo
+
+**Funktionen des Link-Generators:**
+1. **Link erstellen**: Automatische Generierung direkter URLs mit Bucket- und Ordner-Parametern
+2. **Link kopieren**: Ein-Klick-Kopieren in die Zwischenablage mit visueller Bestätigung
+3. **QR-Code generieren**: Hochauflösende QR-Codes (800x800px) mit Logo-Integration
+4. **QR-Code herunterladen**: Download als PNG-Datei mit aussagekräftigem Dateinamen
+5. **Native Sharing**: Verwendung der Web Share API auf unterstützten Geräten
+6. **Fallback-Unterstützung**: Automatische Fallbacks für ältere Browser
+
+**QR-Code-Features:**
+- **Hohe Auflösung**: 800x800 Pixel für scharfe Druckergebnisse
+- **Logo-Integration**: Automatische Einbettung des Organisations-Logos
+- **Fehlerkorrektur**: Höchste Stufe (Level H) für bessere Lesbarkeit trotz Logo
+- **Anpassbares Design**: Grünes Farbschema passend zum Corporate Design
+- **Weißer Hintergrund**: Professioneller weißer Kreis um das Logo
+
+#### **CSS-Animationen für Unterordner**
+
+Neue CSS-Klassen in `src/index.css`:
+
+- `.animate-slide-in`: Sanfte Einblend-Animation für Unterordner
+- `.folder-icon-transition`: Hover-Effekte für Ordner-Icons
+- `.sidebar-scroll`: Benutzerdefinierte Scrollbar für die Seitenleiste
 
 ## 🌟 Wichtige Funktionen erklärt
 
@@ -308,6 +391,32 @@ Echtzeit-Suche über alle Mediendateien:
 - Sofortige Ergebnisse während der Eingabe
 - Hervorhebung passender Dokumente und Bilder
 - Ordnerübergreifende Suchfunktion
+
+### **Link-Generator und QR-Code-System**
+
+Die Anwendung bietet ein vollständiges System zur Erstellung und Verwaltung direkter Links:
+
+#### **Link-Generierung**
+- **Intelligente URL-Struktur**: Links enthalten Bucket- und Ordner-Parameter für direkten Zugriff
+- **Automatische Kodierung**: Ordnerpfade werden korrekt URL-kodiert für Sonderzeichen
+- **Basis-URL-Erkennung**: Automatische Erkennung der aktuellen Domain und des Pfads
+
+#### **QR-Code-Technologie**
+- **Hochauflösende Generierung**: 800x800 Pixel QR-Codes für professionelle Verwendung
+- **Logo-Integration**: Automatische Einbettung des Organisations-Logos mit weißem Hintergrund
+- **Fehlerkorrektur Level H**: Höchste Fehlerkorrektur für bessere Lesbarkeit trotz Logo-Overlay
+- **Canvas-basierte Verarbeitung**: Verwendung der HTML5 Canvas API für präzise Bildbearbeitung
+
+#### **Sharing-Funktionalität**
+- **Web Share API**: Native Sharing-Unterstützung auf mobilen Geräten und modernen Browsern
+- **Clipboard API**: Moderne Zwischenablage-Integration mit Fallback für ältere Browser
+- **Download-Funktionen**: Direkte Download-Links für QR-Codes mit aussagekräftigen Dateinamen
+
+#### **Benutzerfreundlichkeit**
+- **Visuelle Bestätigung**: Sofortiges Feedback bei erfolgreichem Kopieren oder Teilen
+- **Responsive Design**: Optimierte Darstellung auf allen Geräten
+- **Mehrsprachige Unterstützung**: Vollständige Lokalisierung in Deutsch und Englisch
+- **Barrierefreiheit**: Tastaturnavigation und Screenreader-Unterstützung
 
 ## 🚀 Bereitstellung
 
@@ -360,40 +469,118 @@ Bei der Bereitstellung auf Hosting-Plattformen müssen Sie die folgenden Umgebun
 
 Dieses Projekt wurde für die Grüne Fraktion Kirchhundem entwickelt. Bitte kontaktieren Sie die Organisation für Lizenzinformationen.
 
-## 🆘 Unterstützung
+## 🗂️ Hierarchische Ordnerstruktur - Technische Details
 
-Für technische Unterstützung oder Fragen zur Anwendung:
+### **Datenstruktur**
 
-1. **Überprüfen Sie die Dokumentation** in dieser README
-2. **Lesen Sie die Unterordner-Dokumentation** in `SUBFOLDER_FEATURE.md` für detaillierte Informationen zur neuen Funktionalität
-3. **Sehen Sie die Code-Kommentare durch** für Implementierungsdetails
-4. **Kontaktieren Sie das Entwicklungsteam** für spezifische Probleme
+Die Anwendung verwendet eine verschachtelte Datenstruktur für die Ordnerverwaltung:
+
+```javascript
+folderStructure = {
+  antraege: {
+    name: 'antraege',
+    bucket: 'antraege',
+    files: [/* Dateien im Root */],
+    subfolders: {
+      '2024': {
+        name: '2024',
+        path: '2024',
+        files: [/* Dateien in 2024/ */],
+        subfolders: {
+          'januar': {
+            name: 'januar',
+            path: '2024/januar',
+            files: [/* Dateien in 2024/januar/ */],
+            subfolders: {}
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### **Kern-Funktionen**
+
+#### **Rekursive Ordner-Auflistung**
+- **Datei**: `src/lib/supabaseClient.js`
+- **Funktion**: `listFilesAndFoldersRecursively()`
+- Lädt rekursiv alle Dateien und Ordner aus einem Supabase Storage Bucket
+
+#### **Hierarchische Datenverarbeitung**
+- **Datei**: `src/api/supabaseStorage.js`
+- **Funktionen**: 
+  - `createFolderStructure()` - Erstellt eine verschachtelte Ordnerstruktur
+  - `processFilesRecursively()` - Verarbeitet Dateien rekursiv
+  - `getAllFilesRecursively()` - Holt alle Dateien aus der Hierarchie
+  - `countFilesRecursively()` - Zählt Dateien rekursiv
+
+#### **Erweiterte UI-Komponenten**
+- **Datei**: `src/components/Sidebar.jsx`
+- **Funktionen**:
+  - `renderSubfolder()` - Rendert Unterordner rekursiv
+  - `toggleSubfolder()` - Klappt Unterordner aus/ein
+  - `countFilesInSubfolder()` - Zählt Dateien in Unterordnern
+
+### **State Management für Unterordner**
+
+- `expandedFolders`: Set der ausgeklappten Hauptordner
+- `expandedSubfolders`: Set der ausgeklappten Unterordner (mit vollständigem Pfad)
+
+### **Performance-Optimierungen**
+
+- **Lazy Loading**: Unterordner werden nur geladen, wenn sie ausgeklappt werden
+- **Caching**: Geladene Strukturen werden im State gecacht
+- **Rekursive Zählung**: Effiziente Berechnung der Datei-Anzahl
+- **Optimierte Rendering**: Nur sichtbare Ordner werden gerendert
 
 ## 🔮 Zukünftige Erweiterungen
 
 ### **Geplante Funktionen**
-- **Ordner-Management**: Ordner-Erstellung, -Umbenennung und -Löschung über die UI
-- **Drag & Drop**: Dateien zwischen Ordnern verschieben
-- **Bulk-Operationen**: Mehrere Dateien gleichzeitig verwalten
+- **Erweiterte Link- und QR-Code-Features**:
+  - **Batch-QR-Code-Generierung**: QR-Codes für mehrere Ordner gleichzeitig erstellen
+  - **Anpassbare QR-Code-Designs**: Verschiedene Farbschemata und Logo-Optionen
+  - **Link-Analytik**: Tracking von Link-Aufrufen und QR-Code-Scans
+  - **Zeitbasierte Links**: Links mit Ablaufdatum für temporären Zugriff
+  - **Passwort-geschützte Links**: Sichere Links mit Zugangskontrolle
 - **Dokumenten-Anmerkungen**: Notizen und Hervorhebungen zu PDFs hinzufügen
 - **Erweiterte Suche**: Volltextsuche innerhalb von PDF-Inhalten
 - **Bild-Metadaten**: EXIF-Datenanzeige für Bilder
 - **Diashow-Modus**: Automatische Bilddiashowfunktion
 - **Dokumenten-Versionierung**: Dokumentenänderungen im Laufe der Zeit verfolgen
 - **Benutzerverwaltung**: Rollenbasierte Zugriffskontrolle
-- **Export-Optionen**: Funktionen für Massendownload und Teilen
-- **Analytik**: Dokumentnutzungsstatistiken und Erkenntnisse
+- **Export-Optionen**: Funktionen für Massendownload und erweiterte Sharing-Optionen
+- **Analytik**: Dokumentnutzungsstatistiken und Link-/QR-Code-Erkenntnisse
 
 ### **Technische Verbesserungen**
 - **Progressive Web App**: Offline-Funktionalität und App-ähnliche Erfahrung
-- **Leistungsoptimierung**: Lazy-Loading- und Caching-Strategien
-- **Barrierefreiheit**: Verbesserte Screenreader-Unterstützung und Tastaturnavigation
-- **Tests**: Umfassende Einheits- und Integrationstests
+- **Erweiterte Performance-Optimierung**: 
+  - Virtualisierung für große Ordnerstrukturen
+  - Intelligentes Caching für Unterordner
+  - Optimierte Rekursions-Algorithmen
+- **Barrierefreiheit**: Verbesserte Screenreader-Unterstützung und Tastaturnavigation für Ordnerstrukturen
+- **Tests**: Umfassende Einheits- und Integrationstests für Unterordner-Funktionalität
 - **Zusätzliche Formate**: Unterstützung für weitere Dateitypen (WEBP, SVG, usw.)
 - **Verbesserter Supabase-Support**: Vollständige Integration aller Supabase-Funktionen
+
+## 🆘 Unterstützung
+
+Für technische Unterstützung oder Fragen zur Anwendung:
+
+1. **Überprüfen Sie die Dokumentation** in dieser README
+2. **Konsultieren Sie die Unterordner-Dokumentation** - Die detaillierten Informationen zur hierarchischen Ordnerstruktur sind jetzt vollständig in diese README integriert
+3. **Sehen Sie die Code-Kommentare durch** für Implementierungsdetails
+4. **Kontaktieren Sie das Entwicklungsteam** für spezifische Probleme
+
+### **Kompatibilität der Unterordner-Funktionalität**
+
+- **Rückwärtskompatibel** mit bestehenden flachen Strukturen
+- **Funktioniert mit allen unterstützten Dateitypen** (PDF, PNG, JPG, JPEG)
+- **Vollständige Dark Mode-Unterstützung** für alle Unterordner-Elemente
+- **Responsive Design** für Unterordner-Navigation auf allen Geräten
 
 ---
 
 **Mit ❤️ erstellt für die Grüne Fraktion Kirchhundem**
 
-*Diese Anwendung repräsentiert unser Engagement für digitale Transparenz und effiziente Medienverwaltung in der Lokalpolitik.*
+*Diese Anwendung repräsentiert unser Engagement für digitale Transparenz und effiziente Medienverwaltung in der Lokalpolitik. Die erweiterte Unterordner-Funktionalität ermöglicht eine noch bessere Organisation und Navigation durch politische Dokumente und Materialien.*
