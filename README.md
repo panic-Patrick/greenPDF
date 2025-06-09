@@ -4,6 +4,8 @@
 
 Ein modernes, responsives Medien-Betrachtungs- und Verwaltungssystem, speziell entwickelt für die Grüne Fraktion Kirchhundem. Diese Anwendung bietet eine intuitive Oberfläche zur Organisation, Betrachtung und Verwaltung politischer Dokumente und Bilder in verschiedenen Kategorien. Die gesamte Medienverwaltung läuft über Supabase als Backend-as-a-Service mit vollständiger Unterordner-Unterstützung.
 
+> 📋 **Für andere Grüne Ortsverbände:** Eine detaillierte Anleitung zur Anpassung des Systems für Ihren Ortsverband finden Sie in der [Anpassungsanleitung](ANPASSUNGEN_FUER_ANDERE_FRAKTION.md).
+
 
 ## ✨ Funktionen
 
