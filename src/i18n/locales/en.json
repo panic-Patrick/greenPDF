@@ -49,12 +49,17 @@
     "bucket": "Bucket",
     "folder": "Folder",
     "generatedLink": "Generated Link",
+    "qrCode": "QR Code",
+    "qrCodeDescription": "Download a high-resolution QR code with logo",
     "copy": "Copy",
     "copied": "Copied!",
+    "download": "Download",
     "share": "Share",
     "close": "Close",
     "shareFolder": "Share Folder Overview",
-    "directLink": "Direct Link to Folder Overview"
+    "directLink": "Direct Link to Folder Overview",
+    "downloadQR": "Download QR Code",
+    "generating": "Generating..."
   },
   "folderOverview": {
     "folders": "Folders",
