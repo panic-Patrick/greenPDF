@@ -43,7 +43,7 @@ const SupabaseDebug = () => {
     }
 
     // Test 2: Check buckets
-    const buckets = ['antraege', 'presse', 'wahlkampf'];
+    const buckets = ['antraege', 'presse', 'wahlkampf', 'events'];
     for (const bucket of buckets) {
       try {
         const { data, error } = await supabase.storage.getBucket(bucket);

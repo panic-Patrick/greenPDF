@@ -5,7 +5,8 @@ export class SupabaseStorageService {
   static BUCKETS = {
     antraege: 'antraege',
     presse: 'presse', 
-    wahlkampf: 'wahlkampf'
+    wahlkampf: 'wahlkampf',
+    events: 'events'
   };
 
   // Supported file extensions

@@ -18,7 +18,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 const Sidebar = ({ onFileSelect, selectedFile }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedFolders, setExpandedFolders] = useState(new Set(['antraege', 'presse', 'wahlkampf']));
+  const [expandedFolders, setExpandedFolders] = useState(new Set(['antraege', 'presse', 'wahlkampf', 'events']));
   const [activeTab, setActiveTab] = useState('folders');
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
   const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
