@@ -46,8 +46,8 @@
   "linkGenerator": {
     "title": "Direkten Link erstellen",
     "description": "Erstellen Sie einen direkten Link zur Ordner-Übersicht, um sie einfach zu teilen.",
-    "bucket": "Bucket",
-    "folder": "Ordner",
+    "bucket": "Ordner",
+    "folder": "Unterordner",
     "generatedLink": "Generierter Link",
     "qrCode": "QR-Code",
     "qrCodeDescription": "QR-Code mit Logo",
@@ -74,6 +74,20 @@
     "emptyFolder": "Dieser Ordner ist leer",
     "noFilesInFolder": "Keine Dateien oder Unterordner gefunden",
     "noSearchResults": "Keine Suchergebnisse",
-    "tryDifferentSearch": "Versuchen Sie einen anderen Suchbegriff"
+    "tryDifferentSearch": "Versuchen Sie einen anderen Suchbegriff",
+    "noResults": "Keine Ergebnisse gefunden",
+    "items": "Elemente",
+    "gridView": "Rasteransicht",
+    "listView": "Listenansicht"
+  },
+  "footer": {
+    "contact": "Kontakt",
+    "quickLinks": "Schnellzugriff",
+    "legal": "Rechtliches",
+    "website": "Website",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "poweredBy": "Powered by"
   }
 }

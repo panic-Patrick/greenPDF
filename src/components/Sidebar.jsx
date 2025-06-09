@@ -12,14 +12,15 @@ import {
   AlertCircle,
   Image as ImageIcon,
   Loader,
-  Link as LinkIcon
+  Link as LinkIcon,
+  X
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useUrlNavigation } from '../hooks/useUrlNavigation';
 import LinkGenerator from './LinkGenerator';
 
-const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
+const Sidebar = ({ onFileSelect, selectedFile, onFolderClick, onClose }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -29,7 +30,6 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
   const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
   const [linkGenerator, setLinkGenerator] = useState({ show: false, bucket: null, folder: null });
-
   const { 
     folderStructure, 
     loading, 
@@ -164,8 +164,8 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
       </div>
       <button
         onClick={(e) => toggleFavorite(file, e)}
-        className={`opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 ${
-          isFavorite(file.id) ? 'text-red-500 dark:text-red-400 opacity-100' : 'text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400'
+        className={`w-6 h-6 rounded-full transition-all duration-200 touch-manipulation bg-white dark:bg-gray-800 shadow-soft hover:shadow-md flex items-center justify-center ${
+          isFavorite(file.id) ? 'text-red-500 dark:text-red-400' : 'text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400'
         }`}
       >
         <Heart 
@@ -251,13 +251,11 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              // Extract bucket name from the parent path or use the first part of subfolderPath
-              const pathParts = subfolderPath.split('/');
-              const bucketName = pathParts[0];
-              const folderPath = pathParts.slice(1).join('/');
+              const bucketName = subfolderPath.split('/')[0];
+              const folderPath = subfolderPath.split('/').slice(1).join('/');
               showLinkGenerator(bucketName, folderPath);
             }}
-            className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400"
+            className="w-6 h-6 rounded-full transition-all duration-200 touch-manipulation bg-white dark:bg-gray-800 shadow-soft hover:shadow-md flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400"
             title={t('linkGenerator.shareFolder')}
           >
             <LinkIcon className="h-3 w-3" />
@@ -265,8 +263,8 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
         </div>
         
         {isExpanded && (
-          <div className={`space-y-1 animate-slide-in ${level > 0 ? 'ml-4' : 'ml-6'}`}>
-            {/* Render files in this subfolder */}
+          <div className="ml-6 space-y-1 animate-slide-in">
+            {/* Render files in subfolder */}
             {files.length > 0 && (
               <div className="space-y-1">
                 {files.map(renderFile)}
@@ -276,7 +274,7 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
             {/* Render nested subfolders */}
             {subfolders.length > 0 && (
               <div className="space-y-1">
-                {subfolders.map(sf => renderSubfolder(sf, subfolderPath, level + 1))}
+                {subfolders.map(nestedSubfolder => renderSubfolder(nestedSubfolder, subfolderPath, level + 1))}
               </div>
             )}
             
@@ -295,10 +293,11 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
     if (loading) {
       return (
         <div className="flex items-center justify-center py-8">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 dark:border-green-400 mx-auto mb-4"></div>
-            <p className="text-sm text-gray-600 dark:text-gray-300">{t('sidebar.loading')}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Lade von Supabase Storage...</p>
+          <div className="flex flex-col items-center space-y-3">
+            <Loader className="h-8 w-8 animate-spin text-green-600 dark:text-green-400" />
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+              {t('sidebar.loading')}
+            </p>
           </div>
         </div>
       );
@@ -306,12 +305,14 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
 
     if (error) {
       return (
-        <div className="space-y-4">
-          <div className="flex items-center justify-center py-8">
-            <div className="text-center">
-              <AlertCircle className="h-8 w-8 text-red-500 dark:text-red-400 mx-auto mb-4" />
-              <p className="text-sm text-red-600 dark:text-red-400 mb-2">{error}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center justify-center py-8">
+          <div className="flex flex-col items-center space-y-3 text-center px-4">
+            <AlertCircle className="h-8 w-8 text-red-500 dark:text-red-400" />
+            <div>
+              <p className="text-sm font-medium text-red-700 dark:text-red-300 mb-1">
+                {t('sidebar.error')}
+              </p>
+              <p className="text-xs text-red-600 dark:text-red-400">
                 Überprüfen Sie Ihre Supabase-Konfiguration
               </p>
             </div>
@@ -395,7 +396,7 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
                     e.stopPropagation();
                     showLinkGenerator(folderId);
                   }}
-                  className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400"
+                  className="w-6 h-6 rounded-full transition-all duration-200 touch-manipulation bg-white dark:bg-gray-800 shadow-soft hover:shadow-md flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400"
                   title={t('linkGenerator.shareFolder')}
                 >
                   <LinkIcon className="h-3 w-3" />
@@ -434,6 +435,22 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
 
   return (
     <div className="w-full h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col transition-colors duration-300">
+      {/* Mobile Close Button */}
+      {onClose && (
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            {t('sidebar.title', 'Ordner & Dateien')}
+          </h2>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group touch-manipulation"
+            aria-label={t('sidebar.close', 'Schließen')}
+          >
+            <X className="h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200" />
+          </button>
+        </div>
+      )}
+      
       {/* Search */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-700">
         <div className="relative">

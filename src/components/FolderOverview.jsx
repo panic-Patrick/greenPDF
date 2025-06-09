@@ -70,11 +70,11 @@ const FolderOverview = ({
 
   const getFileIcon = (file) => {
     if (file.type === 'pdf') {
-      return <FileText className="h-8 w-8 text-red-600 dark:text-red-400" />;
+      return <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-red-600 dark:text-red-400" />;
     } else if (file.type === 'image') {
-      return <ImageIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />;
+      return <ImageIcon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 dark:text-blue-400" />;
     }
-    return <FileText className="h-8 w-8 text-gray-500 dark:text-gray-400" />;
+    return <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-gray-500 dark:text-gray-400" />;
   };
 
   const getFileTypeColor = (file) => {
@@ -113,47 +113,48 @@ const FolderOverview = ({
   return (
     <div className="h-full flex flex-col bg-white dark:bg-gray-800">
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-700 p-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-3">
+      <div className="border-b border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+        <div className="flex items-center justify-between mb-3 sm:mb-4">
+          <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
             <button
               onClick={onBack}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 active:bg-gray-200 dark:active:bg-gray-600 transition-colors touch-manipulation flex-shrink-0"
             >
               <ArrowLeft className="h-5 w-5 text-gray-600 dark:text-gray-400" />
             </button>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <div className="min-w-0 flex-1">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 truncate">
                 {folderPath ? folderPath.split('/').pop() : t(`folders.${bucketName}`)}
               </h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 truncate">
                 {bucketName}
                 {folderPath && ` / ${folderPath}`}
               </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 flex-shrink-0">
             <button
               onClick={() => showLinkGenerator(bucketName, folderPath)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+              className="flex items-center space-x-2 px-3 py-2 bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50 active:bg-green-300 dark:active:bg-green-900/70 rounded-lg transition-all duration-200 text-green-700 dark:text-green-300 hover:text-green-800 dark:hover:text-green-200 touch-manipulation shadow-sm hover:shadow-md"
               title={t('linkGenerator.shareFolder')}
             >
-              <LinkIcon className="h-5 w-5" />
+              <LinkIcon className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="hidden sm:inline text-sm font-medium">Teilen</span>
             </button>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="flex items-center space-x-4 text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
           {totalSubfolders > 0 && (
             <span className="flex items-center space-x-1">
-              <Folder className="h-4 w-4" />
+              <Folder className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>{totalSubfolders} {t('folderOverview.folders')}</span>
             </span>
           )}
           {totalFiles > 0 && (
             <span className="flex items-center space-x-1">
-              <FileText className="h-4 w-4" />
+              <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
               <span>{totalFiles} {t('folderOverview.files')}</span>
             </span>
           )}
@@ -171,8 +172,8 @@ const FolderOverview = ({
       </div>
 
       {/* Controls */}
-      <div className="border-b border-gray-200 dark:border-gray-700 p-4">
-        <div className="flex items-center justify-between space-x-4">
+      <div className="border-b border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between space-y-3 sm:space-y-0 sm:space-x-4">
           {/* Search */}
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
@@ -185,147 +186,206 @@ const FolderOverview = ({
             />
           </div>
 
-          {/* Sort */}
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-          >
-            <option value="name">{t('folderOverview.sortByName')}</option>
-            <option value="type">{t('folderOverview.sortByType')}</option>
-            <option value="size">{t('folderOverview.sortBySize')}</option>
-            <option value="date">{t('folderOverview.sortByDate')}</option>
-          </select>
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* Sort */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-green-500 dark:focus:border-green-400 transition-all duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
+            >
+              <option value="name">{t('folderOverview.sortByName')}</option>
+              <option value="type">{t('folderOverview.sortByType')}</option>
+              <option value="size">{t('folderOverview.sortBySize')}</option>
+              <option value="date">{t('folderOverview.sortByDate')}</option>
+            </select>
 
-          {/* View Mode */}
-          <div className="flex border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 transition-colors ${
-                viewMode === 'grid'
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
-                  : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600'
-              }`}
-            >
-              <Grid className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 transition-colors ${
-                viewMode === 'list'
-                  ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
-                  : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-600'
-              }`}
-            >
-              <List className="h-4 w-4" />
-            </button>
+            {/* View Mode */}
+            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-md transition-all duration-200 touch-manipulation ${
+                  viewMode === 'grid'
+                    ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-400 shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
+                title={t('folderOverview.gridView')}
+              >
+                <Grid className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded-md transition-all duration-200 touch-manipulation ${
+                  viewMode === 'list'
+                    ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-400 shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                }`}
+                title={t('folderOverview.listView')}
+              >
+                <List className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
-        {/* Subfolders */}
-        {filteredSubfolders.length > 0 && (
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              {t('folderOverview.subfolders')}
-            </h3>
-            <div className={viewMode === 'grid' ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4' : 'space-y-2'}>
-              {filteredSubfolders.map((folder) => (
-                <div
-                  key={folder.name}
-                  onClick={() => handleFolderClick(folder)}
-                  className={`cursor-pointer group transition-all duration-200 ${
-                    viewMode === 'grid'
-                      ? 'p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-md'
-                      : 'flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  <Folder className="h-8 w-8 text-yellow-600 dark:text-yellow-400 group-hover:text-yellow-700 dark:group-hover:text-yellow-300 transition-colors" />
-                  <div className={viewMode === 'grid' ? 'mt-2' : 'flex-1'}>
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                      {folder.name}
-                    </p>
-                    {viewMode === 'list' && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {t('folderOverview.folder')}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
+      <div className="flex-1 overflow-auto p-3 sm:p-4">
+        {filteredSubfolders.length === 0 && filteredFiles.length === 0 ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <Folder className="h-16 w-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400">
+                {searchQuery ? t('folderOverview.noResults') : t('folderOverview.emptyFolder')}
+              </p>
             </div>
           </div>
-        )}
+        ) : (
+          <div className="space-y-6">
+            {/* Subfolders */}
+            {filteredSubfolders.length > 0 && (
+              <div>
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                  {t('folderOverview.folders')} ({filteredSubfolders.length})
+                </h3>
+                <div className={viewMode === 'grid' 
+                  ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4' 
+                  : 'space-y-2'
+                }>
+                  {filteredSubfolders.map((folder) => (
+                    <div
+                      key={folder.name}
+                      className={`cursor-pointer group transition-all duration-200 touch-manipulation relative ${
+                        viewMode === 'grid'
+                          ? 'bg-white dark:bg-gray-700 rounded-xl p-3 sm:p-4 shadow-soft hover:shadow-green border border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-500'
+                          : 'flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700'
+                      }`}
+                      onClick={() => handleFolderClick(folder)}
+                    >
+                      {viewMode === 'grid' ? (
+                        <div className="text-center">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3 group-hover:scale-105 transition-transform duration-200">
+                            <Folder className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+                          </div>
+                          <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                            {folder.name}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            {(folder.files?.length || 0) + Object.keys(folder.subfolders || {}).length} {t('folderOverview.items')}
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Folder className="h-5 w-5 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                              {folder.name}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {(folder.files?.length || 0) + Object.keys(folder.subfolders || {}).length} {t('folderOverview.items')}
+                            </p>
+                          </div>
+                        </>
+                      )}
+                      
+                      {/* Share folder button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          const newPath = folderPath ? `${folderPath}/${folder.name}` : folder.name;
+                          showLinkGenerator(bucketName, newPath);
+                        }}
+                        className="absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full transition-all duration-200 touch-manipulation bg-white dark:bg-gray-800 shadow-soft hover:shadow-md text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400 flex items-center justify-center"
+                        title={t('linkGenerator.shareFolder')}
+                      >
+                        <LinkIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-        {/* Files */}
-        {filteredFiles.length > 0 && (
-          <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              {t('folderOverview.files')}
-            </h3>
-            <div className={viewMode === 'grid' ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4' : 'space-y-2'}>
-              {filteredFiles.map((file) => (
-                <div
-                  key={file.id}
-                  onClick={() => handleFileClick(file)}
-                  className={`cursor-pointer group transition-all duration-200 ${
-                    viewMode === 'grid'
-                      ? 'p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 hover:shadow-md'
-                      : 'flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  <div className="relative">
-                    {getFileIcon(file)}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleFavorite(file, e);
-                      }}
-                      className={`absolute -top-1 -right-1 p-1 rounded-full transition-all duration-200 ${
-                        isFavorite(file.id) 
-                          ? 'text-red-500 dark:text-red-400 opacity-100' 
-                          : 'text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 hover:text-red-500 dark:hover:text-red-400'
+            {/* Files */}
+            {filteredFiles.length > 0 && (
+              <div>
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                  {t('folderOverview.files')} ({filteredFiles.length})
+                </h3>
+                <div className={viewMode === 'grid' 
+                  ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4' 
+                  : 'space-y-2'
+                }>
+                  {filteredFiles.map((file) => (
+                    <div
+                      key={file.id}
+                      onClick={() => handleFileClick(file)}
+                      className={`cursor-pointer group transition-all duration-200 relative touch-manipulation ${
+                        viewMode === 'grid'
+                          ? 'bg-white dark:bg-gray-700 rounded-xl p-3 sm:p-4 shadow-soft hover:shadow-green border border-gray-200 dark:border-gray-600 hover:border-green-300 dark:hover:border-green-500'
+                          : 'flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700'
                       }`}
                     >
-                      <Heart className={`h-3 w-3 ${isFavorite(file.id) ? 'fill-current' : ''}`} />
-                    </button>
-                  </div>
-                  <div className={viewMode === 'grid' ? 'mt-2 w-full' : 'flex-1 min-w-0'}>
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                      {file.name}
-                    </p>
-                    <div className={`flex items-center ${viewMode === 'grid' ? 'justify-between' : 'space-x-2'} mt-1`}>
-                      <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${getFileTypeColor(file)}`}>
-                        {file.type?.toUpperCase() || 'FILE'}
-                      </span>
-                      {viewMode === 'list' && (
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          {file.size}
-                        </span>
+                      {viewMode === 'grid' ? (
+                        <div className="text-center">
+                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white dark:bg-gray-600 rounded-xl flex items-center justify-center mx-auto mb-2 sm:mb-3 shadow-soft group-hover:scale-105 transition-transform duration-200">
+                            {getFileIcon(file)}
+                          </div>
+                          <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100 truncate mb-1">
+                            {file.name}
+                          </p>
+                          <div className="flex items-center justify-center space-x-1">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getFileTypeColor(file)}`}>
+                              {file.type?.toUpperCase() || 'FILE'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            {file.size}
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          <div className="w-10 h-10 bg-white dark:bg-gray-600 rounded-lg flex items-center justify-center shadow-soft flex-shrink-0">
+                            {getFileIcon(file)}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center space-x-2">
+                              <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                                {file.name}
+                              </p>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getFileTypeColor(file)}`}>
+                                {file.type?.toUpperCase() || 'FILE'}
+                              </span>
+                            </div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {file.size}
+                            </p>
+                          </div>
+                        </>
                       )}
+                      
+                      {/* Favorite button */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleFavorite(file, e);
+                        }}
+                        className={`absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 rounded-full transition-all duration-200 touch-manipulation bg-white dark:bg-gray-800 shadow-soft hover:shadow-md flex items-center justify-center ${
+                          isFavorite(file.id) 
+                            ? 'text-red-500 dark:text-red-400' 
+                            : 'text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400'
+                        }`}
+                      >
+                        <Heart 
+                          className={`h-3 w-3 sm:h-4 sm:w-4 ${isFavorite(file.id) ? 'fill-current' : ''}`} 
+                        />
+                      </button>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Empty State */}
-        {filteredFiles.length === 0 && filteredSubfolders.length === 0 && (
-          <div className="text-center py-12">
-            <Folder className="h-16 w-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-              {searchQuery ? t('folderOverview.noSearchResults') : t('folderOverview.emptyFolder')}
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400">
-              {searchQuery 
-                ? t('folderOverview.tryDifferentSearch')
-                : t('folderOverview.noFilesInFolder')
-              }
-            </p>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -333,8 +393,8 @@ const FolderOverview = ({
       {/* Link Generator Modal */}
       {linkGenerator.show && (
         <LinkGenerator
-          bucketName={linkGenerator.bucket}
-          folderPath={linkGenerator.folder}
+          bucket={linkGenerator.bucket}
+          folder={linkGenerator.folder}
           onClose={hideLinkGenerator}
         />
       )}

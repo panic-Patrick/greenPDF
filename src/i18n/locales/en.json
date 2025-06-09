@@ -46,8 +46,8 @@
   "linkGenerator": {
     "title": "Create Direct Link",
     "description": "Create a direct link to the folder overview to easily share it.",
-    "bucket": "Bucket",
-    "folder": "Folder",
+    "bucket": "Folder",
+    "folder": "Subfolder",
     "generatedLink": "Generated Link",
     "qrCode": "QR Code",
     "qrCodeDescription": "QR code with logo",
@@ -74,6 +74,20 @@
     "emptyFolder": "This folder is empty",
     "noFilesInFolder": "No files or subfolders found",
     "noSearchResults": "No search results",
-    "tryDifferentSearch": "Try a different search term"
+    "tryDifferentSearch": "Try a different search term",
+    "noResults": "No results found",
+    "items": "items",
+    "gridView": "Grid view",
+    "listView": "List view"
+  },
+  "footer": {
+    "contact": "Contact",
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
+    "website": "Website",
+    "privacy": "Privacy",
+    "imprint": "Imprint",
+    "allRightsReserved": "All rights reserved.",
+    "poweredBy": "Powered by"
   }
 }
