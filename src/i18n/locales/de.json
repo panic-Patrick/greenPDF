@@ -42,5 +42,33 @@
     "addToFavorites": "Zu Favoriten hinzufügen",
     "removeFromFavorites": "Aus Favoriten entfernen",
     "copyLink": "Link kopieren"
+  },
+  "linkGenerator": {
+    "title": "Direkten Link erstellen",
+    "description": "Erstellen Sie einen direkten Link zur Ordner-Übersicht, um sie einfach zu teilen.",
+    "bucket": "Bucket",
+    "folder": "Ordner",
+    "generatedLink": "Generierter Link",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "share": "Teilen",
+    "close": "Schließen",
+    "shareFolder": "Ordner-Übersicht teilen",
+    "directLink": "Direkter Link zur Ordner-Übersicht"
+  },
+  "folderOverview": {
+    "folders": "Ordner",
+    "files": "Dateien",
+    "folder": "Ordner",
+    "subfolders": "Unterordner",
+    "search": "In diesem Ordner suchen...",
+    "sortByName": "Nach Name sortieren",
+    "sortByType": "Nach Typ sortieren",
+    "sortBySize": "Nach Größe sortieren",
+    "sortByDate": "Nach Datum sortieren",
+    "emptyFolder": "Dieser Ordner ist leer",
+    "noFilesInFolder": "Keine Dateien oder Unterordner gefunden",
+    "noSearchResults": "Keine Suchergebnisse",
+    "tryDifferentSearch": "Versuchen Sie einen anderen Suchbegriff"
   }
 }

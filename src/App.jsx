@@ -4,12 +4,21 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import MediaViewer from './components/MediaViewer';
 import Footer from './components/Footer';
+import DirectLinkIndicator from './components/DirectLinkIndicator';
+import FolderOverview from './components/FolderOverview';
+import { useUrlNavigation } from './hooks/useUrlNavigation';
+import { useLocalStorage } from './hooks/useLocalStorage';
+import { useDynamicFolders } from './hooks/useDynamicFolders';
 import './i18n/i18n';
 
 function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [folderOverview, setFolderOverview] = useState(null);
+  const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
   const { ready } = useTranslation();
+  const { urlParams, hasUrlNavigation, shouldShowFolderOverview, clearNavigation } = useUrlNavigation();
+  const { folderStructure, loading } = useDynamicFolders();
 
   // Handle responsive sidebar
   useEffect(() => {
@@ -21,6 +30,103 @@ function App() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Show notification for direct link access
+  useEffect(() => {
+    if (hasUrlNavigation) {
+      // Auto-open sidebar on mobile when accessing via direct link
+      if (window.innerWidth < 768) {
+        setSidebarOpen(true);
+      }
+    }
+  }, [hasUrlNavigation]);
+
+  // Handle URL navigation to folder overview
+  useEffect(() => {
+    // Only trigger if we have URL navigation, data is loaded, and we're not already showing a selected file
+    if (shouldShowFolderOverview() && !loading && folderStructure && urlParams.bucket && !selectedFile) {
+      const bucketData = folderStructure[urlParams.bucket];
+      
+      if (bucketData) {
+        let targetFolderData = bucketData;
+        let folderPath = '';
+        
+        // Navigate to specific subfolder if specified in URL
+        if (urlParams.folder) {
+          const pathParts = urlParams.folder.split('/');
+          let currentFolder = bucketData;
+          
+          for (const part of pathParts) {
+            if (currentFolder.subfolders && currentFolder.subfolders[part]) {
+              currentFolder = currentFolder.subfolders[part];
+              folderPath = folderPath ? `${folderPath}/${part}` : part;
+            } else {
+              // Folder not found, fallback to bucket root
+              console.warn(`Subfolder "${part}" not found in path "${urlParams.folder}"`);
+              break;
+            }
+          }
+          
+          targetFolderData = currentFolder;
+        }
+        
+        // Only set folder overview if we're not already showing one or if it's different
+        if (!folderOverview || 
+            folderOverview.bucketName !== urlParams.bucket || 
+            folderOverview.folderPath !== folderPath) {
+          setFolderOverview({
+            folderData: targetFolderData,
+            folderPath: folderPath,
+            bucketName: urlParams.bucket
+          });
+        }
+      }
+    }
+  }, [shouldShowFolderOverview, loading, folderStructure, urlParams, selectedFile, folderOverview]);
+
+  // Handle folder click from sidebar
+  const handleFolderClick = (folderData, folderPath, bucketName) => {
+    setFolderOverview({
+      folderData,
+      folderPath,
+      bucketName
+    });
+    setSelectedFile(null);
+    
+    // Close sidebar on mobile
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  };
+
+  // Handle back from folder overview
+  const handleBackFromFolder = () => {
+    setFolderOverview(null);
+    // Clear URL parameters when going back
+    clearNavigation();
+  };
+
+  // Handle file selection - clear URL parameters to allow normal file viewing
+  const handleFileSelect = (file) => {
+    setSelectedFile(file);
+    setFolderOverview(null);
+    
+    // Only clear URL parameters if we're currently in URL navigation mode
+    if (hasUrlNavigation) {
+      clearNavigation();
+    }
+  };
+
+  // Handle favorite toggle
+  const toggleFavorite = (file, event) => {
+    event.stopPropagation();
+    const isFavorite = favoriteFiles.some(f => f.id === file.id);
+    if (isFavorite) {
+      setFavoriteFiles(favoriteFiles.filter(f => f.id !== file.id));
+    } else {
+      setFavoriteFiles([file, ...favoriteFiles]);
+    }
+  };
 
   if (!ready) {
     return (
@@ -56,12 +162,13 @@ function App() {
         `}>
           <Sidebar 
             onFileSelect={(file) => {
-              setSelectedFile(file);
+              handleFileSelect(file);
               if (window.innerWidth < 768) {
                 setSidebarOpen(false);
               }
             }}
             selectedFile={selectedFile}
+            onFolderClick={handleFolderClick}
           />
         </div>
         
@@ -80,11 +187,25 @@ function App() {
             </button>
           </div>
           
-          <MediaViewer selectedFile={selectedFile} />
+          {folderOverview ? (
+            <FolderOverview
+              folderData={folderOverview.folderData}
+              folderPath={folderOverview.folderPath}
+              bucketName={folderOverview.bucketName}
+              onFileSelect={handleFileSelect}
+              onFolderClick={handleFolderClick}
+              onBack={handleBackFromFolder}
+              favoriteFiles={favoriteFiles}
+              onToggleFavorite={toggleFavorite}
+            />
+          ) : (
+            <MediaViewer selectedFile={selectedFile} />
+          )}
         </div>
       </div>
       
       <Footer />
+      <DirectLinkIndicator />
     </div>
   );
 }

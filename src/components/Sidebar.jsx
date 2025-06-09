@@ -11,12 +11,15 @@ import {
   ChevronDown,
   AlertCircle,
   Image as ImageIcon,
-  Loader
+  Loader,
+  Link as LinkIcon
 } from 'lucide-react';
 import { useDynamicFolders } from '../hooks/useDynamicFolders';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useUrlNavigation } from '../hooks/useUrlNavigation';
+import LinkGenerator from './LinkGenerator';
 
-const Sidebar = ({ onFileSelect, selectedFile }) => {
+const Sidebar = ({ onFileSelect, selectedFile, onFolderClick }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -25,6 +28,7 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
   const [activeTab, setActiveTab] = useState('folders');
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
   const [favoriteFiles, setFavoriteFiles] = useLocalStorage('favoriteFiles', []);
+  const [linkGenerator, setLinkGenerator] = useState({ show: false, bucket: null, folder: null });
 
   const { 
     folderStructure, 
@@ -32,6 +36,14 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
     error, 
     searchFiles 
   } = useDynamicFolders();
+
+  const { 
+    urlParams, 
+    navigateToPath, 
+    clearNavigation, 
+    isCurrentPath, 
+    hasUrlNavigation 
+  } = useUrlNavigation();
 
   // Search functionality
   useEffect(() => {
@@ -42,6 +54,20 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
       setSearchResults([]);
     }
   }, [searchQuery, folderStructure, searchFiles]);
+
+  // Handle URL navigation on load
+  useEffect(() => {
+    if (hasUrlNavigation && urlParams.bucket) {
+      // Auto-expand the bucket from URL
+      setExpandedFolders(prev => new Set([...prev, urlParams.bucket]));
+      
+      // Auto-expand the folder path if specified
+      if (urlParams.folder) {
+        const folderPath = `${urlParams.bucket}/${urlParams.folder}`;
+        setExpandedSubfolders(prev => new Set([...prev, folderPath]));
+      }
+    }
+  }, [hasUrlNavigation, urlParams, folderStructure]);
 
   const toggleFolder = (folderId) => {
     const newExpanded = new Set(expandedFolders);
@@ -82,6 +108,14 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
   };
 
   const isFavorite = (fileId) => favoriteFiles.some(f => f.id === fileId);
+
+  const showLinkGenerator = (bucket, folder = null) => {
+    setLinkGenerator({ show: true, bucket, folder });
+  };
+
+  const hideLinkGenerator = () => {
+    setLinkGenerator({ show: false, bucket: null, folder: null });
+  };
 
   const getFileIcon = (file) => {
     if (file.type === 'pdf') {
@@ -165,42 +199,69 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
 
     return (
       <div key={subfolderPath} className="space-y-1">
-        <div
-          onClick={() => toggleSubfolder(subfolderPath)}
-          className={`flex items-center space-x-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 group ${
-            level > 0 ? 'ml-4' : ''
-          }`}
-        >
-          {isExpanded ? (
-            <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
-          ) : (
-            <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
-          )}
-          {isExpanded ? (
-            <FolderOpen className="h-4 w-4 text-yellow-600 dark:text-yellow-400 folder-icon-transition" />
-          ) : (
-            <Folder className="h-4 w-4 text-yellow-600 dark:text-yellow-400 folder-icon-transition" />
-          )}
-          <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors duration-200">
-            {subfolder.name}
-          </span>
-          <div className="flex items-center space-x-1">
-            {totalFiles > 0 && (
-              <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full font-medium">
-                {totalFiles}
+        <div className={`flex items-center justify-between px-3 py-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 group ${
+          level > 0 ? 'ml-4' : ''
+        }`}>
+          <div className="flex items-center space-x-2 flex-1">
+            <button
+              onClick={() => toggleSubfolder(subfolderPath)}
+              className="flex items-center space-x-1 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              {isExpanded ? (
+                <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
+              ) : (
+                <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
+              )}
+            </button>
+            <button
+              onClick={() => {
+                const bucketName = subfolderPath.split('/')[0];
+                const folderPath = subfolderPath.split('/').slice(1).join('/');
+                onFolderClick && onFolderClick(subfolder, folderPath, bucketName);
+              }}
+              className="flex items-center space-x-2 flex-1 text-left p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              {isExpanded ? (
+                <FolderOpen className="h-4 w-4 text-yellow-600 dark:text-yellow-400 folder-icon-transition" />
+              ) : (
+                <Folder className="h-4 w-4 text-yellow-600 dark:text-yellow-400 folder-icon-transition" />
+              )}
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors duration-200">
+                {subfolder.name}
               </span>
-            )}
-            {pdfCount > 0 && (
-              <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
-                {pdfCount} PDF
-              </span>
-            )}
-            {imageCount > 0 && (
-              <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-full font-medium">
-                {imageCount} IMG
-              </span>
-            )}
+              <div className="flex items-center space-x-1">
+                {totalFiles > 0 && (
+                  <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full font-medium">
+                    {totalFiles}
+                  </span>
+                )}
+                {pdfCount > 0 && (
+                  <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                    {pdfCount} PDF
+                  </span>
+                )}
+                {imageCount > 0 && (
+                  <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                    {imageCount} IMG
+                  </span>
+                )}
+              </div>
+            </button>
           </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              // Extract bucket name from the parent path or use the first part of subfolderPath
+              const pathParts = subfolderPath.split('/');
+              const bucketName = pathParts[0];
+              const folderPath = pathParts.slice(1).join('/');
+              showLinkGenerator(bucketName, folderPath);
+            }}
+            className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400"
+            title={t('linkGenerator.shareFolder')}
+          >
+            <LinkIcon className="h-3 w-3" />
+          </button>
         </div>
         
         {isExpanded && (
@@ -286,40 +347,59 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
           
           return (
             <div key={folderId} className="space-y-1">
-              <div
-                onClick={() => toggleFolder(folderId)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 group"
-              >
-                {isExpanded ? (
-                  <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
-                ) : (
-                  <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
-                )}
-                {isExpanded ? (
-                  <FolderOpen className="h-4 w-4 text-green-600 dark:text-green-400 folder-icon-transition" />
-                ) : (
-                  <Folder className="h-4 w-4 text-green-600 dark:text-green-400 folder-icon-transition" />
-                )}
-                <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors duration-200">
-                  {t(`folders.${folderId}`)}
-                </span>
-                <div className="flex items-center space-x-1">
-                  {totalFiles > 0 && (
-                    <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full font-medium">
-                      {totalFiles}
+              <div className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 group">
+                <div className="flex items-center space-x-2 flex-1">
+                  <button
+                    onClick={() => toggleFolder(folderId)}
+                    className="flex items-center space-x-1 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    {isExpanded ? (
+                      <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4 text-gray-500 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => onFolderClick && onFolderClick(folderStructure[folderId], '', folderId)}
+                    className="flex items-center space-x-2 flex-1 text-left p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    {isExpanded ? (
+                      <FolderOpen className="h-4 w-4 text-green-600 dark:text-green-400 folder-icon-transition" />
+                    ) : (
+                      <Folder className="h-4 w-4 text-green-600 dark:text-green-400 folder-icon-transition" />
+                    )}
+                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-800 dark:group-hover:text-green-200 transition-colors duration-200">
+                      {t(`folders.${folderId}`)}
                     </span>
-                  )}
-                  {pdfCount > 0 && (
-                    <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
-                      {pdfCount} PDF
-                    </span>
-                  )}
-                  {imageCount > 0 && (
-                    <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-full font-medium">
-                      {imageCount} IMG
-                    </span>
-                  )}
+                    <div className="flex items-center space-x-1">
+                      {totalFiles > 0 && (
+                        <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full font-medium">
+                          {totalFiles}
+                        </span>
+                      )}
+                      {pdfCount > 0 && (
+                        <span className="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                          {pdfCount} PDF
+                        </span>
+                      )}
+                      {imageCount > 0 && (
+                        <span className="text-xs text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/30 px-1.5 py-0.5 rounded-full font-medium">
+                          {imageCount} IMG
+                        </span>
+                      )}
+                    </div>
+                  </button>
                 </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    showLinkGenerator(folderId);
+                  }}
+                  className="opacity-0 group-hover:opacity-100 p-1 rounded transition-all duration-200 text-gray-400 dark:text-gray-500 hover:text-green-600 dark:hover:text-green-400"
+                  title={t('linkGenerator.shareFolder')}
+                >
+                  <LinkIcon className="h-3 w-3" />
+                </button>
               </div>
               
               {isExpanded && (
@@ -418,6 +498,15 @@ const Sidebar = ({ onFileSelect, selectedFile }) => {
           </div>
         )}
       </div>
+
+      {/* Link Generator Modal */}
+      {linkGenerator.show && (
+        <LinkGenerator
+          bucketName={linkGenerator.bucket}
+          folderPath={linkGenerator.folder}
+          onClose={hideLinkGenerator}
+        />
+      )}
     </div>
   );
 };

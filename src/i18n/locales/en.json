@@ -42,5 +42,33 @@
     "addToFavorites": "Add to favorites",
     "removeFromFavorites": "Remove from favorites",
     "copyLink": "Copy link"
+  },
+  "linkGenerator": {
+    "title": "Create Direct Link",
+    "description": "Create a direct link to the folder overview to easily share it.",
+    "bucket": "Bucket",
+    "folder": "Folder",
+    "generatedLink": "Generated Link",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "share": "Share",
+    "close": "Close",
+    "shareFolder": "Share Folder Overview",
+    "directLink": "Direct Link to Folder Overview"
+  },
+  "folderOverview": {
+    "folders": "Folders",
+    "files": "Files",
+    "folder": "Folder",
+    "subfolders": "Subfolders",
+    "search": "Search in this folder...",
+    "sortByName": "Sort by Name",
+    "sortByType": "Sort by Type",
+    "sortBySize": "Sort by Size",
+    "sortByDate": "Sort by Date",
+    "emptyFolder": "This folder is empty",
+    "noFilesInFolder": "No files or subfolders found",
+    "noSearchResults": "No search results",
+    "tryDifferentSearch": "Try a different search term"
   }
 }
