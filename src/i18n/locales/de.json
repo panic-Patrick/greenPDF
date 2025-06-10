@@ -12,6 +12,8 @@
     "noFiles": "Keine Dateien gefunden",
     "loading": "Lade Ordner...",
     "refresh": "Aktualisieren",
+    "refreshData": "Daten aktualisieren",
+    "refreshing": "Aktualisiere...",
     "retry": "Erneut versuchen"
   },
   "viewer": {

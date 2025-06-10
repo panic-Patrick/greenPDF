@@ -12,6 +12,8 @@
     "noFiles": "No files found",
     "loading": "Loading folders...",
     "refresh": "Refresh",
+    "refreshData": "Refresh Data",
+    "refreshing": "Refreshing...",
     "retry": "Retry"
   },
   "viewer": {
