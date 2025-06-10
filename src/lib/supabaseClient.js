@@ -140,15 +140,18 @@ export const testSupabaseConnection = async () => {
 // Helper function to check if bucket exists
 export const checkBucketExists = async (bucketName) => {
   try {
-    // Verwenden Sie die korrekte API-Methode
-    const { data, error } = await supabase.storage.getBucket(bucketName);
+    // Instead of getBucket (which requires admin permissions),
+    // try to list files in the bucket to check accessibility
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .list('', { limit: 1 });
     
     if (error) {
       console.error(`Error checking bucket ${bucketName}:`, error);
       return false;
     }
     
-    return !!data;
+    return true; // If we can list files, bucket exists and is accessible
   } catch (error) {
     console.error(`Error checking bucket ${bucketName}:`, error);
     return false;

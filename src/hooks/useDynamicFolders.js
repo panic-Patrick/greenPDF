@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { SupabaseStorageService } from '../api/supabaseStorage';
 
 export const useDynamicFolders = () => {
@@ -55,20 +55,20 @@ export const useDynamicFolders = () => {
     await loadFolders();
   };
 
-  const getAllFiles = () => {
+  const getAllFiles = useCallback(() => {
     return Object.values(folderStructure).flatMap(folder => 
       SupabaseStorageService.getAllFilesRecursively(folder)
     );
-  };
+  }, [folderStructure]);
 
-  const searchFiles = (query) => {
+  const searchFiles = useCallback((query) => {
     if (!query.trim()) return [];
     
     const allFiles = getAllFiles();
     return allFiles.filter(file => 
       file.name.toLowerCase().includes(query.toLowerCase())
     );
-  };
+  }, [getAllFiles]);
 
   return {
     folderStructure,

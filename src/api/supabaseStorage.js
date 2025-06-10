@@ -252,11 +252,16 @@ export class SupabaseStorageService {
     
     for (const [folderName, bucketName] of Object.entries(this.BUCKETS)) {
       try {
-        const { data, error } = await supabase.storage.getBucket(bucketName);
+        // Instead of getBucket (which requires admin permissions), 
+        // try to list files in the bucket to check accessibility
+        const { data, error } = await supabase.storage
+          .from(bucketName)
+          .list('', { limit: 1 });
+        
         health[folderName] = {
           accessible: !error,
           error: error?.message || null,
-          bucket: data
+          bucket: { name: bucketName, public: true } // Assume public for now
         };
       } catch (error) {
         health[folderName] = {

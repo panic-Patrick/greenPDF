@@ -5,16 +5,7 @@
   },
   "presse": {
     "name": "presse",
-    "files": [
-      {
-        "id": "presse_logo",
-        "name": "logo.png",
-        "path": "/media/presse/logo.png",
-        "type": "image",
-        "size": "567.7 KB",
-        "lastModified": "2025-06-06"
-      }
-    ]
+    "files": []
   },
   "wahlkampf": {
     "name": "wahlkampf",

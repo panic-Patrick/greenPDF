@@ -24,7 +24,7 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick, onClose }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [expandedFolders, setExpandedFolders] = useState(new Set(['antraege', 'presse', 'wahlkampf', 'events']));
+  const [expandedFolders, setExpandedFolders] = useState(new Set());
   const [expandedSubfolders, setExpandedSubfolders] = useState(new Set());
   const [activeTab, setActiveTab] = useState('folders');
   const [recentFiles, setRecentFiles] = useLocalStorage('recentFiles', []);
@@ -57,17 +57,23 @@ const Sidebar = ({ onFileSelect, selectedFile, onFolderClick, onClose }) => {
 
   // Handle URL navigation on load
   useEffect(() => {
-    if (hasUrlNavigation && urlParams.bucket) {
+    if (hasUrlNavigation && urlParams.bucket && Object.keys(folderStructure).length > 0) {
       // Auto-expand the bucket from URL
-      setExpandedFolders(prev => new Set([...prev, urlParams.bucket]));
+      setExpandedFolders(prev => {
+        if (prev.has(urlParams.bucket)) return prev;
+        return new Set([...prev, urlParams.bucket]);
+      });
       
       // Auto-expand the folder path if specified
       if (urlParams.folder) {
         const folderPath = `${urlParams.bucket}/${urlParams.folder}`;
-        setExpandedSubfolders(prev => new Set([...prev, folderPath]));
+        setExpandedSubfolders(prev => {
+          if (prev.has(folderPath)) return prev;
+          return new Set([...prev, folderPath]);
+        });
       }
     }
-  }, [hasUrlNavigation, urlParams, folderStructure]);
+  }, [hasUrlNavigation, urlParams.bucket, urlParams.folder, folderStructure]);
 
   const toggleFolder = (folderId) => {
     const newExpanded = new Set(expandedFolders);
