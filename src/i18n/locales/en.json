@@ -52,7 +52,7 @@
     "folder": "Subfolder",
     "generatedLink": "Generated Link",
     "qrCode": "QR Code",
-    "qrCodeDescription": "QR code with logo",
+    "qrCodeDescription": "The QR code contains the logo and can be used to quickly access the folder overview.",
     "copy": "Copy",
     "copied": "Copied!",
     "download": "Download",

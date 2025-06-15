@@ -204,7 +204,10 @@ function App() {
                   onToggleFavorite={toggleFavorite}
                 />
               ) : (
-                <MediaViewer selectedFile={selectedFile} />
+                <MediaViewer 
+                  selectedFile={selectedFile} 
+                  onOpenSidebar={() => setSidebarOpen(true)}
+                />
               )}
             </div>
           </div>

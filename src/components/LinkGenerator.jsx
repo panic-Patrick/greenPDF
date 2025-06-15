@@ -236,33 +236,16 @@ const LinkGenerator = ({ bucketName, folderPath = '', onClose }) => {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('linkGenerator.qrCode')}
             </label>
-            <div className="flex items-center space-x-2">
-              <input
-                type="text"
-                value={t('linkGenerator.qrCodeDescription')}
-                readOnly
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm"
-              />
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {t('linkGenerator.qrCodeDescription')}
+              </p>
               <button
                 onClick={downloadQRCode}
-                disabled={qrCodeLoading || !qrCodeDataUrl}
-                className={`px-3 py-2 rounded-lg transition-all duration-200 flex items-center space-x-1 ${
-                  qrCodeLoading || !qrCodeDataUrl
-                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-                    : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800/40'
-                }`}
+                className="flex items-center space-x-2 px-4 py-2 bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white rounded-lg transition-colors duration-200 text-sm font-medium min-w-[120px] justify-center"
               >
-                {qrCodeLoading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-600"></div>
-                    <span className="text-sm">{t('linkGenerator.generating')}</span>
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-4 w-4" />
-                    <span className="text-sm">{t('linkGenerator.download')}</span>
-                  </>
-                )}
+                <Download className="h-4 w-4" />
+                <span>{t('linkGenerator.download')}</span>
               </button>
             </div>
           </div>

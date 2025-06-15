@@ -52,7 +52,7 @@
     "folder": "Unterordner",
     "generatedLink": "Generierter Link",
     "qrCode": "QR-Code",
-    "qrCodeDescription": "QR-Code mit Logo",
+    "qrCodeDescription": "Der QR-Code enthält das Logo und kann für schnellen Zugriff auf die Ordner-Übersicht verwendet werden.",
     "copy": "Kopieren",
     "copied": "Kopiert!",
     "download": "Download",
