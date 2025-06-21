@@ -82,6 +82,26 @@ const ImpressumContent = ({ onClose }) => {
               </section>
 
               <section>
+                <h4 className="text-lg font-semibold text-emerald-800 dark:text-emerald-400 mb-2">Hosting und technische Dienstleister</h4>
+                <p className="mb-2">
+                  Diese Website wird gehostet bei:
+                </p>
+                <p className="mb-2">
+                  Strato AG<br/>
+                  Pascalstraße 10, 10587 Berlin, Deutschland
+                </p>
+                <p className="mb-2">
+                  Strato ist ein deutscher Hosting-Anbieter, der unsere Website bereitstellt. Weitere Informationen zu Strato finden Sie unter: <a href="https://www.strato.de" target="_blank" rel="noopener noreferrer" className="text-emerald-600 dark:text-emerald-400 hover:underline">https://www.strato.de</a>
+                </p>
+                <p className="mb-2">
+                  Für das Kontaktformular nutzen wir den Dienst "Formspree" der Formspree Inc. Dabei werden die über das Formular übermittelten Daten sicher verarbeitet und an uns weitergeleitet.
+                </p>
+                <p className="mb-2">
+                  Zum Schutz vor Spam verwenden wir hCaptcha, einen Dienst der Intuition Machines, Inc. hCaptcha ist ein datenschutzfreundlicher Captcha-Dienst, der in Deutschland betrieben wird.
+                </p>
+              </section>
+
+              <section>
                 <h4 className="text-lg font-semibold text-emerald-800 dark:text-emerald-400 mb-2">Streitschlichtung</h4>
                 <p className="mb-2">
                   Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:{' '}
