@@ -43,14 +43,18 @@ const SupabaseDebug = () => {
     }
 
     // Test 2: Check buckets
-    const buckets = ['antraege', 'presse', 'wahlkampf'];
+    const buckets = ['antraege', 'presse', 'wahlkampf', 'events'];
     for (const bucket of buckets) {
       try {
-        const { data, error } = await supabase.storage.getBucket(bucket);
+        // Use list instead of getBucket to avoid admin permission requirements
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .list('', { limit: 1 });
+        
         results.buckets[bucket] = {
           exists: !error,
           error: error?.message,
-          public: data?.public || false
+          public: true // Assume public since we can access it
         };
 
         // Test 3: List files in bucket

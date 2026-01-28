@@ -12,6 +12,8 @@
     "noFiles": "Keine Dateien gefunden",
     "loading": "Lade Ordner...",
     "refresh": "Aktualisieren",
+    "refreshData": "Daten aktualisieren",
+    "refreshing": "Aktualisiere...",
     "retry": "Erneut versuchen"
   },
   "viewer": {
@@ -35,11 +37,59 @@
     "antraege": "Anträge",
     "presse": "Presse",
     "wahlkampf": "Wahlkampf",
+    "events": "Events",
     "documents": "Dokumente"
   },
   "actions": {
     "addToFavorites": "Zu Favoriten hinzufügen",
     "removeFromFavorites": "Aus Favoriten entfernen",
     "copyLink": "Link kopieren"
+  },
+  "linkGenerator": {
+    "title": "Direkten Link erstellen",
+    "description": "Erstellen Sie einen direkten Link zur Ordner-Übersicht, um sie einfach zu teilen.",
+    "bucket": "Ordner",
+    "folder": "Unterordner",
+    "generatedLink": "Generierter Link",
+    "qrCode": "QR-Code",
+    "qrCodeDescription": "Der QR-Code enthält das Logo und kann für schnellen Zugriff auf die Ordner-Übersicht verwendet werden.",
+    "copy": "Kopieren",
+    "copied": "Kopiert!",
+    "download": "Download",
+    "share": "Teilen",
+    "close": "Schließen",
+    "shareFolder": "Ordner-Übersicht teilen",
+    "directLink": "Direkter Link zur Ordner-Übersicht",
+    "downloadQR": "QR-Code herunterladen",
+    "generating": "Generiere..."
+  },
+  "folderOverview": {
+    "folders": "Ordner",
+    "files": "Dateien",
+    "folder": "Ordner",
+    "subfolders": "Unterordner",
+    "search": "In diesem Ordner suchen...",
+    "sortByName": "Nach Name sortieren",
+    "sortByType": "Nach Typ sortieren",
+    "sortBySize": "Nach Größe sortieren",
+    "sortByDate": "Nach Datum sortieren",
+    "emptyFolder": "Dieser Ordner ist leer",
+    "noFilesInFolder": "Keine Dateien oder Unterordner gefunden",
+    "noSearchResults": "Keine Suchergebnisse",
+    "tryDifferentSearch": "Versuchen Sie einen anderen Suchbegriff",
+    "noResults": "Keine Ergebnisse gefunden",
+    "items": "Elemente",
+    "gridView": "Rasteransicht",
+    "listView": "Listenansicht"
+  },
+  "footer": {
+    "contact": "Kontakt",
+    "quickLinks": "Schnellzugriff",
+    "legal": "Rechtliches",
+    "website": "Website",
+    "privacy": "Datenschutz",
+    "imprint": "Impressum",
+    "allRightsReserved": "Alle Rechte vorbehalten.",
+    "poweredBy": "Powered by"
   }
 }

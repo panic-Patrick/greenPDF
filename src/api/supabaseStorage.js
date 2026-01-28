@@ -1,11 +1,12 @@
-import { supabase, getPublicUrl, listFilesInBucket } from '../lib/supabaseClient';
+import { supabase, getPublicUrl, listFilesInBucket, listFilesAndFoldersRecursively } from '../lib/supabaseClient';
 
 export class SupabaseStorageService {
   // Bucket names that correspond to your folder structure
   static BUCKETS = {
     antraege: 'antraege',
     presse: 'presse', 
-    wahlkampf: 'wahlkampf'
+    wahlkampf: 'wahlkampf',
+    events: 'events'
   };
 
   // Supported file extensions
@@ -35,8 +36,8 @@ export class SupabaseStorageService {
   /**
    * Generate unique ID for file
    */
-  static generateFileId(bucketName, fileName) {
-    const baseName = fileName.replace(/\.(pdf|png|jpg|jpeg)$/i, '').toLowerCase();
+  static generateFileId(bucketName, filePath) {
+    const baseName = filePath.replace(/\.(pdf|png|jpg|jpeg)$/i, '').toLowerCase();
     const sanitized = baseName.replace(/[^a-z0-9]/g, '_');
     return `${bucketName}_${sanitized}`;
   }
@@ -50,7 +51,68 @@ export class SupabaseStorageService {
   }
 
   /**
-   * Load files from a specific bucket
+   * Process files recursively from folder structure
+   */
+  static processFilesRecursively(bucketName, files, folders, basePath = '') {
+    const processedFiles = [];
+    
+    // Process files in current level
+    files
+      .filter(file => file.name && this.isSupportedFile(file.name))
+      .forEach(file => {
+        processedFiles.push({
+          id: this.generateFileId(bucketName, file.path),
+          name: file.name,
+          path: getPublicUrl(bucketName, file.path),
+          fullPath: file.path,
+          type: this.getFileType(file.name),
+          size: this.formatFileSize(file.metadata?.size),
+          lastModified: file.updated_at ? new Date(file.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+          bucket: bucketName,
+          folder: basePath
+        });
+      });
+
+    return processedFiles;
+  }
+
+  /**
+   * Create folder structure with nested files and subfolders
+   */
+  static createFolderStructure(bucketName, files, folders, basePath = '') {
+    const structure = {
+      files: this.processFilesRecursively(bucketName, files, folders, basePath),
+      subfolders: {}
+    };
+
+    // Process subfolders recursively
+    folders.forEach(folder => {
+      const folderPath = basePath ? `${basePath}/${folder.name}` : folder.name;
+      structure.subfolders[folder.name] = {
+        name: folder.name,
+        path: folder.path,
+        ...this.createFolderStructure(bucketName, folder.files, folder.folders, folderPath)
+      };
+    });
+
+    return structure;
+  }
+
+  /**
+   * Load files from a specific bucket with folder structure
+   */
+  static async loadFilesFromBucketWithFolders(bucketName) {
+    try {
+      const { files, folders } = await listFilesAndFoldersRecursively(bucketName);
+      return this.createFolderStructure(bucketName, files, folders);
+    } catch (error) {
+      console.error(`Error loading files from bucket ${bucketName}:`, error);
+      return { files: [], subfolders: {} };
+    }
+  }
+
+  /**
+   * Load files from a specific bucket (legacy flat structure)
    */
   static async loadFilesFromBucket(bucketName) {
     try {
@@ -62,10 +124,12 @@ export class SupabaseStorageService {
           id: this.generateFileId(bucketName, file.name),
           name: file.name,
           path: getPublicUrl(bucketName, file.name),
+          fullPath: file.name,
           type: this.getFileType(file.name),
           size: this.formatFileSize(file.metadata?.size),
           lastModified: file.updated_at ? new Date(file.updated_at).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-          bucket: bucketName
+          bucket: bucketName,
+          folder: ''
         }));
 
       return processedFiles;
@@ -76,7 +140,7 @@ export class SupabaseStorageService {
   }
 
   /**
-   * Load all files from all buckets
+   * Load all files from all buckets with folder structure
    */
   static async loadAllFiles() {
     const folderStructure = {};
@@ -84,24 +148,59 @@ export class SupabaseStorageService {
     for (const [folderName, bucketName] of Object.entries(this.BUCKETS)) {
       try {
         console.log(`Loading files from bucket: ${bucketName}`);
-        const files = await this.loadFilesFromBucket(bucketName);
+        const bucketStructure = await this.loadFilesFromBucketWithFolders(bucketName);
         
         folderStructure[folderName] = {
           name: folderName,
-          files: files
+          bucket: bucketName,
+          files: bucketStructure.files,
+          subfolders: bucketStructure.subfolders
         };
         
-        console.log(`Loaded ${files.length} files from ${bucketName}`);
+        const totalFiles = this.countFilesRecursively(bucketStructure);
+        console.log(`Loaded ${totalFiles} files from ${bucketName}`);
       } catch (error) {
         console.error(`Error loading bucket ${bucketName}:`, error);
         folderStructure[folderName] = {
           name: folderName,
-          files: []
+          bucket: bucketName,
+          files: [],
+          subfolders: {}
         };
       }
     }
 
     return folderStructure;
+  }
+
+  /**
+   * Count files recursively in folder structure
+   */
+  static countFilesRecursively(structure) {
+    let count = structure.files ? structure.files.length : 0;
+    
+    if (structure.subfolders) {
+      Object.values(structure.subfolders).forEach(subfolder => {
+        count += this.countFilesRecursively(subfolder);
+      });
+    }
+    
+    return count;
+  }
+
+  /**
+   * Get all files recursively from folder structure
+   */
+  static getAllFilesRecursively(structure) {
+    let allFiles = [...(structure.files || [])];
+    
+    if (structure.subfolders) {
+      Object.values(structure.subfolders).forEach(subfolder => {
+        allFiles = allFiles.concat(this.getAllFilesRecursively(subfolder));
+      });
+    }
+    
+    return allFiles;
   }
 
   /**
@@ -115,7 +214,9 @@ export class SupabaseStorageService {
       folderStructure = await this.loadAllFiles();
     }
 
-    const allFiles = Object.values(folderStructure).flatMap(folder => folder.files || []);
+    const allFiles = Object.values(folderStructure).flatMap(folder => 
+      this.getAllFilesRecursively(folder)
+    );
     
     return allFiles.filter(file => 
       file.name.toLowerCase().includes(query.toLowerCase())
@@ -151,11 +252,16 @@ export class SupabaseStorageService {
     
     for (const [folderName, bucketName] of Object.entries(this.BUCKETS)) {
       try {
-        const { data, error } = await supabase.storage.getBucket(bucketName);
+        // Instead of getBucket (which requires admin permissions), 
+        // try to list files in the bucket to check accessibility
+        const { data, error } = await supabase.storage
+          .from(bucketName)
+          .list('', { limit: 1 });
+        
         health[folderName] = {
           accessible: !error,
           error: error?.message || null,
-          bucket: data
+          bucket: { name: bucketName, public: true } // Assume public for now
         };
       } catch (error) {
         health[folderName] = {

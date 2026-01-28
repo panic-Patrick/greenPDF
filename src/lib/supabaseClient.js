@@ -55,6 +55,57 @@ export const listFilesInBucket = async (bucketName) => {
   }
 };
 
+// Helper function to recursively list files and folders in a bucket
+export const listFilesAndFoldersRecursively = async (bucketName, path = '') => {
+  try {
+    console.log(`Listing files and folders in bucket: ${bucketName}, path: ${path}`);
+    
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .list(path, {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: 'name', order: 'asc' }
+      });
+
+    if (error) {
+      console.error(`Error listing files in bucket ${bucketName} at path ${path}:`, error);
+      return { files: [], folders: [] };
+    }
+
+    const files = [];
+    const folders = [];
+
+    for (const item of data || []) {
+      const fullPath = path ? `${path}/${item.name}` : item.name;
+      
+      if (item.id === null) {
+        // This is a folder
+        const subItems = await listFilesAndFoldersRecursively(bucketName, fullPath);
+        folders.push({
+          name: item.name,
+          path: fullPath,
+          files: subItems.files,
+          folders: subItems.folders,
+          metadata: item
+        });
+      } else {
+        // This is a file
+        files.push({
+          ...item,
+          path: fullPath
+        });
+      }
+    }
+
+    console.log(`Found ${files.length} files and ${folders.length} folders in ${bucketName}/${path}`);
+    return { files, folders };
+  } catch (error) {
+    console.error(`Error accessing bucket ${bucketName} at path ${path}:`, error);
+    return { files: [], folders: [] };
+  }
+};
+
 // Helper function to get file metadata
 export const getFileMetadata = async (bucketName, filePath) => {
   try {
@@ -89,15 +140,18 @@ export const testSupabaseConnection = async () => {
 // Helper function to check if bucket exists
 export const checkBucketExists = async (bucketName) => {
   try {
-    // Verwenden Sie die korrekte API-Methode
-    const { data, error } = await supabase.storage.getBucket(bucketName);
+    // Instead of getBucket (which requires admin permissions),
+    // try to list files in the bucket to check accessibility
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .list('', { limit: 1 });
     
     if (error) {
       console.error(`Error checking bucket ${bucketName}:`, error);
       return false;
     }
     
-    return !!data;
+    return true; // If we can list files, bucket exists and is accessible
   } catch (error) {
     console.error(`Error checking bucket ${bucketName}:`, error);
     return false;

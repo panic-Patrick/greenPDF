@@ -12,6 +12,8 @@
     "noFiles": "No files found",
     "loading": "Loading folders...",
     "refresh": "Refresh",
+    "refreshData": "Refresh Data",
+    "refreshing": "Refreshing...",
     "retry": "Retry"
   },
   "viewer": {
@@ -35,11 +37,59 @@
     "antraege": "Applications",
     "presse": "Press",
     "wahlkampf": "Campaign",
+    "events": "Events",
     "documents": "Documents"
   },
   "actions": {
     "addToFavorites": "Add to favorites",
     "removeFromFavorites": "Remove from favorites",
     "copyLink": "Copy link"
+  },
+  "linkGenerator": {
+    "title": "Create Direct Link",
+    "description": "Create a direct link to the folder overview to easily share it.",
+    "bucket": "Folder",
+    "folder": "Subfolder",
+    "generatedLink": "Generated Link",
+    "qrCode": "QR Code",
+    "qrCodeDescription": "The QR code contains the logo and can be used to quickly access the folder overview.",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "download": "Download",
+    "share": "Share",
+    "close": "Close",
+    "shareFolder": "Share Folder Overview",
+    "directLink": "Direct Link to Folder Overview",
+    "downloadQR": "Download QR Code",
+    "generating": "Generating..."
+  },
+  "folderOverview": {
+    "folders": "Folders",
+    "files": "Files",
+    "folder": "Folder",
+    "subfolders": "Subfolders",
+    "search": "Search in this folder...",
+    "sortByName": "Sort by Name",
+    "sortByType": "Sort by Type",
+    "sortBySize": "Sort by Size",
+    "sortByDate": "Sort by Date",
+    "emptyFolder": "This folder is empty",
+    "noFilesInFolder": "No files or subfolders found",
+    "noSearchResults": "No search results",
+    "tryDifferentSearch": "Try a different search term",
+    "noResults": "No results found",
+    "items": "items",
+    "gridView": "Grid view",
+    "listView": "List view"
+  },
+  "footer": {
+    "contact": "Contact",
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
+    "website": "Website",
+    "privacy": "Privacy",
+    "imprint": "Imprint",
+    "allRightsReserved": "All rights reserved.",
+    "poweredBy": "Powered by"
   }
 }
